@@ -6,32 +6,35 @@ body {
 
 /* Cabeçalho */
 header {
-    background: #1a6fb8;
     color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 10px 30px;
+    padding: 20px 30px;
     margin-bottom: 20px;
+    background: #5079ca;;
 }
 
 header h1 {
     margin: 0;
-    font-size: 22px;
+    font-size: 30px;
+    margin-left: 15px;
+    color: white;
 }
 
 nav a {
-    margin-left: 20px;
+    margin-left: 75px;
+    margin-top: 15px;
     text-decoration: none;
     color: white;
     font-weight: bold;
+    font-size: 17px;
 }
 
 nav a:hover {
     text-decoration: underline;
 }
 
-/* Seção verde */
 .merchan {
     background: #2d9e45;
     color: white;
@@ -39,26 +42,38 @@ nav a:hover {
     justify-content: space-between;
     align-items: center;
     padding: 30px;
+    height: 360px;
+    margin-right: 2%;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
 }
 
 .texto-merchan {
     max-width: 50%;
+    margin-bottom: 100px;
+    margin-left: 10%;
 }
 
 .texto-merchan h2 {
-    font-size: 20px;
+    font-size: 30px;
     margin-bottom: 20px;
 }
 
 .buttons-merchan {
-    margin-top: 15px;
+    margin-left: 50%;
+    margin-top: 30px;
+    text-align: center;
 }
 
 .buttons-merchan a {
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    align-items: center;
     display: inline-block;
-    padding: 10px 18px;
     border-radius: 5px;
     text-decoration: none;
+    text-align: center;
     font-weight: bold;
     margin-right: 10px;
 }
@@ -74,39 +89,34 @@ nav a:hover {
 }
 
 .merchan img {
-    max-width: 280px;
+    max-width: 480px;
     border-radius: 5px;
+    margin-right: 5%;
+    position: relative;
 }
 
 /* Bloco azul */
 .info {
+    height: 250px;
     background: #2f72c4;
     color: white;
     margin: 30px;
+    margin-right: 0%;
     padding: 40px;
-    border-radius: 5px;
-    font-size: 18px;
-    text-align: center;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
 }
 
 /* Rodapé */
 footer {
     position: fixed;
-    margin-top: 100%;
+    margin-top: 25%;
     background: #e0e0e0;
     padding: 10px;
     text-align: center;
     font-size: 12px;
     position: relative;
-}
-
-.icons {
-    position: absolute;
-    left: 20px;
-    bottom: 10px;
-}
-
-.icons img {
-    height: 25px;
-    margin-right: 5px;
 }
