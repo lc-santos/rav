@@ -23,9 +23,18 @@ header h1 {
 }
 
 a {
+    color: white;
     text-decoration: none;
 }
 
+h1 a {
+    text-decoration: none;
+}
+
+a:visited {
+    color: white;
+    text-decoration: none;
+}
 nav a {
     margin-left: 75px;
     margin-top: 15px;

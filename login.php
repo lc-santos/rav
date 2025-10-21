@@ -13,7 +13,7 @@
 <body>
 
   <header>
-    <a href="index.php"><h1>Guarita</h1></a>
+    <h1><a href="index.php">Guarita</h1></a>
     <nav>
       <a href="login.php">Login</a>
       <a href="cadastro.php">Cadastro</a>

@@ -11,7 +11,7 @@ header {
     align-items: center;
     padding: 20px 30px;
     margin-bottom: 20px;
-    background: #5079ca;;
+    background: #5079ca;
 }
 
 header h1 {
@@ -19,6 +19,11 @@ header h1 {
     font-size: 30px;
     margin-left: 15px;
     color: white;
+}
+
+h1 a {
+    color: white;
+    text-decoration: none;
 }
 
 nav a {
