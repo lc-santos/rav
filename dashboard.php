@@ -5,7 +5,7 @@ session_start();
 // 1. VERIFICA SE O USUÁRIO ESTÁ LOGADO
 if (!isset($_SESSION['usuario_id'])) {
     // Se não estiver logado, redireciona para o login
-    header("Location: login.html");
+    header("Location: login.php");
     exit();
 }
 
@@ -136,5 +136,6 @@ $nome_admin = $_SESSION['usuario_nome'];
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 
 </html>
