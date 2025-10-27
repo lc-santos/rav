@@ -4,7 +4,6 @@ body {
     background: #f2f2f2;
 }
 
-/* Cabeçalho */
 header {
     color: white;
     display: flex;
@@ -12,7 +11,7 @@ header {
     align-items: center;
     padding: 20px 30px;
     margin-bottom: 20px;
-    background: #5079ca;;
+    background: #5079ca;
 }
 
 header h1 {
@@ -22,19 +21,6 @@ header h1 {
     color: white;
 }
 
-a {
-    color: white;
-    text-decoration: none;
-}
-
-h1 a {
-    text-decoration: none;
-}
-
-a:visited {
-    color: white;
-    text-decoration: none;
-}
 nav a {
     margin-left: 75px;
     margin-top: 15px;
@@ -49,60 +35,6 @@ nav a:hover {
 }
 
 
-.texto-merchan {
-    max-width: 50%;
-    margin-bottom: 100px;
-    margin-left: 10%;
-}
-
-.texto-merchan h2 {
-    font-size: 30px;
-    margin-bottom: 20px;
-}
-
-.buttons-merchan {
-    margin-left: 50%;
-    margin-top: 30px;
-    text-align: center;
-}
-
-.buttons-merchan a {
-    width: 150px;
-    height: 50px;
-    line-height: 50px;
-    align-items: center;
-    display: inline-block;
-    border-radius: 5px;
-    text-decoration: none;
-    text-align: center;
-    font-weight: bold;
-    margin-right: 10px;
-}
-
-.btn-green {
-    background: white;
-    color: #2d9e45;
-}
-
-.btn-blue {
-    background: #3066d6;
-    color: white;
-}
-
-.merchan img {
-    max-width: 480px;
-    border-radius: 5px;
-    margin-right: 5%;
-    position: relative;
-}
-
-.info p {
-    margin-right: 550px;
-    margin-bottom: 50px;
-    height: 100px;
-    width: 700px;
-}
-
 footer {
     position: fixed;
     margin-top: 25%;
@@ -113,3 +45,6 @@ footer {
     position: relative;
 }
 
+.container {
+    margin-top: -2%;
+}

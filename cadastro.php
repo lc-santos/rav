@@ -4,16 +4,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guarita</title>
-  <link rel="stylesheet" href="css/cadastro.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <title>Cadastro - RAV</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
+  <link rel="stylesheet" href="css/login.css">
+  <link rel="stylesheet" href="css/cadastro.css">
 </head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
   <header>
-    <h1><a href="index.php">Guarita</h1></a>
+    <h1>Guarita</h1>
     <nav>
       <a href="login.php">Login</a>
       <a href="cadastro.php">Cadastro</a>
@@ -21,84 +22,77 @@
     </nav>
   </header>
 
-  <section class="container">
-    <h1>Cadastrar Empresa</h1>
+  <main class="container-fluid flex-grow-1 d-flex align-items-center justify-content-center py-5">
 
-    <form method="post" action="salvar.php" enctype="multipart/form-data">
-      <!-- Dados da Empresa -->
-      <h5 class="mb-3">Dados da Empresa</h5>
-      <div class="mb-3">
-        <label for="empresaNome" class="form-label">Nome da Empresa</label>
-        <input type="text" class="form-control" id="empresaNome" name="empresaNome" required>
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-md-12">
+
+          <div class="inter-container p-4 p-md-5">
+            <h2 class="text-center mb-4">Cadastro de Empresa e Usuário</h2>
+
+            <form action="processa-cadastro.php" method="POST">
+              <div class="row">
+                <div class="col-lg-6">
+                  <h4 class="mb-3">Empresa</h4>
+                  <div class="mb-3">
+                    <label for="empresaNome" class="form-label">Nome da Empresa</label>
+                    <input type="text" class="form-control" id="empresaNome" name="empresaNome" placeholder="Nome da Empresa" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="tipoDocumento" class="form-label">Tipo de Documento</label>
+                    <input type="text" class="form-control" id="tipoDocumento" name="tipoDocumento" placeholder="Tipo de Documento (ex: CNPJ)" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="documento" class="form-label">Número do Documento</label>
+                    <input type="text" class="form-control" id="documento" name="documento" placeholder="Número do Documento" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="telefone" class="form-label">Telefone</label>
+                    <input type="text" class="form-control" id="telefone" name="telefone" placeholder="Telefone" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="endereco" class="form-label">Endereço</label>
+                    <input type="text" class="form-control" id="endereco" name="endereco" placeholder="Endereço" required>
+                  </div>
+                </div>
+
+                <div class="col-lg-6">
+                  <h4 class="mb-3">Usuário</h4>
+                  <div class="mb-3">
+                    <label for="nome_completo" class="form-label">Nome completo</label>
+                    <input type="text" class="form-control" id="nome_completo" name="nome_completo" placeholder="Nome completo" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="email" class="form-label">E-mail</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="E-mail" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="senha" class="form-label">Senha</label>
+                    <input type="password" class="form-control" id="senha" name="senha" placeholder="Senha" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="cpf" class="form-label">CPF</label>
+                    <input type="text" class="form-control" id="cpf" name="cpf" placeholder="CPF" required>
+                  </div>
+                  <div class="mb-3">
+                    <label for="datanasc" class="form-label">Data de Nascimento</label>
+                    <input type="date" class="form-control" id="datanasc" name="datanasc" placeholder="Data de Nascimento">
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">Cadastrar</button>
+              </div>
+
+            </form>
+          </div>
+        </div>
       </div>
-
-      <div class="mb-3">
-        <label for="tipoDocumento" class="form-label">Tipo de Documento</label>
-        <select class="form-select" id="tipoDocumento" name="tipoDocumento" required>
-          <option value="" selected disabled>Selecione...</option>
-          <option value="cnpj">CNPJ</option>
-          <option value="cpf">CPF</option>
-          <option value="ie">Inscrição Estadual</option>
-          <option value="im">Inscrição Municipal</option>
-          <option value="nire">NIRE</option>
-          <option value="estatuto">Registro em Cartório</option>
-        </select>
-      </div>
-
-      <div class="mb-3">
-        <label for="documento" class="form-label">Número do Documento</label>
-        <input type="text" class="form-control" id="documento" name="documento" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="telefone" class="form-label">Telefone</label>
-        <input type="text" class="form-control" id="telefone" name="telefone" placeholder="(xx) xxxx-xxxx" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="endereco" class="form-label">Endereço</label>
-        <input type="text" class="form-control" id="endereco" name="endereco" required>
-      </div>
-
-      <!-- Admin da Empresa -->
-      <h5 class="mt-4 mb-3">Administrador da Conta</h5>
-      <div class="mb-3">
-        <label for="nomeAdmin" class="form-label">Nome Completo</label>
-        <input type="text" class="form-control" id="nomeAdmin" name="nomeAdmin" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="cpfadmin" class="form-label">CPF</label>
-        <input type="text" class="form-control" id="cpfadmin" name="cpfadmin" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="datanasc" class="form-label">Data de Nascimento</label>
-        <input type="date" class="form-control" id="datanasc" name="datanasc" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="emailAdmin" class="form-label">E-mail</label>
-        <input type="email" class="form-control" id="emailAdmin" name="emailAdmin" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="senha" class="form-label">Senha</label>
-        <input type="password" class="form-control" id="senha" name="senha" minlength="6" required>
-      </div>
-
-      <div class="mb-3">
-        <label for="confirmarSenha" class="form-label">Confirmar Senha</label>
-        <input type="password" class="form-control" id="confirmarSenha" name="confirmarSenha" required>
-      </div>
-
-      <button type="submit" class="btn btn-primary w-100">Cadastrar Empresa</button>
-    </form>
-  </section>
-
-  <footer>
-    Todos os direitos reservados - 2025
-  </footer>
-
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

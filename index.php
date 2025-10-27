@@ -1,57 +1,92 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Guarita</title>
-    <link rel="stylesheet" href="css/homepage.css">
+  <title>RAV - Registro de acesso de veículos</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/index.css">
 </head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
   <header>
-    <h1>Guarita</h1>
+    <h1>RAV - Registro de acesso de veículos</h1>
     <nav>
-      <a href="login.php">Login</a>
-      <a href="cadastro.php">Cadastro</a>
+      <a href="login.php">Acessar</a>
+      <a href="cadastro.php">Cadastrar</a>
       <a href="#">Saiba mais</a>
     </nav>
   </header>
 
+  <main class="flex-grow-1">
 
-  <section class="merchan">
-    <div class="texto-merchan">
-      <h2>Gerencie o acesso do seu estabelecimento com o nosso<br>
-         sistema prático de controle de acesso de veículos</h2>
-      <div class="buttons-merchan">
-        <a href="#" class="btn-green">Saiba mais</a>
-        <a href="cadastro.html" class="btn-blue">Cadastrar</a>
+    <section class="section-principal">
+      <div class="div-principal">
+        <h1>Texto</h1>
+        <div class="div-img-principal">
+          <img class="img-principal" src="img/acesso.png">
+        </div>
+
       </div>
-    </div>
-    <img src="img/guarda1.png" alt="Segurança">
-  </section>
+    </section>
 
- 
-  <section class="info">
-      <p>Registre acessos de forma dinâmica e agil <br>
-      Cadastre os motoristas e veículos quando necessário
-    </p>
-    <div class="video">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/gfzsjcTZlWU?si=n10mSSJwvYUY0Mqv" title="YouTube video player" frameborder="0" allow="accelerometer;
-       autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    </div>
-  
-   
-  </section>
 
-   <section class="info2">
-    <p>Gerencie e atribue diferentes tipos de acessos</p>
-  </section>
 
+    <section class="merchan py-5 right-off">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 texto-merchan">
+            <h2>Gerencie acesso e cadastro de veículos<br> de forma ágil e prática com o RAV</h2>
+            <div class="buttons-merchan mt-4">
+              <a href="#" class="btn-green">Saiba mais</a>
+              <a href="cadastro.php" class="btn-blue">Cadastrar</a>
+            </div>
+          </div>
+          <div class="col-lg-6 text-center">
+            <img src="img/guarda1.png" alt="Segurança" class="img-fluid merchan-img">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info py-5 left-off">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-lg-6 info-texto">
+            <p>Registro dinâmico</p>
+            <p>Cadastros simplificados</p>
+            <p>Sem sistemas embarcados</p>
+          </div>
+          <div class="col-lg-6">
+            <div class="ratio ratio-16x9">
+              <iframe src="https://www.youtube.com/embed/gfzsjcTZlWU?si=n10mSSJwvYUY0Mqv" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="info2">
+      <div class="container-flex">
+        <p>gerencie e atribua diferentes acessos e funções<br>
+          para funcionários da portaria</p>
+        <div class="col-lg-6 text-center">
+          <img src="img/acesso.png" alt="Segurança" class="img-fluid">
+        </div>
+
+      </div>
+    </section>
+
+  </main>
 
 
   <footer>
-  todos os direitos reservados - 2025
+    todos os direitos reservados - 2025
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

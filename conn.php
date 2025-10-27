@@ -1,14 +1,14 @@
 <?php
-$host = "localhost";
-$user = "root"; 
-$pass = "";     
-$db   = "cadastro";
+$servername = "localhost";
+$username = "root";
+$password = "";
+$database = "rav";
 
-$conn = new mysqli($host, $user, $pass, $db);
+$conn = new mysqli($servername, $username, $password, $database);
 
 if ($conn->connect_error) {
     die("Falha na conexão: " . $conn->connect_error);
 }
 
-date_default_timezone_set('America/Sao_Paulo');
+$conn->set_charset("utf8mb4");
 ?>

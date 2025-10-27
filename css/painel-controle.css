@@ -1,0 +1,20 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding-top: 56px;
+    background-color: #343a40;
+    color: white;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding-top: 56px;
+}
+
+.titulo-pagina {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}

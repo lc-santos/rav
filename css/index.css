@@ -1,0 +1,158 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f2f2f2;
+}
+
+header {
+    color: white;
+    display: flex;
+    position: fixed;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 3.5em;
+    background: #5079ca;
+}
+
+section {
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.section-principal {
+    margin-top: 1%;
+    width: 100%;
+    height: 50em;
+}
+
+.div-img-principal {
+    margin-top: 8em;
+    display: flex;
+    justify-content: right;
+}
+
+.img-principal {  
+    width: 50em;
+}
+
+.div-principal {
+    width: 100%;
+    height: 100%;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 30px;
+    margin-left: 15px;
+    color: white;
+}
+
+
+nav a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 17px;
+    padding: 0.5rem 1rem;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.merchan {
+    background: #f2f2f2;
+    color: black;
+
+}
+
+
+.texto-merchan h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+
+.buttons-merchan a {
+    width: 150px;
+    height: 50px;
+    line-height: 50px;
+    align-items: center;
+    display: inline-block;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.btn-green {
+    background: white;
+    color: #2d9e45;
+}
+
+.btn-blue {
+    border: 0px, white;
+    background: #3066d6;
+    color: white;
+}
+
+.btn-blue:hover  {
+    width: 10em;
+    background-color: white;
+    color: #2d9e45;
+}
+
+nav a:hover {
+    text-decoration: none;
+}
+
+
+.merchan-img {
+    max-width: 480px;
+    width: 100%;
+    border-radius: 5px;
+}
+
+.info {
+    background: #2f72c4;
+    color: white;
+    text-align: left;
+    font-size: 30px;
+}
+
+
+.container-flex {
+    display: flex;
+}
+
+
+.info2 {
+    background: #ada6a6;
+    color: white;
+    padding: 40px;
+    font-size: 25px;
+    font-weight: bold;
+    text-align: left;
+}
+
+
+footer {
+    background: #e0e0e0;
+    padding: 10px;
+    text-align: center;
+    font-size: 12px;
+}
+
+.right-off {
+    margin-right: 5%;
+    border-top-right-radius: 30px;
+    border-bottom-right-radius: 30px;
+}
+
+.left-off {
+    margin-left: 5%;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+}
