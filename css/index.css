@@ -24,16 +24,30 @@ section {
     margin-top: 1%;
     width: 100%;
     height: 50em;
+    background-color: #eff1ee
 }
 
 .div-img-principal {
     margin-top: 8em;
     display: flex;
     justify-content: right;
+    background-color:#eff1ee
+}
+
+img {
+    background-color:#f2f2f2;
+    border-radius: 10px;
+    border: 2px solid #2f4d8a;
 }
 
 .img-principal {  
-    width: 50em;
+    margin-right: 5%;
+    width: 40em;
+}
+
+.final-img {
+    width: 20em;
+    border: 2px solid lightgray;
 }
 
 .div-principal {
@@ -62,11 +76,10 @@ nav a:hover {
 }
 
 .merchan {
-    background: #f2f2f2;
-    color: black;
+    background: #2d9e45;
+    color: white;
 
 }
-
 
 .texto-merchan h2 {
     font-size: 30px;
@@ -113,6 +126,7 @@ nav a:hover {
     max-width: 480px;
     width: 100%;
     border-radius: 5px;
+    
 }
 
 .info {
@@ -129,7 +143,7 @@ nav a:hover {
 
 
 .info2 {
-    background: #ada6a6;
+    background: #2d9e45;
     color: white;
     padding: 40px;
     font-size: 25px;

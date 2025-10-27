@@ -24,7 +24,9 @@
 
     <section class="section-principal">
       <div class="div-principal">
-        <h1>Texto</h1>
+        <div class="merchan">
+          <h1>Texto</h1>
+        </div>
         <div class="div-img-principal">
           <img class="img-principal" src="img/acesso.png">
         </div>
@@ -73,7 +75,7 @@
         <p>gerencie e atribua diferentes acessos e funções<br>
           para funcionários da portaria</p>
         <div class="col-lg-6 text-center">
-          <img src="img/acesso.png" alt="Segurança" class="img-fluid">
+          <img class="final-img" src="img/acesso.png" alt="Segurança" class="img-fluid">
         </div>
 
       </div>
