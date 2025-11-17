@@ -108,6 +108,34 @@ if ($result->num_rows > 0) {
                     <p><strong>Função:</strong> <?= htmlspecialchars($usuario["role"]) ?></p>
                 </div>
             </div>
+        
+            <div class="card mb-4">
+                <div class="card-header">
+                    Cadastrar funcionário
+                </div>
+                <div class="card-body">
+                <button class="margin-bottom btn btn-secondary">Cadastrar funcionário</button>
+                    <table>
+                        <th>Funcionários cadastrados</th>
+                        <tr>
+                            <td>Nome</td>
+                            <td>ID</td>
+                            <td>E-mail</td>
+                        </tr>
+                        <tr>
+                            <td>Lucas Silva</td>
+                            <td>1</td>
+                            <td>lcprojetos23@gmail.com</td>
+                        </tr>
+                    </table>
+                </div>
+    
+                
+                
+
+            </div>
+            
+        
 
             <div class="row">
                 <div class="col-md-4">

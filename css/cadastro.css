@@ -1,41 +1,397 @@
+/* Seu CSS (index.css) */
 body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f2f2f2; 
+    margin: 0 auto;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: #eff1ee;
+    color: #333;
 }
 
-.container {
-    margin-top: -2%;
+.default-bg {
+    background-color: #eff1ee;
+}
+
+.margin-top {
+    margin-top: 5em;
+}
+
+.margin-bottom {
+    margin-bottom: 2em;
+}
+
+.padding-right {
+    padding-right: 2em;
+}
+
+.min-width {
+    width: 2em;
+}
+
+/* Bordas e cores */
+.blue-border {
+    border: 2px solid #1d5ca0;
+    border-radius: 10px;
+}
+
+.green-border {
+
+    border: 3px solid #28a745;
+    border-radius: 10px;
+}
+
+hr {
+    border: 3px solid lightgray;
+}
+
+.border-radius {
+    border: 1px solid black;
+}
+
+.bg-radius-green {
+    background-color: rgba(40, 167, 69, 1.0);
+    color: #fff;
+    margin: 0 7em;
+    border-radius: 50px;
+}
+
+.bg-radius-blue {
+
+    background-color: blue;
+    color: #fff;
+}
+
+.bg-rav-blue {
+    background-color: #0069d9;
+    color: #fff;
+}
+
+
+a {
+    text-decoration: none;
+    color: white;
+    transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+
+.btn-green {
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+}
+
+.btn-green:hover {
+    background-color: #218838;
+}
+
+.btn-blue {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+}
+
+.btn-blue:hover {
+    background-color: #0069d9;
 }
 
 header {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+    background-color: #2470c2;
     color: white;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 30px;
-    background: #5079ca;
-    
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+#header.scrolled {
+    background-color: #387dc7;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 header h1 {
-    margin: 0;
-    font-size: 30px;
-    margin-left: 15px;
-    color: white;
+    font-weight: 600;
+    font-size: 1.3rem;
+}
+
+/*Div principal*/
+.div-principal {
+    background-color: #eff1ee;
+    height: 25em;
+    margin-top: 10em;
+    margin-bottom: 5em;
+    padding: 2em 0;
+}
+
+.div-principal-text h2 {
+    color: #000;
+    font-size: 1.5rem;
+    line-height: 1.4;
+}
+
+.div-principal-image img {
+    margin: 0 auto;
+}
+
+.div-principal-buttons {
+    text-align: center;
 }
 
 
-nav a {
-    text-decoration: none;
-    color: white;
-    font-weight: bold;
-    font-size: 17px;
-    padding: 0.5rem 1rem; 
+li {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    transition: font-size 0.5s, padding 0.5s;
 }
 
-nav a:hover {
-    text-decoration: underline;
+li:hover {
+    font-size: 1.7em;
+    padding: 0.5em;
+}
+
+p {
+    font-size: 1.5em;
+    margin-bottom: 0.5em;
+    transition: font-size 0.5s, padding 0.5s;
+}
+
+p:hover {
+    font-size: 2em;
+    padding: 0.5em;
+}
+
+
+.info {
+    background-color: #eef3f8;
+}
+
+.info ul li {
+    margin-bottom: 3.5rem;
+}
+
+
+.info2 {
+    background: linear-gradient(to bottom right, #007bff, #00c6ff);
+    color: #fff;
+    padding: 3rem 1rem;
+}
+
+.info2 p {
+    font-size: 1.25rem;
+    font-weight: 500;
+}
+
+.info2 img {
+    margin-top: 1.5rem;
+    max-width: 300px;
+}
+
+
+footer {
+    background-color: #222;
+    color: #bbb;
+    font-size: 0.9rem;
+}
+
+/*Media queries */
+
+@media (max-width: 320px) {
+
+    .div-principal {
+        padding-bottom: 2em;
+    }
+
+    .div-principal-text h2 {
+        font-size: 1.3rem;
+        line-height: 1.2;
+    }
+
+
+    .div-principal-buttons a {
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+    }
+
+    .info ul li {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 576px) {
+
+
+    ul {
+        padding-top: 5em;
+        margin: 1em;
+        margin-top: 10em;
+    }
+
+    .div-principal {
+        margin-top: 5em;
+        padding-bottom: 10em;
+    }
+
+    .div-principal-buttons {
+        display: inline-flex;
+        align-items: center;
+        width: 25%;
+        margin: 38%;
+    }
+
+}
+
+@media (max-width: 767px) {
+    .div-principal {
+        margin-top: 5em;
+        margin-bottom: -15em;
+    }
+
+    .div-principal-image {
+        display: none;
+    }
+
+    hr {
+        display: none;
+    }
+
+    ul {
+        margin-top: 5em;
+        font-size: 0.5em;
+    }
+
+    li {
+        position: relative;
+        display: flex;
+        text-align: center;
+        font-size: 1em;
+    }
+}
+
+/* Tablets (≥768px)  */
+@media (min-width: 768px) {
+
+    /* Header */
+    header h1 {
+        margin-right: -10em;
+        font-size: 1px;
+    }
+
+    nav a {
+        margin-right: -1em;
+        margin-left: 0em;
+    }
+
+    /* Div-Principal Tablet-Querie */
+    .div-principal {
+        margin-top: 5em;
+        margin-bottom: 5em;
+    }
+
+    .div-principal-image {
+        margin-left: 3em;
+    }
+
+    .div-principal-text h2 {
+        font-size: 1.5em;
+    }
+
+    .merchan h2 {
+        font-size: 3rem;
+    }
+
+    .info2 p {
+        font-size: 2.25rem;
+    }
+
+    .info2 img {
+        max-width: 400px;
+    }
+
+    li {
+        font-size: 1em;
+    }
+}
+
+/* --- Notebooks (≥992px) --- */
+@media (min-width: 992px) {
+    header {
+        padding: 1rem 0;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    nav a {
+        font-size: 1rem;
+    }
+
+    /* Div-principal Notebook-Querie */
+
+    .div-principal {
+        padding-top: 4rem;
+        padding-bottom: 4rem;
+        margin-bottom: 10em;
+    }
+
+    .div-principal-text {
+        text-align: left;
+    }
+
+    .div-principal-text h2 {
+        font-size: 2rem;
+    }
+
+    .div-principal-image {
+        text-align: right;
+        margin-left: 5em;
+    }
+
+    .div-principal-buttons {
+        margin-top: 2.5rem;
+        justify-content: flex-start;
+    }
+
+    .div-principal-buttons a {
+        font-size: 1rem;
+        padding: 0.75rem 2rem;
+    }
+
+    /* Info sections */
+    .info ul li {
+        font-size: 2rem;
+    }
+
+    .info2 {
+        padding: 4rem 2rem;
+    }
+}
+
+/* --- Monitores grandes (≥1200px) --- */
+@media (min-width: 1200px) {
+
+    .div-principal {
+        margin-top: 7em;
+        margin-bottom: 10em;
+    }
+
+    header h1 {
+        font-size: 2.25rem;
+    }
+
+    .div-principal-text h2 {
+        font-size: 2.25rem;
+    }
+
+    .info2 p {
+        font-size: 2.5rem;
+    }
+
+    .info2 img {
+        max-width: 500px;
+    }
 }
 
 .inter-container {

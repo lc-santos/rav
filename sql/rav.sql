@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS rav;
+DROP DATABASE IF EXISTS rav;
 -- Cria o banco de dados (se ele não existir)
 CREATE DATABASE IF NOT EXISTS rav;
 

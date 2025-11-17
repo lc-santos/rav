@@ -52,7 +52,7 @@
             </p>
 
             <div class="default-bg div-principal-buttons d-flex flex-column flex-sm-row justify-content-center justify-content-md-start gap-4 mt-3">
-              <a href="saibamais.php" class="btn btn-success px-3">Saiba mais</a>
+              <a href="#" class="btn btn-success px-3">Saiba mais</a>
               <a href="login.php" class="btn btn-primary px-4">Acessar</a>
             </div>
           </div>
@@ -79,7 +79,6 @@
               <li>Registros dinâmicos</li>
               <li>Cadastros simplificados</li>
               <li>Relatórios automatizados</li>
-              <li>Sem precisar de aparelhos externos!</li>
             </ul>
           </div>
 

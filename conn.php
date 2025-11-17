@@ -1,3 +1,4 @@
+-- Active: 1761340476403@@127.0.0.1@3306
 <?php
 $servername = "localhost";
 $username = "root";
