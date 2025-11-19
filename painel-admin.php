@@ -39,6 +39,7 @@ if ($result->num_rows > 0) {
 
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,8 +52,8 @@ if ($result->num_rows > 0) {
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="#">Painel Admin</a>
-            <div class="collapse navbar-collapse">
+            <a class="navbar-brand" href="#">RAV - admin</a>
+            <div class="collapse navbar-collapse margin-right">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="#">
@@ -100,7 +101,7 @@ if ($result->num_rows > 0) {
             <h1 class="titulo-pagina">Painel de controle</h1>
 
             <div class="card mb-4">
-                <div class="card-header">
+                <div class="card-header bg-secondary text-white">
                     Empresa: <?= htmlspecialchars($usuario["empresaNome"]) ?>
                 </div>
                 <div class="card-body">
@@ -108,58 +109,100 @@ if ($result->num_rows > 0) {
                     <p><strong>Função:</strong> <?= htmlspecialchars($usuario["role"]) ?></p>
                 </div>
             </div>
-        
+
             <div class="card mb-4">
-                <div class="card-header">
-                    Cadastrar funcionário
+                <div class="card-header bg-success text-white">
+                    Registro de acesso
                 </div>
-                <div class="card-body">
-                <button class="margin-bottom btn btn-secondary">Cadastrar funcionário</button>
-                    <table>
-                        <th>Funcionários cadastrados</th>
-                        <tr>
-                            <td>Nome</td>
-                            <td>ID</td>
-                            <td>E-mail</td>
-                        </tr>
-                        <tr>
-                            <td>Lucas Silva</td>
-                            <td>1</td>
-                            <td>lcprojetos23@gmail.com</td>
-                        </tr>
-                    </table>
+                <div class="card-body" style="padding: 2em">
+                    <div class="flex">
+
+                        <div class="margin-bottom margin-right">
+                            <label>Placa:</label>
+                            <input>
+                        </div>
+
+                        <div class="margin-bottom margin-right">
+                            <label>Nome:</label>
+                            <input>
+                        </div>
+
+                        <div class="margin-bottom margin-right">
+                            <label>Tipo Veículo</label>
+                            <select>
+                                <option>Carro</option>
+                                <option>Moto</option>
+                                <option>Biciletas</option>
+                                <option>Outros</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-    
-                
-                
+
+                <button class="margin-bottom btn  btn-success margin-left" style="width:25%">Registrar</button>
+
 
             </div>
-            
-        
+        </div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="card text-white bg-primary mb-3">
-                        <div class="card-header">Total de Porteiros</div>
-                        <div class="card-body">
-                            <h5 class="card-title">0</h5>
-                            <p class="card-text">Usuários com permissão de porteiro cadastrados no sistema.</p>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="col-md-4">
-                    <div class="card text-white bg-success mb-3">
-                        <div class="card-header">Entradas Registradas Hoje</div>
-                        <div class="card-body">
-                            <h5 class="card-title">0</h5>
-                            <p class="card-text">Registros de entrada e saída nas últimas 24 horas.</p>
-                        </div>
-                    </div>
-                </div>
+        <div class="card mb-4">
+            <div class="card-header color-rav">
+                Funcionários
+            </div>
+            <div class="card-body">
+
+                <table>
+                    <th class="text-white bg-primary" colspan="3">Funcionários cadastrados</th>
+                    <tr>
+                        <td>Nome</td>
+                        <td>ID</td>
+                        <td>E-mail</td>
+                    </tr>
+                    <tr>
+                        <td>Lucas Silva</td>
+                        <td>1</td>
+                        <td>lcprojetos23@gmail.com</td>
+                    </tr>
+                </table>
+                <button class="btn btn-secondary" style="margin-top: 15px;">Cadastrar funcionário</button>
             </div>
 
         </div>
+
+
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">Relatórios</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card text-white bg-success mb-3">
+                            <div class="card-header">Entradas Registradas Hoje</div>
+                            <div class="card-body">
+                                <h5 class="card-title">0</h5>
+                                <p class="card-text">Registros de entrada e saída nas últimas 24 horas.</p>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-md-4">
+                        <div class="card text-white bg-primary mb-3">
+                            <div class="card-header">Total de Porteiros</div>
+                            <div class="card-body">
+                                <h5 class="card-title">0</h5>
+                                <p class="card-text">Usuários com permissão de porteiro cadastrados no sistema.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>

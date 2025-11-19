@@ -19,6 +19,17 @@
     margin-bottom: 20px;
 }
 
+.flex {
+    display: flex;
+}
+.margin-left {
+    margin-left: 20px;
+}
+
+.margin-right {
+    margin-right: 20px;
+}
+
 /* Seu CSS (index.css) */
 body {
     margin: 0 auto;
@@ -80,11 +91,40 @@ hr {
     color: #fff;
 }
 
-.bg-rav-blue {
+.color-rav {
     background-color: #0069d9;
+    color: white;
+}
+
+.rav-green {
+    background-color: #28a745;
+}
+
+.bg-rav-blue {
+    background-color:#0069d9 ;
     color: #fff;
 }
 
+input {
+    padding-left: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+table {
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
+
+tr, td {
+    text-align: center;
+    border: 1px solid gray;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
 a {
     color: white;
@@ -172,7 +212,7 @@ li:hover {
 }
 
 p {
-    font-size: 1.3em;
+    font-size: 1.1em;
     margin-bottom: 0.5em;
     transition: font-size 0.5s, padding 0.5s;
 }
