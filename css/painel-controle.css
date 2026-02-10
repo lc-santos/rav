@@ -1,3 +1,35 @@
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 250px;
+    padding-top: 56px;
+    background-color: #343a40;
+    color: white;
+}
+
+.main-content {
+    margin-left: 250px;
+    padding-top: 56px;
+}
+
+.titulo-pagina {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+
+.flex {
+    display: flex;
+}
+.margin-left {
+    margin-left: 20px;
+}
+
+.margin-right {
+    margin-right: 20px;
+}
+
 /* Seu CSS (index.css) */
 body {
     margin: 0 auto;
@@ -59,14 +91,42 @@ hr {
     color: #fff;
 }
 
-.bg-rav-blue {
+.color-rav {
     background-color: #0069d9;
+    color: white;
+}
+
+.rav-green {
+    background-color: #28a745;
+}
+
+.bg-rav-blue {
+    background-color:#0069d9 ;
     color: #fff;
 }
 
+input {
+    padding-left: 10px;
+    border: 1px solid black;
+    border-radius: 10px;
+}
+
+table {
+    text-align: center;
+}
+
+th {
+    text-align: center;
+}
+
+tr, td {
+    text-align: center;
+    border: 1px solid gray;
+    padding-left: 10px;
+    padding-right: 10px;
+}
 
 a {
-    text-decoration: none;
     color: white;
     transition: color 0.3s ease, background-color 0.3s ease;
 }
@@ -141,24 +201,24 @@ header h1 {
 
 
 li {
-    font-size: 1.5em;
+    font-size: 1.3em;
     margin-bottom: 0.5em;
     transition: font-size 0.5s, padding 0.5s;
 }
 
 li:hover {
-    font-size: 1.7em;
+    font-size: 1.3em;
     padding: 0.5em;
 }
 
 p {
-    font-size: 1.5em;
+    font-size: 1.1em;
     margin-bottom: 0.5em;
     transition: font-size 0.5s, padding 0.5s;
 }
 
 p:hover {
-    font-size: 2em;
+    font-size: 1.6em;
     padding: 0.5em;
 }
 
@@ -392,20 +452,4 @@ footer {
     .info2 img {
         max-width: 500px;
     }
-}
-
-.inter-container {
-    background: #2d9e45; 
-    border-radius: 10px; 
-    color: white; 
-}
-
-
-.inter-container .form-label {
-    color: white;
-}
-
-.inter-container h2,
-.inter-container h4 {
-    color: white;
 }
