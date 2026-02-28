@@ -1,0 +1,100 @@
+/* style.css */
+
+
+html, body {
+    background-color: #121212 !important; /* Cor real do Spotify */
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+.bg-dark-card {
+    background-color: #161b22 !important;
+}
+
+/* Bordas mais suaves */
+.card {
+    background-color: #181818 !important; /* Um cinza levemente mais claro que o body */
+    border: none !important; /* Spotify raramente usa bordas lineares */
+    border-radius: 12px !important; /* Cantos mais circulares */
+    transition: background-color 0.3s ease;
+}
+
+.card:hover {
+    background-color: #282828 !important;
+}
+
+/* Inputs focados no tema dark */
+.form-control:focus, .form-select:focus {
+    background-color: #0d1117;
+    color: whitesmoke;
+    border-color: #58a6ff;
+    box-shadow: 0 0 0 0.25rem rgba(88, 166, 255, 0.15);
+}
+
+/* Fix para a barra lateral não "colar" no topo ao rolar */
+@media (min-width: 992px) {
+    .sticky-lg-top {
+        z-index: 1000;
+    }
+}
+
+/* Deixa o texto dos labels mais legível sobre o fundo escuro */
+.form-label {
+    color: #8b949e !important;
+}
+/* Centraliza e limita o conteúdo em telas grandes */
+.main-container {
+    max-width: 1400px; /* Largura máxima ideal para painéis admin */
+    margin: 0 auto;
+}
+
+/* Evita que os inputs fiquem gigantes horizontalmente */
+.form-group-custom {
+    max-width: 100%;
+}
+
+@media (min-width: 992px) {
+    /* Ajusta o espaçamento interno para não parecer vazio */
+    .card-body {
+        padding: 1.5rem;
+    }
+    
+    /* Mantém uma altura mínima harmoniosa para os cards laterais */
+    .sticky-sidebar {
+        position: sticky;
+        top: 80px; /* Fica fixo ao rolar a página no PC */
+    }
+}
+
+/* Estilo para o Dark Mode (conforme seu novo print) */
+body {
+    background-color: #0f111a;
+    color: #ffffff;
+}
+
+.card {
+    background-color: #161b22;
+    border: 1px solid #30363d;
+}
+
+.form-control, .form-select {
+    background-color: #535353 !important;
+    border: 1px solid transparent !important;
+    border-radius: 4px;
+    color: white !important;
+}
+
+.form-control:focus {
+    background-color: #535353 !important;
+    border-color: #1DB954 !important; /* Verde Spotify ao focar */
+    box-shadow: none;
+}
+
+.btn-success, .btn-registrar { 
+    background-color: #1DB954 !important;
+    border: none;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
