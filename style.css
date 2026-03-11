@@ -1,100 +1,113 @@
-/* style.css */
-
+/* style.css - Tema Dark RAV */
 
 html, body {
-    background-color: #121212 !important; /* Cor real do Spotify */
+    background-color: #0f111a !important;
     color: #FFFFFF;
     margin: 0;
     padding: 0;
     min-height: 100vh;
 }
 
-.bg-dark-card {
-    background-color: #161b22 !important;
-}
-
-/* Bordas mais suaves */
+/* Bordas e Cards */
 .card {
-    background-color: #181818 !important; /* Um cinza levemente mais claro que o body */
-    border: none !important; /* Spotify raramente usa bordas lineares */
-    border-radius: 12px !important; /* Cantos mais circulares */
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 12px !important;
     transition: background-color 0.3s ease;
 }
 
 .card:hover {
-    background-color: #282828 !important;
+    background-color: #1c2128 !important;
 }
 
-/* Inputs focados no tema dark */
-.form-control:focus, .form-select:focus {
-    background-color: #0d1117;
-    color: whitesmoke;
-    border-color: #58a6ff;
-    box-shadow: 0 0 0 0.25rem rgba(88, 166, 255, 0.15);
-}
+.bg-dark-card { background-color: #161b22 !important; }
 
-/* Fix para a barra lateral não "colar" no topo ao rolar */
-@media (min-width: 992px) {
-    .sticky-lg-top {
-        z-index: 1000;
-    }
-}
+/* Labels e Textos */
+.form-label { color: #8b949e !important; }
 
-/* Deixa o texto dos labels mais legível sobre o fundo escuro */
-.form-label {
-    color: #8b949e !important;
-}
-/* Centraliza e limita o conteúdo em telas grandes */
-.main-container {
-    max-width: 1400px; /* Largura máxima ideal para painéis admin */
-    margin: 0 auto;
-}
-
-/* Evita que os inputs fiquem gigantes horizontalmente */
-.form-group-custom {
-    max-width: 100%;
-}
-
-@media (min-width: 992px) {
-    /* Ajusta o espaçamento interno para não parecer vazio */
-    .card-body {
-        padding: 1.5rem;
-    }
-    
-    /* Mantém uma altura mínima harmoniosa para os cards laterais */
-    .sticky-sidebar {
-        position: sticky;
-        top: 80px; /* Fica fixo ao rolar a página no PC */
-    }
-}
-
-/* Estilo para o Dark Mode (conforme seu novo print) */
-body {
-    background-color: #0f111a;
-    color: #ffffff;
-}
-
-.card {
-    background-color: #161b22;
-    border: 1px solid #30363d;
-}
-
+/* Inputs do Formulário Principal */
 .form-control, .form-select {
-    background-color: #535353 !important;
-    border: 1px solid transparent !important;
-    border-radius: 4px;
+    background-color: #21262d !important; /* Corrigido de #535353 para melhor contraste */
+    border: 1px solid #30363d !important;
+    border-radius: 6px;
     color: white !important;
 }
 
 .form-control:focus {
-    background-color: #535353 !important;
-    border-color: #1DB954 !important; /* Verde Spotify ao focar */
-    box-shadow: none;
+    border-color: #1DB954 !important;
+    box-shadow: 0 0 0 0.15rem rgba(29, 185, 84, 0.25) !important;
 }
 
-.btn-success, .btn-registrar { 
+/* Botões */
+.btn-success {
     background-color: #1DB954 !important;
     border: none;
     font-weight: bold;
-    letter-spacing: 1px;
+}
+
+/* ==========================================
+   ESTRUTURA DA BUSCA SUPERIOR (CORREÇÃO)
+   ========================================== */
+
+.custom-search {
+    position: relative !important;
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+}
+
+.custom-search .form-control {
+    background-color: transparent !important;
+    border: none !important;
+    padding-left: 45px !important; /* Espaço para a lupa */
+    height: 45px;
+}
+
+.busca-icon {
+    position: absolute;
+    left: 15px;
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    font-size: 1.1rem;
+}
+
+/* LISTA DE RESULTADOS FLUTUANTE */
+#resultado_busca_geral {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0;
+    width: 100%;
+    z-index: 9999 !important;
+    background-color: #1c2128 !important;
+    border: 1px solid #30363d !important;
+    border-top: none !important;
+    border-radius: 0 0 12px 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+#resultado_busca_geral .list-group-item {
+    background-color: transparent !important;
+    color: white !important;
+    border: none;
+    border-bottom: 1px solid #30363d;
+}
+
+#resultado_busca_geral .list-group-item:hover {
+    background-color: #21262d !important;
+}
+
+#secaoDetalhesVeiculo {
+    transition: all 0.4s ease-in-out;
+    animation: fadeInDown 0.5s t-out;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }

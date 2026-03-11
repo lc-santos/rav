@@ -67,8 +67,6 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                         Estacionamento</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-white"><i class="bi bi-shield-check me-2"></i>
                         Acessos</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white border-top border-secondary mt-2 pt-2"><i
-                            class="bi bi-pencil-square me-2"></i> Editar Painel</a></li>
             </ul>
         </div>
     </div>
@@ -77,11 +75,11 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="row mb-4">
             <div class="col-12">
-                <div class="input-group input-group-lg custom-search">
-                    <span class="input-group-text bg-dark border-secondary text-secondary"><i
-                            class="bi bi-search"></i></span>
-                    <input type="text" class="form-control bg-dark border-secondary text-white"
-                        placeholder="Placa, Veículo, Nome...">
+                <div class="input-group input-group-lg custom-search position-relative">
+                    <span class="busca-icon">
+                        <i class="bi bi-search"></i>
+                    </span>
+                    <input type="text" class="form-control" placeholder="Placa, Veículo, Nome...">
                 </div>
             </div>
         </div>
@@ -109,79 +107,79 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
                         <form action="registrar_acesso.php" method="POST" class="row g-3">
-                            <div class="col-md-4 col-6">
+                            <div class="col-md-6">
                                 <label class="form-label small text-secondary fw-bold">Tipo Veículo</label>
-                                <select name="tipo_veiculo" class="form-select bg-dark border-secondary text-white">
-                                    <option>Carro</option>
-                                    <option>Moto</option>
-                                    <option>Bicicleta</option>
-                                    <option>Caminhão</option>
-                                    <option>Outros</option>
+                                <select id="selectTipoVeiculo" name="tipo_veiculo" class="form-select bg-dark border-secondary text-white">
+                                    <option value="" selected disabled>Selecione...</option>
+                                    <option value="Carro">Carro</option>
+                                    <option value="Moto">Moto</option>
+                                    <option value="Bicicleta">Bicicleta</option>
+                                    <option value="Caminhão">Caminhão</option>
                                 </select>
                             </div>
-                            <div class="col-md-4 col-6">
-                                <label class="form-label small text-secondary fw-bold">Placa</label>
-                                <input type="text" id="placa" name="placa"
-                                    class="form-control bg-dark border-secondary text-white" placeholder="ex: ABC1234">
-                            </div>
-                            <div class="col-md-4 col-12">
+                            <div class="col-md-6">
                                 <label class="form-label small text-secondary fw-bold">Tipo Acesso</label>
                                 <select name="tipo_acesso" class="form-select bg-dark border-secondary text-white">
                                     <option>Aluno</option>
                                     <option>Diretoria</option>
                                     <option>Professor</option>
-                                    <option>Funcionário</option>
                                     <option>Serviço</option>
                                 </select>
                             </div>
-                            <div class="col-md-6 col-12">
-                                <label class="form-label small text-secondary fw-bold">Nome</label>
-                                <input type="text" name="nome_condutor"
-                                    class="form-control bg-dark border-secondary text-white">
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small text-secondary fw-bold">Contato</label>
-                                <div class="input-group">
-                                    <select id="tipoContato" name="contato_tipo"
-                                        class="form-select bg-dark text-white border-secondary"
-                                        style="max-width: 110px; font-size: 0.8rem;">
-                                        <option value="tel">Tel</option>
-                                        <option value="email">E-mail</option>
-                                    </select>
-                                    <input type="text" name="contato_valor" id="inputContato"
-                                        class="form-control bg-dark text-white border-secondary"
-                                        placeholder="(00) 00000-0000">
-                                </div>
-                            </div>
-                            <div class="col-12 mt-4">
-                                <div class="d-flex gap-2 mb-2">
-                                    <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2">
-                                        Registrar <i class="bi bi-check2-circle ms-1"></i>
-                                    </button>
-                                    <button class="btn btn-outline-secondary py-2 px-3" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseObs" aria-expanded="false">
-                                        <i class="bi bi-chat-left-text"></i>
-                                    </button>
 
-                                </div>
-                                <button type="button" class="btn btn-outline-info w-100 mt-3" data-bs-toggle="modal" data-bs-target="#modalCadastro">
-                                    <i class="bi bi-person-plus-fill me-2"></i> Cadastrar
-                                </button>
-
-                                <div class="collapse" id="collapseObs">
-                                    <div class="position-relative">
-                                        <textarea name="observacao"
-                                            class="form-control bg-dark text-white border-secondary"
-                                            placeholder="Adicione uma observação (Ex: Veículo com avaria, portão específico...)"
-                                            rows="3" style="resize: none;"></textarea>
-                                        <button type="button"
-                                            class="btn btn-sm btn-link text-success position-absolute bottom-0 end-0 m-2"
-                                            data-bs-toggle="collapse" data-bs-target="#collapseObs">
-                                            <i class="bi bi-plus-lg fs-5"></i>
-                                        </button>
+                            <div id="secaoDetalhesVeiculo" class="col-12 d-none">
+                                <div class="card bg-secondary bg-opacity-10 border-secondary p-3">
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <label id="labelPlaca" class="form-label small text-info fw-bold">Placa</label>
+                                            <input type="text" id="placa" name="placa" class="form-control bg-dark border-secondary text-white">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-secondary fw-bold">Modelo/Marca</label>
+                                            <input type="text" name="modelo_veiculo" class="form-control bg-dark border-secondary text-white">
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small text-secondary fw-bold">Cor</label>
+                                            <input type="text" name="cor_veiculo" class="form-control bg-dark border-secondary text-white">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label small text-secondary fw-bold">Nome</label>
+                                <input type="text" name="nome_condutor" class="form-control bg-dark border-secondary text-white">
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small text-secondary fw-bold">Contato</label>
+                                <input type="text" name="contato_valor" id="inputContato" class="form-control bg-dark border-secondary text-white" placeholder="Telefone ou E-mail">
+                            </div>
+
+                            <div class="col-12 mt-4">
+                                <div class="d-flex gap-2 mb-2">
+                                    <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2">
+                                        Registrar Acesso <i class="bi bi-check2-circle ms-1"></i>
+                                    </button>
+                                    <button class="btn btn-outline-secondary py-2 px-3" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseObs">
+                                        <i class="bi bi-chat-left-text"></i>
+                                    </button>
+                                    
+                                </div>
+
+                                <div class="collapse mt-3" id="collapseObs">
+                                    <textarea name="observacao" class="form-control bg-dark text-white border-secondary"
+                                        placeholder="Observações ou avarias..." rows="3"></textarea>
+                                </div>
+
+                                <button type="button" id="btnAbrirModal" class="btn btn-outline-info w-100 mt-2"
+                                    data-bs-toggle="modal" data-bs-target="#modalCadastro">
+                                    <i class="bi bi-person-plus-fill me-2"></i> Cadastrar Novo Condutor
+                                </button>
+
+                                
+                            </div>
+
                         </form>
                     </div>
                 </div>
@@ -194,7 +192,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center p-3">
                                     <div>
                                         <h6 class="mb-0 text-success fw-bold"><?= $reg['placa'] ?></h6>
-                                        <small class="text-secondary"><?= $reg['nome_condutor'] ?> - In: <?= date('H:i', strtotime($reg['data_entrada'])) ?></small>
+                                        <small class="text-secondary"><?= $reg['nome_condutor'] ?> - Dentro: <?= date('H:i', strtotime($reg['data_entrada'])) ?></small>
                                     </div>
                                     <a href="registrar_saida.php?id=<?= $reg['id'] ?>" class="btn btn-sm btn-outline-danger">SAÍDA</a>
                                 </div>
@@ -217,7 +215,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                                 <?php foreach ($acessosRecentes as $reg): ?>
                                     <li class="list-group-item bg-dark text-white border-secondary small py-3">
                                         <i class="bi bi-circle-fill <?= $reg['status'] == 'Dentro' ? 'text-success' : 'text-danger' ?> me-2"></i>
-                                        <?= $reg['placa'] ?> - <?= date('H:i', strtotime($reg['data_entrada'])) ?>
+                                        <?= $reg['placa'] ?>  - <?= $reg['nome_condutor'] ?> - <?= date('H:i', strtotime($reg['data_entrada'])) ?>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
@@ -232,48 +230,85 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
         </div>
     </main>
 
-    <div class="modal fade" id="modalCadastro" tabindex="-1" aria-hidden="true">
+    <<div class="modal fade" id="modalCadastro" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content bg-dark text-white border-secondary">
                 <div class="modal-header border-secondary">
-                    <h5 class="modal-title">Cadastro Completo</h5>
+                    <h5 class="modal-title"><i class="bi bi-person-plus me-2"></i>Cadastro Completo</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
-                <div class="modal-body">
-                    <form action="processa_cadastro.php" method="POST" class="row g-3">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label small">Nome do Condutor (ID automático)</label>
-                                <input type="text" id="modalNomeCondutor" name="nome_completo" class="form-control bg-dark text-white border-secondary" readonly>
+                <div class="modal-body p-4">
+                    <form action="processa_cadastro.php" method="POST">
+                        <div class="mb-4">
+                            <h6 class="text-info border-bottom border-secondary pb-2 mb-3">
+                                <i class="bi bi-person-lines-fill me-2"></i>Dados do Condutor
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-12">
+                                    <label class="form-label small">Nome Completo</label>
+                                    <input type="text" id="modalNomeCondutor" name="nome_completo" class="form-control bg-dark text-white border-secondary">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">CPF</label>
+                                    <input type="text" id="modalCPF" name="cpf" class="form-control bg-dark text-white border-secondary" placeholder="000.000.000-00">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">E-mail</label>
+                                    <input type="email" id="modalEmail" name="email" class="form-control bg-dark text-white border-secondary" placeholder="exemplo@email.com">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">Telefone/Celular</label>
+                                    <input type="text" id="modalTelefone" name="telefone" class="form-control bg-dark text-white border-secondary" placeholder="(00) 00000-0000">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label small">Placa</label>
-                                <input type="text" id="modalPlacaVeiculo" name="placa" class="form-control bg-dark text-white border-secondary" readonly>
-                            </div>
+                        </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label small">CPF do Condutor</label>
-                                <input type="text" name="cpf" id="cpf_modal" class="form-control bg-dark text-white border-secondary" placeholder="000.000.000-00">
+                        <div class="mb-4">
+                            <h6 class="text-success border-bottom border-secondary pb-2 mb-3">
+                                <i class="bi bi-car-front-fill me-2"></i>Dados do Veículo
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label small">Tipo Veículo</label>
+                                    <select id="modalTipoVeiculo" name="tipo_veiculo" class="form-select bg-dark text-white border-secondary">
+                                        <option value="Carro">Carro</option>
+                                        <option value="Moto">Moto</option>
+                                        <option value="Bicicleta">Bicicleta</option>
+                                        <option value="Caminhão">Caminhão</option>
+                                        <option value="Outros">Outros</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">Placa</label>
+                                    <input type="text" id="modalPlacaVeiculo" name="placa" class="form-control bg-dark text-white border-secondary">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">Marca/Modelo</label>
+                                    <input type="text" id="modalModelo" name="modelo_veiculo" class="form-control bg-dark text-white border-secondary">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small">Cor</label>
+                                    <input type="text" id="modalCor" name="cor_veiculo" class="form-control bg-dark text-white border-secondary">
+                                </div>
                             </div>
-                            <div class="col-md-6">
-                                <label class="form-label small">Marca/Modelo do Veículo</label>
-                                <input type="text" name="modelo_veiculo" class="form-control bg-dark text-white border-secondary" placeholder="Ex: Honda Civic">
-                            </div>
+                        </div>
 
-                            <hr class="border-secondary">
-                            <div class="col-12 text-end">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                                <button type="submit" class="btn btn-success">Salvar Cadastro</button>
-                            </div>
+                        <div class="text-end mt-4 pt-3 border-top border-secondary">
+                            <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success px-4 fw-bold">Salvar Cadastro</button>
+                        </div>
                     </form>
                 </div>
-
             </div>
         </div>
+        </div>
+
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://unpkg.com/imask"></script>
         <script src="script.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </body>
 
 </html>

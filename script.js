@@ -1,60 +1,52 @@
-/**
- * RAV - Sistema de Controle de Acesso
- * Script Principal Refatorado
- */
+// 1. FUNÇÃO GLOBAL DE SELEÇÃO (Fora do DOMContentLoaded para ser acessível pelos resultados da busca)
+function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '') {
+    // Preenchimento dos dados básicos
+    document.getElementsByName('nome_condutor')[0].value = nome;
+    document.getElementById('placa').value = placa;
+    document.getElementById('inputContato').value = contato;
 
-console.log('JS - Conectado');
+    // Garante que a seção oculta (modelo/cor) apareça
+    const secao = document.getElementById('secaoDetalhesVeiculo');
+    if (secao) secao.classList.remove('d-none');
+
+    // Preenchimento dos detalhes do veículo
+    document.getElementsByName('modelo_veiculo')[0].value = modelo;
+    document.getElementsByName('cor_veiculo')[0].value = cor;
+
+    // Esconde as listas de resultados após a seleção
+    const listaRapida = document.getElementById('lista_veiculos_encontrados');
+    if (listaRapida) listaRapida.classList.add('d-none');
+
+    const overlayGeral = document.getElementById('resultado_busca_geral');
+    if (overlayGeral) overlayGeral.classList.add('d-none');
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENTOS ---
-    const tipoContato = document.getElementById('tipoContato');
-    const inputContato = document.getElementById('inputContato');
+    const selectVeiculo = document.getElementById('selectTipoVeiculo');
+    const secaoDetalhes = document.getElementById('secaoDetalhesVeiculo');
+    const labelPlaca = document.getElementById('labelPlaca');
     const inputPlaca = document.getElementById('placa');
+    const formAcesso = document.querySelector('form[action="registrar_acesso.php"]');
     const campoBuscaRapida = document.getElementById('busca_rapida');
-    const btnAbrirModal = document.querySelector('[data-bs-target="#modalCadastro"]');
+    const buscaGeral = document.querySelector('.custom-search .form-control');
+    const btnAbrirModal = document.getElementById('btnAbrirModal');
 
-    let currentMask = null;
-
-    // --- MÁSCARAS (IMask) ---
-    const atualizarCampoContato = () => {
-        if (currentMask) {
-            currentMask.destroy();
-            currentMask = null;
-        }
-
-        if (tipoContato.value === 'tel') {
-            inputContato.type = 'text';
-            inputContato.placeholder = '(00) 00000-0000';
-            currentMask = IMask(inputContato, {
-                mask: [
-                    { mask: '(00) 0000-0000' },
-                    { mask: '(00) 00000-0000' }
-                ]
-            });
-        } else {
-            inputContato.type = 'email';
-            inputContato.placeholder = 'exemplo@email.com';
-            inputContato.value = '';
-        }
-    };
-
-    // Máscara para Placa (Mercosul/Antiga)
-    if (inputPlaca) {
-        IMask(inputPlaca, {
-            mask: [
-                { mask: 'aaa-0000' }, // Padrão antigo
-                { mask: 'aaa-0a00' }  // Padrão Mercosul
-            ],
-            prepare: str => str.toUpperCase(), // Força maiúsculas
-            lazy: true, // Só mostra a máscara quando você começa a digitar
-            definitions: {
-                'a': /[A-Z]/,
-                '0': /[0-9]/
+    // 1. CONTROLE DE EXIBIÇÃO DINÂMICA (Bicicleta vs Outros)
+    if (selectVeiculo) {
+        selectVeiculo.addEventListener('change', function () {
+            secaoDetalhes.classList.remove('d-none');
+            if (this.value === 'Bicicleta') {
+                labelPlaca.innerText = 'Registro (Obrigatório)';
+                inputPlaca.value = 'BK-' + Math.floor(1000 + Math.random() * 9000);
+            } else {
+                labelPlaca.innerText = 'Placa (Obrigatório)';
+                if (inputPlaca.value.startsWith('BK-')) inputPlaca.value = '';
             }
         });
     }
-    // --- BUSCA RÁPIDA (ID de 7 dígitos ou CPF) ---
-    // --- BUSCA RÁPIDA (ID de 7 dígitos ou CPF) ---
+
+    // 2. BUSCA RÁPIDA (CPF ou ID de 7 dígitos)
     if (campoBuscaRapida) {
         campoBuscaRapida.addEventListener('input', function () {
             const valor = this.value.replace(/\D/g, '');
@@ -63,104 +55,154 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (valor.length === 7 || valor.length === 11) {
                 fetch(`buscar_condutor.php?busca=${valor}`)
-                    .then(response => response.json())
+                    .then(res => res.json())
                     .then(data => {
+                        // Dentro do fetch de buscar_condutor.php
                         if (data.sucesso) {
                             containerLista.classList.remove('d-none');
-                            containerOpcoes.innerHTML = `<h6 class="text-info mb-3"><i class="bi bi-person-check"></i> ${data.nome}</h6>`;
+                            containerOpcoes.innerHTML = `
+                                <div class="p-3 border border-info rounded bg-dark">
+                                    <h6 class="text-info mb-3"><i class="bi bi-person-check"></i> ${data.nome}</h6>
+                                    <fieldset class="border border-secondary p-2 rounded">
+                                        <legend class="float-none w-auto px-2 small text-secondary">Veículos Vinculados</legend>
+                                        <div id="lista_veiculos_interna"></div>
+                                    </fieldset>
+                                </div>`;
 
-                            if (data.veiculos && data.veiculos.length > 0) {
-                                data.veiculos.forEach(v => {
-                                    containerOpcoes.innerHTML += `
-                <div class="d-flex align-items-center justify-content-between bg-secondary bg-opacity-10 p-2 mb-2 rounded border border-secondary">
-                    <div>
-                        <span class="fw-bold text-success">${v.placa}</span><br>
-                        <small class="text-secondary">${v.modelo}</small>
-                    </div>
-                    <button type="button" class="btn btn-sm btn-success fw-bold" 
-                        onclick="selecionarVeiculo('${data.nome}', '${v.placa}', '${data.contato}')">
-                        ENTRADA <i class="bi bi-box-arrow-in-right"></i>
-                    </button>
-                </div>`;
-                                });
-                            } else {
-                                containerOpcoes.innerHTML += `<p class="text-warning small">Nenhum veículo vinculado a este condutor.</p>`;
-                            }
+                            const listaInterna = document.getElementById('lista_veiculos_interna');
+                            data.veiculos.forEach(v => {
+                                listaInterna.innerHTML += `
+                                    <div class="d-flex align-items-center justify-content-between p-2 mb-1 border-bottom border-secondary border-opacity-25">
+                                        <div>
+                                            <span class="fw-bold text-success small">${v.placa}</span><br>
+                                            <small class="text-muted" style="font-size: 1.0rem;">${v.modelo} - ${v.cor}</small>
+                                        </div>
+                                        <button type="button" class="btn btn-sm btn-success px-3" 
+                                            onclick="selecionarVeiculo('${data.nome}', '${v.placa}', '${data.contato}', '${v.modelo}', '${v.cor}')">
+                                            ENTRADA <i class="plus"></i>
+                                        </button>
+                                    </div>`;
+                            });
                         }
                     });
+            } else { if (containerLista) containerLista.classList.add('d-none'); }
+        });
+    }
+
+    // 3. BUSCA GERAL (Barra Superior)
+    if (buscaGeral) {
+        const resultOverlay = document.createElement('div');
+        resultOverlay.id = 'resultado_busca_geral';
+        resultOverlay.className = 'list-group position-absolute w-100 d-none shadow-lg';
+        resultOverlay.style.zIndex = '9999';
+        buscaGeral.parentElement.appendChild(resultOverlay);
+
+        buscaGeral.addEventListener('input', function () {
+            const termo = this.value.trim();
+            if (termo.length >= 2) {
+                fetch(`buscar_geral.php?termo=${termo}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        resultOverlay.innerHTML = '';
+                        if (data && data.length > 0) {
+                            resultOverlay.classList.remove('d-none');
+                            data.forEach(item => {
+                                const corS = item.status === 'Dentro' ? 'text-success' : 'text-info';
+                                resultOverlay.innerHTML += `
+                                <a href="#" class="list-group-item list-group-item-action bg-dark text-white border-secondary py-3" 
+                                   onclick="selecionarVeiculo('${item.nome_condutor}', '${item.placa}', '', '${item.modelo}', '${item.cor}')">
+                                    <div class="d-flex justify-content-between">
+                                        <div><strong class="${corS}">${item.placa}</strong> - <small>${item.nome_condutor}</small></div>
+                                        <span class="badge bg-secondary opacity-75">${item.status}</span>
+                                    </div>
+                                </a>`;
+                            });
+                        } else { resultOverlay.classList.add('d-none'); }
+                    });
+            } else { resultOverlay.classList.add('d-none'); }
+        });
+    }
+
+    // 4. INTEGRAÇÃO COM MODAL (Puxar dados do formulário principal)
+    if (btnAbrirModal) {
+        btnAbrirModal.addEventListener('click', () => {
+            document.getElementById('modalNomeCondutor').value = document.getElementsByName('nome_condutor')[0].value;
+            document.getElementById('modalTipoVeiculo').value = selectVeiculo.value || 'Carro';
+            document.getElementById('modalPlacaVeiculo').value = inputPlaca.value;
+            document.getElementById('modalModelo').value = document.getElementsByName('modelo_veiculo')[0].value;
+            document.getElementById('modalCor').value = document.getElementsByName('cor_veiculo')[0].value;
+
+            const tipoC = document.getElementById('tipoContato').value;
+            const valorC = document.getElementById('inputContato').value;
+            if (tipoC === 'tel') {
+                document.getElementById('modalTelefone').value = valorC;
+                document.getElementById('modalEmail').value = '';
             } else {
-                containerLista.classList.add('d-none');
+                document.getElementById('modalEmail').value = valorC;
+                document.getElementById('modalTelefone').value = '';
             }
         });
     }
 
-    // Função para preencher o formulário principal e focar no botão de registro
-    function confirmarEntradaRapida(nome, placa, contato) {
-        document.getElementsByName('nome_condutor')[0].value = nome;
-        document.getElementById('placa').value = placa;
-        document.getElementById('inputContato').value = contato;
-
-        // Esconde a lista de busca
-        document.getElementById('lista_veiculos_encontrados').classList.add('d-none');
-        document.getElementById('busca_rapida').value = '';
-
-        // Rola a tela levemente para o formulário e foca no botão de registrar
-        window.scrollTo({ top: 100, behavior: 'smooth' });
-    }
-
-    // --- INTEGRAÇÃO COM MODAL (Transferência de Dados) ---
-    if (btnAbrirModal) {
-        btnAbrirModal.addEventListener('click', () => {
-            const nomePrincipal = document.getElementsByName('nome_condutor')[0].value;
-            const placaPrincipal = inputPlaca.value;
-
-            // Preenche campos do modal (IDs do seu HTML)
-            const mNomeEmpresa = document.getElementById('modalNomeEmpresa');
-            const mNomeCondutor = document.getElementById('modalNomeCondutor');
-            const mPlaca = document.getElementById('modalPlacaVeiculo');
-
-            if (mNomeEmpresa) mNomeEmpresa.value = nomePrincipal;
-            if (mNomeCondutor) mNomeCondutor.value = nomePrincipal;
-            if (mPlaca) mPlaca.value = placaPrincipal;
+    // 5. ENVIO DO REGISTRO (AJAX)
+    if (formAcesso) {
+        formAcesso.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(this);
+            fetch('registrar_acesso.php', { method: 'POST', body: formData })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.sucesso) {
+                        Swal.fire({ title: 'Sucesso!', icon: 'success' }).then(() => window.location.reload());
+                    } else {
+                        Swal.fire({ title: 'Erro', text: data.erro, icon: 'error' });
+                    }
+                }).catch(() => Swal.fire('Erro', 'Falha na comunicação.', 'error'));
         });
     }
 
-    // --- INICIALIZAÇÃO ---
-    if (tipoContato && inputContato) {
-        atualizarCampoContato();
-        tipoContato.addEventListener('change', atualizarCampoContato);
-    }
-
-    // --- NOTIFICAÇÕES (Alertas de Sucesso) ---
+    // 6. NOTIFICAÇÃO DE SUCESSO NO CADASTRO
     const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('codigo')) {
+    if (urlParams.has('sucesso_cadastro')) {
         const codigo = urlParams.get('codigo');
-        // Usando setTimeout para garantir que o layout carregou antes do alert
-        setTimeout(() => {
-            alert(`CADASTRO CONCLUÍDO!\nO ID de acesso permanente é: ${codigo}`);
-        }, 500);
+        Swal.fire({
+            title: 'Cadastro Concluído!',
+            html: `O condutor foi cadastrado com sucesso.<br><b>ID de Acesso: ${codigo}</b>`,
+            icon: 'success',
+            confirmButtonColor: '#1DB954'
+        }).then(() => {
+            window.history.replaceState({}, document.title, window.location.pathname);
+        });
     }
 });
 
-// Adicione isso ao final do seu script.js
-// Função global para preencher o formulário ao escolher um veículo da lista
-// No final do script.js, fora de qualquer addEventListener
-// No final do script.js, fora de qualquer addEventListener
-// Adicione ou substitua no final do seu arquivo script.js
-function selecionarVeiculo(nome, placa, contato) {
-    // 1. Preenche os campos do formulário de Registro de Acesso
-    document.getElementsByName('nome_condutor')[0].value = nome;
-    document.getElementById('placa').value = placa;
-    document.getElementById('inputContato').value = contato;
-    
-    // 2. Esconde o card de resultados e limpa a busca
-    document.getElementById('lista_veiculos_encontrados').classList.add('d-none');
-    document.getElementById('busca_rapida').value = '';
-    
-    // 3. ENVIO AUTOMÁTICO
-    // Localiza o formulário de registro e envia os dados para o registrar_acesso.php
-    const formulario = document.querySelector('form[action="registrar_acesso.php"]');
-    if (formulario) {
-        formulario.submit(); // Esta linha faz o registro acontecer no clique
-    }
+// Alterado para registrar a entrada IMEDIATAMENTE
+// Localize esta função no seu script.js e altere a linha do tipo_acesso
+function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '', tipo = 'Carro') {
+    const formData = new FormData();
+    formData.append('nome_condutor', nome);
+    formData.append('placa', placa);
+    formData.append('contato_valor', contato);
+    formData.append('modelo_veiculo', modelo);
+    formData.append('cor_veiculo', cor);
+    formData.append('tipo_veiculo', tipo);
+
+    // MUDANÇA AQUI: Use 'Serviço' ou 'Aluno' para não dar erro de ENUM no banco
+    formData.append('tipo_acesso', 'Serviço');
+
+    fetch('registrar_acesso.php', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+            if (data.sucesso) {
+                Swal.fire({
+                    title: 'Registrado!',
+                    text: `Entrada de: ${placa} registrada.`,
+                    icon: 'success',
+                    timer: 3000,
+                    showConfirmButton: false
+                }).then(() => window.location.reload());
+            } else {
+                Swal.fire({ title: 'Erro', text: data.erro, icon: 'error' });
+            }
+        });
 }

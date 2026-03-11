@@ -1,47 +1,36 @@
 <?php
-require_once 'conn.php'; 
+require_once 'conn.php';
 header('Content-Type: application/json');
 
 $busca = $_GET['busca'] ?? '';
-$buscaLimpa = preg_replace('/\D/', '', $busca); 
 
-if (empty($buscaLimpa)) {
+if (empty($busca)) {
     echo json_encode(['sucesso' => false]);
     exit;
 }
 
 try {
-    // Busca o condutor e a lista de veículos vinculada ao ID dele
-    $sql = "SELECT u.id as usuario_id, u.nome_completo, u.contato_valor, v.placa, v.modelo 
-            FROM usuarios u 
-            LEFT JOIN veiculos v ON u.id = v.id_usuario 
-            WHERE u.codigo_acesso = :busca OR u.cpf = :busca";
-        
-    $stmt = $pdo->prepare($sql);
-    $stmt->execute([':busca' => $buscaLimpa]);
-    $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Busca o usuário pelo Código de Acesso (7 dígitos) ou CPF
+    $stmt = $pdo->prepare("SELECT id, nome_completo, contato_valor 
+                           FROM usuarios 
+                           WHERE codigo_acesso = :busca OR cpf = :busca LIMIT 1");
+    $stmt->execute([':busca' => $busca]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($resultados) {
-        $veiculos = [];
-        foreach ($resultados as $row) {
-            // Só adiciona à lista se o veículo realmente existir no banco
-            if (!empty($row['placa'])) {
-                $veiculos[] = [
-                    'placa' => $row['placa'],
-                    'modelo' => $row['modelo'] ?? 'Não informado'
-                ];
-            }
-        }
+    if ($user) {
+        // Busca veículos vinculados a esse usuário
+        $stmtV = $pdo->prepare("SELECT placa, modelo, cor FROM veiculos WHERE id_usuario = :id");
+        $stmtV->execute([':id' => $user['id']]);
+        $veiculos = $stmtV->fetchAll(PDO::FETCH_ASSOC);
 
         echo json_encode([
             'sucesso' => true,
-            'id_usuario' => $resultados[0]['usuario_id'], // Corrigido para garantir o ID
-            'nome' => $resultados[0]['nome_completo'],
-            'contato' => $resultados[0]['contato_valor'],
+            'nome' => $user['nome_completo'],
+            'contato' => $user['contato_valor'],
             'veiculos' => $veiculos
         ]);
     } else {
-        echo json_encode(['sucesso' => false]);
+        echo json_encode(['sucesso' => false, 'erro' => 'Condutor não encontrado.']);
     }
 } catch (Exception $e) {
     echo json_encode(['sucesso' => false, 'erro' => $e->getMessage()]);
