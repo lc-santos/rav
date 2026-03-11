@@ -1,7 +1,9 @@
 <?php
-session_start();    // Inicia a sessão
-session_unset();    // Limpa as variáveis da sessão
-session_destroy();  // Destrói a sessão
-header("Location: ../login.php"); // Redireciona para a página de login
+session_start(); // Inicia a sessão para poder destruí-la
+session_unset(); // Remove todas as variáveis de sessão
+session_destroy(); // Destrói a sessão
+
+// Redireciona para a página inicial (index.php) do projeto rav
+header("Location: index.php");
 exit();
-?>
+?>  

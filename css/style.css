@@ -1,0 +1,113 @@
+/* style.css - Tema Dark RAV */
+
+html, body {
+    background-color: #0f111a !important;
+    color: #FFFFFF;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* Bordas e Cards */
+.card {
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 12px !important;
+    transition: background-color 0.3s ease;
+}
+
+.card:hover {
+    background-color: #1c2128 !important;
+}
+
+.bg-dark-card { background-color: #161b22 !important; }
+
+/* Labels e Textos */
+.form-label { color: #8b949e !important; }
+
+/* Inputs do Formulário Principal */
+.form-control, .form-select {
+    background-color: #21262d !important; /* Corrigido de #535353 para melhor contraste */
+    border: 1px solid #30363d !important;
+    border-radius: 6px;
+    color: white !important;
+}
+
+.form-control:focus {
+    border-color: #1DB954 !important;
+    box-shadow: 0 0 0 0.15rem rgba(29, 185, 84, 0.25) !important;
+}
+
+/* Botões */
+.btn-success {
+    background-color: #1DB954 !important;
+    border: none;
+    font-weight: bold;
+}
+
+/* ==========================================
+   ESTRUTURA DA BUSCA SUPERIOR (CORREÇÃO)
+   ========================================== */
+
+.custom-search {
+    position: relative !important;
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 8px !important;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+}
+
+.custom-search .form-control {
+    background-color: transparent !important;
+    border: none !important;
+    padding-left: 45px !important; /* Espaço para a lupa */
+    height: 45px;
+}
+
+.busca-icon {
+    position: absolute;
+    left: 15px;
+    z-index: 10;
+    color: rgba(255, 255, 255, 0.4);
+    pointer-events: none;
+    font-size: 1.1rem;
+}
+
+/* LISTA DE RESULTADOS FLUTUANTE */
+#resultado_busca_geral {
+    position: absolute !important;
+    top: 100% !important;
+    left: 0;
+    width: 100%;
+    z-index: 9999 !important;
+    background-color: #1c2128 !important;
+    border: 1px solid #30363d !important;
+    border-top: none !important;
+    border-radius: 0 0 12px 12px;
+    max-height: 400px;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+#resultado_busca_geral .list-group-item {
+    background-color: transparent !important;
+    color: white !important;
+    border: none;
+    border-bottom: 1px solid #30363d;
+}
+
+#resultado_busca_geral .list-group-item:hover {
+    background-color: #21262d !important;
+}
+
+#secaoDetalhesVeiculo {
+    transition: all 0.4s ease-in-out;
+    animation: fadeInDown 0.5s t-out;
+}
+
+@keyframes fadeInDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
