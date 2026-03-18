@@ -34,8 +34,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <a class="navbar-brand fw-bold" href="#">RAV <span
-                    class="badge bg-secondary font-monospace">Admin</span></a>
+            <a class="navbar-brand fw-bold" href="#">RAV <span class="badge bg-secondary font-monospace">Admin</span></a>
             <div class="dropdown">
                 <i class="bi bi-person-circle text-white fs-4" data-bs-toggle="dropdown"></i>
                 <ul class="dropdown-menu dropdown-menu-end shadow">
@@ -62,8 +61,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                 <p class="mb-0 small"><strong>Op:</strong> Lucas Silva</p>
             </div>
             <ul class="nav flex-column">
-                <li class="nav-item"><a href="#" class="nav-link text-white active bg-success bg-opacity-50"><i
-                            class="bi bi-house-door me-2"></i> Painel Inicial</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-white active bg-success bg-opacity-50"><i class="bi bi-house-door me-2"></i> Painel Inicial</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-white"><i class="bi bi-p-circle me-2"></i>
                         Estacionamento</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-white"><i class="bi bi-shield-check me-2"></i>
@@ -86,11 +84,10 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
         </div>
 
         <div class="row g-4">
-            <div class="col-12 col-lg-8">
-
+            <div class="col=12 col lg-8">
                 <div class="card bg-dark-card border-success-subtle mb-4 shadow-lg">
-                    <div class="card-header bg-success text-white py-2 px-3 d-flex align-items-center">
-                        <i class="bi bi-plus-circle-fill me-2"></i> <span class="fw-bold">Registrar Acesso</span>
+                    <div class="card-header bg-primary text-white py-2 px-3 d-flex align-items-center">
+                        <i class="bi bi-plus-circle-fill me-2"></i> <span class="fw-bold">Usuário Cadastrado</span>
                     </div>
                     <div class="card-body p-4">
                         <div class="col-12 mb-3">
@@ -98,8 +95,13 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                                 <span class="input-group-text bg-dark border-secondary text-info">
                                     <i class="bi bi-person-badge"></i>
                                 </span>
-                                <input type="text" id="busca_rapida" class="form-control bg-dark text-white border-secondary" placeholder="ID ou CPF cadastrado">
+                                <input type="text" id="busca_rapida" class="form-control bg-dark text-white border-primary" placeholder="ID ou CPF cadastrado">
                             </div>
+
+                            <button type="button" id="btnAbrirModal" class="btn btn-outline-info w-100 mt-2" data-bs-toggle="modal" data-bs-target="#modalCadastro">
+                                <i class="bi bi-person-plus-fill me-2"></i> Cadastrar Novo Condutor
+                            </button>
+
                             <div id="lista_veiculos_encontrados" class="mt-2 d-none">
                                 <div class="card bg-dark border-info shadow-sm">
                                     <div class="card-body p-3" id="container_opcoes">
@@ -107,6 +109,23 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                             </div>
                         </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <div class="row g-4">
+            <div class="col-12 col-lg-8">
+
+                <div class="card bg-dark-card border-success-subtle mb-4 shadow-lg">
+                    <div class="card-header bg-success text-white py-2 px-3 d-flex align-items-center">
+                        <i class="bi bi-plus-circle-fill me-2"></i> <span class="fw-bold">Registrar Acesso</span>
+                    </div>
+                    <div class="card-body p-4">
+
                         <form action="registrar_acesso.php" method="POST" class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label small text-secondary fw-bold">Tipo Veículo</label>
@@ -161,24 +180,19 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                                     <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2">
                                         Registrar Acesso <i class="bi bi-check2-circle ms-1"></i>
                                     </button>
-                                    <button class="btn btn-outline-secondary py-2 px-3" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseObs">
+                                    <button class="btn btn-outline-secondary py-2 px-3" type="button" data-bs-toggle="collapse" data-bs-target="#collapseObs">
                                         <i class="bi bi-chat-left-text"></i>
                                     </button>
-                                    
+
                                 </div>
 
                                 <div class="collapse mt-3" id="collapseObs">
-                                    <textarea name="observacao" class="form-control bg-dark text-white border-secondary"
-                                        placeholder="Observações ou avarias..." rows="3"></textarea>
+                                    <textarea name="observacao" class="form-control bg-dark text-white border-secondary" placeholder="Observações ou avarias..." rows="3"></textarea>
                                 </div>
 
-                                <button type="button" id="btnAbrirModal" class="btn btn-outline-info w-100 mt-2"
-                                    data-bs-toggle="modal" data-bs-target="#modalCadastro">
-                                    <i class="bi bi-person-plus-fill me-2"></i> Cadastrar Novo Condutor
-                                </button>
 
-                                
+
+
                             </div>
 
                         </form>
@@ -188,8 +202,8 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card bg-dark-card border-danger-subtle shadow-lg mt-4">
                     <div class="card-header bg-danger text-white text-center py-2 fw-bold">Registrar saída</div>
                     <div class="list-group list-group-flush">
-                        <?php if (count($veiculosDentro) > 0): ?>
-                            <?php foreach ($veiculosDentro as $reg): ?>
+                        <?php if (count($veiculosDentro) > 0) : ?>
+                            <?php foreach ($veiculosDentro as $reg) : ?>
                                 <div class="list-group-item bg-dark text-white border-secondary d-flex justify-content-between align-items-center p-3">
                                     <div>
                                         <h6 class="mb-0 text-success fw-bold"><?= $reg['placa'] ?></h6>
@@ -198,7 +212,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                                     <a href="registrar_saida.php?id=<?= $reg['id'] ?>" class="btn btn-sm btn-outline-danger">SAÍDA</a>
                                 </div>
                             <?php endforeach; ?>
-                        <?php else: ?>
+                        <?php else : ?>
                             <div class="p-4 text-center text-secondary"><small>Nenhum veículo no pátio.</small></div>
                         <?php endif; ?>
                     </div>
@@ -213,10 +227,10 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                         <div class="card-body p-0">
                             <ul class="list-group list-group-flush" id="lista-recentes">
-                                <?php foreach ($acessosRecentes as $reg): ?>
+                                <?php foreach ($acessosRecentes as $reg) : ?>
                                     <li class="list-group-item bg-dark text-white border-secondary small py-3">
                                         <i class="bi bi-circle-fill <?= $reg['status'] == 'Dentro' ? 'text-success' : 'text-danger' ?> me-2"></i>
-                                        <?= $reg['placa'] ?>  - <?= $reg['nome_condutor'] ?> - <?= date('H:i', strtotime($reg['data_hora_entrada'])) ?>
+                                        <?= $reg['placa'] ?> - <?= $reg['nome_condutor'] ?> - <?= date('H:i', strtotime($reg['data_hora_entrada'])) ?>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>

@@ -1,3 +1,4 @@
+-- Active: 1773874024213@@127.0.0.1@3306
 -- 1. LIMPEZA TOTAL (Para evitar erros ao re-executar)
 SET FOREIGN_KEY_CHECKS = 0;
 DROP DATABASE IF EXISTS rav3;

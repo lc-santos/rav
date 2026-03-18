@@ -3,7 +3,7 @@
 $host = "localhost";
 $dbname = "rav3"; // Certifique-se de usar o nome do banco que criamos
 $username = "root";
-$password = "Nirvana898!"; // Sua senha do MySQL
+$password = ""; // Sua senha do MySQL
 
 try {
     // Criação da conexão via PDO
