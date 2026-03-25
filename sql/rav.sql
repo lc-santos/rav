@@ -1,9 +1,9 @@
--- Active: 1773874024213@@127.0.0.1@3306
+-- Active: 1774397556316@@127.0.0.1@3306
 -- 1. LIMPEZA TOTAL (Para evitar erros ao re-executar)
 SET FOREIGN_KEY_CHECKS = 0;
-DROP DATABASE IF EXISTS rav3;
-CREATE DATABASE rav3 CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-USE rav3;
+DROP DATABASE IF EXISTS rav;
+CREATE DATABASE rav CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE rav;
 SET FOREIGN_KEY_CHECKS = 1;
 
 -- 2. TABELA 'EMPRESAS'
@@ -74,3 +74,8 @@ CREATE TABLE registros_acesso (
     CONSTRAINT fk_registro_operador FOREIGN KEY (id_usuario_registro) REFERENCES usuarios(id) ON DELETE SET NULL,
     CONSTRAINT fk_registro_empresa FOREIGN KEY (id_empresa) REFERENCES empresas(id) ON DELETE CASCADE
 );
+
+DELETE FROM usuarios WHERE email = 'etec@adm.com';
+
+INSERT INTO usuarios (nome_completo, email, senha, cpf, id_empresa, role) 
+VALUES ('Administrador ETEC', 'etec@adm.com', 'etecguar', '000.000.000-00', 1, 'admin');

@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>RAV - Registro de acesso de veículos</title>
+  <title>G-TEC</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="css/index.css">
 
@@ -27,10 +27,9 @@
 
   <header id="header" class="border-bottom margin-bottom py-3">
     <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center">
-      <h1 class="h4 mb-2 mb-sm-0 text-center text-sm-start fw-bold">RAV - Registro de acesso de veículos</h1>
+      <h1 class="h4 mb-2 mb-sm-0 text-center text-sm-start fw-bold">G-TEC</h1>
       <nav class="d-flex gap-3">
         <a href="login.php" class="text-decoration-none fw-bold padding-right">Acessar</a>
-        <a href="cadastro.php" class="text-decoration-none fw-bold padding-right">Cadastrar</a>
         <a href="saibamais.php" class="text-decoration-none fw-bold">Saiba mais</a>
       </nav>
     </div>
@@ -44,15 +43,13 @@
 
           <div class="col-12 col-md-5 div-principal-text mb-4 mb-lg-0 default-bg">
             <h2 class="fw-bold fs-1 mb-4 default-bg">
-              Gerencie acesso e cadastro de veículos
-              com o RAV
+              Gerenciamento de acesso ETEC
             </h2>
             <p class="fw-bold">
               Sistema web prático e dinâmico.
             </p>
 
             <div class="default-bg div-principal-buttons d-flex flex-column flex-sm-row justify-content-center justify-content-md-start gap-4 mt-3">
-              <a href="saibamais.php" class="btn btn-success px-3">Saiba mais</a>
               <a href="login.php" class="btn btn-primary px-4">Acessar</a>
             </div>
           </div>

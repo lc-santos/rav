@@ -15,25 +15,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
 
-        if (password_verify($senha, $user["senha"])) {
-    $_SESSION["id"] = $user["id"];
-    $_SESSION["id_empresa"] = $user["id_empresa"];
-    $_SESSION["nome"] = $user["nome_completo"];
-    $_SESSION["role"] = $user["role"];
+        // COMPARAÇÃO SIMPLES (Sem Hash)
+        if ($senha === $user["senha"]) { 
+            $_SESSION["id"] = $user["id"];
+            $_SESSION["id_empresa"] = $user["id_empresa"];
+            $_SESSION["nome"] = $user["nome_completo"];
+            $_SESSION["role"] = $user["role"];
 
-    // Redireciona conforme o tipo de usuário
-    if ($user["role"] === "admin") {
-        header("Location: painel-admin.php");
-    } else {
-        header("Location: painel-controle.php");
-    }
-    exit();
-}
-
+            if ($user["role"] === "admin") {
+                header("Location: painel-admin.php");
+            } else {
+                header("Location: painel-controle.php");
+            }
+            exit();
         } else {
             echo "<script>alert('Senha incorreta'); window.location.href='login.php';</script>";
         }
     } else {
         echo "<script>alert('Usuário não encontrado'); window.location.href='login.php';</script>";
     }
+}
 ?>

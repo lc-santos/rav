@@ -62,7 +62,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
             </div>
             <ul class="nav flex-column">
                 <li class="nav-item"><a href="#" class="nav-link text-white active bg-success bg-opacity-50"><i class="bi bi-house-door me-2"></i> Painel Inicial</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-white"><i class="bi bi-p-circle me-2"></i>
+                <li class="nav-item"><a href="estacionamento.php" class="nav-link text-white"><i class="bi bi-p-circle me-2"></i>
                         Estacionamento</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-white"><i class="bi bi-shield-check me-2"></i>
                         Acessos</a></li>

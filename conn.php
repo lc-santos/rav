@@ -1,7 +1,7 @@
 <?php
 // Configurações do banco de dados
 $host = "localhost";
-$dbname = "rav3"; // Certifique-se de usar o nome do banco que criamos
+$dbname = "rav"; // Certifique-se de usar o nome do banco que criamos
 $username = "root";
 $password = ""; // Sua senha do MySQL
 
