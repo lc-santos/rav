@@ -1,4 +1,4 @@
--- Active: 1774397556316@@127.0.0.1@3306
+-- Active: 1774732432178@@127.0.0.1@3306@mysql
 -- 1. LIMPEZA TOTAL (Para evitar erros ao re-executar)
 SET FOREIGN_KEY_CHECKS = 0;
 DROP DATABASE IF EXISTS rav;

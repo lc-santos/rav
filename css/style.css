@@ -1,76 +1,122 @@
-/* style.css - Tema Dark RAV */
+/* style.css - Tema Centro Paula Souza (Light) */
 
-html, body {
-    background-color: #0f111a !important;
-    color: #FFFFFF;
+:root {
+    --cps-red: #b80005;
+    --cps-red-hover: #28a745;
+    --cps-bg-gray: #f4f4f4;
+    --cps-black: #212529;
+    --cps-border: #e0e0e0;
+    --cps-green: #6b8b0b;
+}
+
+html,
+body {
+    background-color: var(--cps-bg-gray) !important;
+    color: var(--cps-black);
     margin: 0;
     padding: 0;
     min-height: 100vh;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 }
 
 /* Bordas e Cards */
 .card {
-    background-color: #161b22 !important;
-    border: 1px solid #30363d !important;
-    border-radius: 12px !important;
-    transition: background-color 0.3s ease;
+    background-color: #ffffff !important;
+    border: 1px solid var(--cps-border) !important;
+    border-radius: 10px !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
 }
 
 .card:hover {
-    background-color: #1c2128 !important;
+    border-color: var(--cps-red-hover) !important;
+    box-shadow: 0 6px 16px rgba(40, 167, 69, 0.15) !important;
 }
 
-.bg-dark-card { background-color: #161b22 !important; }
+/* Substituindo as utilitárias de Dark Mode baseadas no código anterior */
+.bg-dark-card {
+    background-color: #ffffff !important;
+}
 
 /* Labels e Textos */
-.form-label { color: #8b949e !important; }
+.form-label {
+    color: #555555 !important;
+    font-weight: 600;
+}
 
 /* Inputs do Formulário Principal */
-.form-control, .form-select {
-    background-color: #21262d !important; /* Corrigido de #535353 para melhor contraste */
-    border: 1px solid #30363d !important;
+.form-control,
+.form-select {
+    background-color: #ffffff !important;
+    border: 1px solid #ced4da !important;
     border-radius: 6px;
-    color: white !important;
+    color: var(--cps-black) !important;
 }
 
-.form-control:focus {
-    border-color: #1DB954 !important;
-    box-shadow: 0 0 0 0.15rem rgba(29, 185, 84, 0.25) !important;
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--cps-border) !important;
+    box-shadow: 0 0 0 0.1rem #28a745 !important;
 }
 
-/* Botões */
-.btn-success {
-    background-color: #1DB954 !important;
-    border: none;
-    font-weight: bold;
+.form-control::placeholder {
+    color: #aaaaaa !important;
 }
 
-/* ==========================================
-   ESTRUTURA DA BUSCA SUPERIOR (CORREÇÃO)
-   ========================================== */
+/* Personalizando barra de rolagem Customizada para a UI combinada */
+.custom-scrollbar::-webkit-scrollbar,
+.list-group::-webkit-scrollbar {
+    width: 6px;
+}
 
+.custom-scrollbar::-webkit-scrollbar-track,
+.list-group::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb,
+.list-group::-webkit-scrollbar-thumb {
+    background: #cccccc;
+    border-radius: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover,
+.list-group::-webkit-scrollbar-thumb:hover {
+    background: var(--cps-red-hover);
+}
+
+/* Botões Custom (opcional para botões de sucesso ficarem mais 'CPS' ou normais) */
+/* Eu deixei verde processo de entrada e vermelho pra saida no PHP, as cores do bootstrap bastam */
+
+/* ESTRUTURA DA BUSCA SUPERIOR */
 .custom-search {
     position: relative !important;
-    background-color: #161b22 !important;
-    border: 1px solid #30363d !important;
+    background-color: #ffffff !important;
+    border: 1px solid var(--cps-border) !important;
     border-radius: 8px !important;
     display: flex;
     align-items: center;
     padding: 2px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
 }
 
 .custom-search .form-control {
     background-color: transparent !important;
     border: none !important;
-    padding-left: 45px !important; /* Espaço para a lupa */
+    padding-left: 45px !important;
+    /* Espaço para a lupa */
     height: 45px;
+}
+
+.custom-search .form-control:focus {
+    box-shadow: none !important;
 }
 
 .busca-icon {
     position: absolute;
     left: 15px;
     z-index: 10;
-    color: rgba(255, 255, 255, 0.4);
+    color: #999999;
     pointer-events: none;
     font-size: 1.1rem;
 }
@@ -82,24 +128,25 @@ html, body {
     left: 0;
     width: 100%;
     z-index: 9999 !important;
-    background-color: #1c2128 !important;
-    border: 1px solid #30363d !important;
+    background-color: #ffffff !important;
+    border: 1px solid #ddd !important;
     border-top: none !important;
-    border-radius: 0 0 12px 12px;
+    border-radius: 0 0 10px 10px;
     max-height: 400px;
     overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 }
 
 #resultado_busca_geral .list-group-item {
     background-color: transparent !important;
-    color: white !important;
+    color: var(--cps-black) !important;
     border: none;
-    border-bottom: 1px solid #30363d;
+    border-bottom: 1px solid #eeeeee;
 }
 
 #resultado_busca_geral .list-group-item:hover {
-    background-color: #21262d !important;
+    background-color: #f8f9fa !important;
+    color: var(--cps-red-hover) !important;
 }
 
 #secaoDetalhesVeiculo {
@@ -108,6 +155,104 @@ html, body {
 }
 
 @keyframes fadeInDown {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Modificadores Navbar CPS (Admin) */
+.nav-cps {
+    background-color: var(--cps-red) !important;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .nav-cps {
+    background-color: #0d0d0d !important;
+    border-bottom: 2px solid var(--cps-red);
+}
+
+.nav-cps .nav-link {
+    transition: all 0.2s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.nav-cps .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.nav-cps .nav-link.active {
+    background-color: var(--cps-red-dark) !important;
+    border-bottom: 3px solid #ffffff;
+}
+
+.dark-mode .nav-cps .nav-link.active {
+    background-color: #1a1a1a !important;
+    border-bottom: 3px solid var(--cps-red);
+}
+
+/* ---------------- DARK MODE OVERRIDES ADMIN ---------------- */
+.dark-mode .bg-white {
+    background-color: #1e1e1e !important;
+}
+
+.dark-mode .card, 
+.dark-mode .bg-dark-card {
+    background-color: #1e1e1e !important;
+    border-color: #333333 !important;
+}
+
+.dark-mode .card-body .bg-light {
+    background-color: #2a2a2a !important;
+}
+
+.dark-mode .form-control,
+.dark-mode .form-select,
+.dark-mode .custom-search {
+    background-color: #2a2a2a !important;
+    border-color: #444444 !important;
+    color: #f4f4f4 !important;
+}
+
+.dark-mode .form-control::placeholder,
+.dark-mode .custom-search input::placeholder {
+    color: #888888 !important;
+}
+
+.dark-mode .list-group-item {
+    background-color: transparent !important;
+    color: #f4f4f4 !important;
+    border-color: #333333 !important;
+}
+
+.dark-mode .list-group-item:hover {
+    background-color: #2a2a2a !important;
+}
+
+.dark-mode .text-dark,
+.dark-mode .form-label,
+.dark-mode th,
+.dark-mode .table {
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .text-secondary,
+.dark-mode .text-muted,
+.dark-mode td.text-secondary {
+    color: #aaaaaa !important;
+}
+
+.dark-mode .btn-light {
+    background-color: #2a2a2a !important;
+    border-color: #333333 !important;
+    color: #e0e0e0 !important;
+}
+
+.dark-mode .btn-light .text-dark {
+    color: #e0e0e0 !important;
 }
