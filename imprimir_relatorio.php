@@ -199,7 +199,7 @@ $dataEmissao = date('d/m/Y H:i:s');
                             <td>
                                 <!-- Mapeamento de texto bruto para o PDF, com badge suave dependendo de suporte print css -->
                                 <strong class="<?= $reg['tipo_movimento'] === 'Entrada' ? 'text-success' : 'text-secondary' ?>">
-                                    <?= $reg['tipo_movimento'] === 'Entrada' ? 'ACESSOU' : 'SAIU' ?>
+                                    <?= $reg['tipo_movimento'] === 'Entrada' ? 'Acessou' : 'Saiu' ?>
                                 </strong>
                             </td>
                             <td class="fw-bold text-dark"><?= htmlspecialchars($reg['nome_condutor']) ?></td>

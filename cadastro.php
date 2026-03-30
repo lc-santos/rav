@@ -38,7 +38,7 @@
                     <span class="text-dark fs-4 mt-1">ETEC</span>
                 </h1>
             </a>
-            <a href="login.php" class="btn btn-outline-secondary btn-sm d-none d-md-flex align-items-center rounded-pill px-3">
+            <a href="login.php" class="btn-capsule d-none d-md-flex" style="padding: 0.4rem 1.5rem; font-size: 0.8rem;">
                 <i class="bi bi-person-fill me-2"></i> Ir para Login
             </a>
         </div>
@@ -47,7 +47,7 @@
     <!-- Main Content -->
     <main class="container flex-grow-1 d-flex align-items-center justify-content-center py-5">
         <div class="row justify-content-center w-100">
-            <div class="col-12 col-lg-10 col-xl-8">
+            <div class="col-12 col-lg-12 col-xl-11">
                 <div class="card shadow-lg border-0 rounded-4 custom-panel-bg">
                     <div class="card-body p-4 p-md-5">
                         <div class="text-center mb-5 border-bottom pb-4">
@@ -115,11 +115,11 @@
                                 </div>
                             </div>
 
-                            <div class="d-grid mt-5 pt-3 border-top custom-border-mode">
-                                <button type="submit" class="btn bg-cps-red text-white btn-lg fw-bold rounded-pill shadow-sm login-btn w-50 mx-auto">
-                                    Cadastrar Unidade <i class="bi bi-check-circle ms-1"></i>
-                                </button>
-                            </div>
+                                <div class="col-12 text-center mt-3 pt-3 border-top">
+                                    <button type="submit" class="btn-capsule btn-lg px-5 shadow border-0 text-white" style="background-color: var(--cps-red);">
+                                        Finalizar Cadastro <i class="bi bi-check-circle-fill ms-2"></i>
+                                    </button>
+                                </div>
                         </form>
 
                         <div class="text-center mt-4 pt-3">

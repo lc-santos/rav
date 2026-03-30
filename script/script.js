@@ -32,19 +32,63 @@ document.addEventListener('DOMContentLoaded', () => {
     const buscaGeral = document.querySelector('.custom-search .form-control');
     const btnAbrirModal = document.getElementById('btnAbrirModal');
 
-    // 1. CONTROLE DE EXIBIÇÃO DINÂMICA (Bicicleta vs Outros)
+    // 1. CONTROLE DE EXIBIÇÃO DINÂMICA (Outros)
     if (selectVeiculo) {
         selectVeiculo.addEventListener('change', function () {
             secaoDetalhes.classList.remove('d-none');
-            if (this.value === 'Bicicleta') {
-                labelPlaca.innerText = 'Registro (Obrigatório)';
-                inputPlaca.value = 'BK-' + Math.floor(1000 + Math.random() * 9000);
+            labelPlaca.innerText = 'Placa (Obrigatório)';
+
+            const elModelo = document.querySelector('input[name="modelo_veiculo"]');
+            const elCor = document.querySelector('input[name="cor_veiculo"]');
+            const elContato = document.getElementById('inputContato');
+            const elNome = document.querySelector('input[name="nome_condutor"]');
+
+            const colPlaca = document.getElementById('placa').closest('div');
+            const contModelo = elModelo ? elModelo.closest('div') : null;
+            const contCor = elCor ? elCor.closest('div') : null;
+            const contContato = elContato ? elContato.closest('div') : null;
+            const colNome = elNome ? elNome.closest('div') : null;
+            
+            const collapseObs = document.getElementById('collapseObs');
+
+            if (this.value === 'Outros') {
+                if (contModelo) contModelo.classList.add('d-none');
+                if (contCor) contCor.classList.add('d-none');
+                if (contContato) contContato.classList.add('d-none');
+                
+                if (colPlaca) {
+                    colPlaca.classList.remove('col-md-4');
+                    colPlaca.classList.add('col-md-12');
+                }
+                if (colNome) {
+                    colNome.classList.remove('col-md-6');
+                    colNome.classList.add('col-md-12');
+                }
+                
+                // Abre o campo de observação automaticamente
+                if (collapseObs && typeof bootstrap !== 'undefined') {
+                    const bsCollapse = new bootstrap.Collapse(collapseObs, {toggle: false});
+                    bsCollapse.show();
+                } else if (collapseObs) {
+                    collapseObs.classList.add('show');
+                }
             } else {
-                labelPlaca.innerText = 'Placa (Obrigatório)';
-                if (inputPlaca.value.startsWith('BK-')) inputPlaca.value = '';
+                if (contModelo) contModelo.classList.remove('d-none');
+                if (contCor) contCor.classList.remove('d-none');
+                if (contContato) contContato.classList.remove('d-none');
+                
+                if (colPlaca) {
+                    colPlaca.classList.remove('col-md-12');
+                    colPlaca.classList.add('col-md-4');
+                }
+                if (colNome) {
+                    colNome.classList.remove('col-md-12');
+                    colNome.classList.add('col-md-6');
+                }
             }
         });
     }
+
 
     // 2. BUSCA RÁPIDA (CPF ou ID de 7 dígitos)
     if (campoBuscaRapida) {
@@ -61,25 +105,25 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (data.sucesso) {
                             containerLista.classList.remove('d-none');
                             containerOpcoes.innerHTML = `
-                                <div class="p-3 border border-info rounded bg-dark">
-                                    <h6 class="text-info mb-3"><i class="bi bi-person-check"></i> ${data.nome}</h6>
-                                    <fieldset class="border border-secondary p-2 rounded">
-                                        <legend class="float-none w-auto px-2 small text-secondary">Veículos Vinculados</legend>
-                                        <div id="lista_veiculos_interna"></div>
+                                <div class="p-3 border border-primary-subtle rounded bg-white shadow-sm mt-2">
+                                    <h6 class="text-primary fw-bold mb-3 border-bottom pb-2"><i class="bi bi-person-badge-fill me-2"></i>${data.nome}</h6>
+                                    <fieldset class="p-0">
+                                        <legend class="float-none w-auto px-1 small text-secondary fw-bold mb-2">Autenticar Entrada de:</legend>
+                                        <div id="lista_veiculos_interna" class="d-flex flex-column gap-2"></div>
                                     </fieldset>
                                 </div>`;
 
                             const listaInterna = document.getElementById('lista_veiculos_interna');
                             data.veiculos.forEach(v => {
                                 listaInterna.innerHTML += `
-                                    <div class="d-flex align-items-center justify-content-between p-2 mb-1 border-bottom border-secondary border-opacity-25">
+                                    <div class="d-flex align-items-center justify-content-between p-2 border rounded bg-light">
                                         <div>
-                                            <span class="fw-bold text-success small">${v.placa}</span><br>
-                                            <small class="text-muted" style="font-size: 1.0rem;">${v.modelo} - ${v.cor}</small>
+                                            <span class="fw-bold text-dark small"><i class="bi bi-card-text me-1 text-secondary"></i>${v.placa}</span><br>
+                                            <small class="text-muted" style="font-size: 0.85rem;">${v.modelo} - ${v.cor}</small>
                                         </div>
-                                        <button type="button" class="btn btn-sm btn-success px-3" 
+                                        <button type="button" class="btn btn-sm btn-success px-3 fw-bold shadow-sm" 
                                             onclick="selecionarVeiculo('${data.nome}', '${v.placa}', '${data.contato}', '${v.modelo}', '${v.cor}')">
-                                            ENTRADA <i class="plus"></i>
+                                            ENTRADA <i class="bi bi-box-arrow-in-right ms-1"></i>
                                         </button>
                                     </div>`;
                             });

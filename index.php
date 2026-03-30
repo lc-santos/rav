@@ -59,9 +59,10 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav w-100 py-2 py-lg-0">
-                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="#">Institucional</a></li>
-                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="#funcionalidades">Funcionalidades</a></li>
-                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="#sobre">Sobre o Sistema</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="index.php">Início</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="funcionalidades.php">Funcionalidades</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="sobre.php">Sobre o Sistema</a></li>
+
                         <li class="nav-item ms-lg-auto d-flex align-items-center py-2 py-lg-0">
                             <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
                                 <i class="bi bi-person-fill me-1"></i> Acessar Sistema
@@ -87,8 +88,8 @@
                             oferecendo uma interface prática, relatórios automatizados e garantindo a proteção de alunos, professores e visitantes.
                         </p>
                         <div class="d-flex flex-wrap gap-3 justify-content-center justify-content-lg-start mt-4">
-                            <a href="#sobre" class="btn btn-outline-light rounded-pill px-4 py-3 fw-medium text-uppercase border-2">Saiba Mais <i class="bi bi-arrow-down ms-2"></i></a>
-                            <a href="login.php" class="btn btn-light text-cps-teal rounded-pill px-4 py-3 fw-bold text-uppercase border-0 shadow hero-btn-acessar">Fazer Login <i class="bi bi-box-arrow-in-right ms-2"></i></a>
+                            <a href="#sobre" class="btn-capsule border-white text-white">Saiba Mais</a>
+                            <a href="login.php" class="btn-capsule-white">Fazer Login <i class="bi bi-box-arrow-in-right ms-2"></i></a>
                         </div>
                     </div>
                 </div>
@@ -141,12 +142,15 @@
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Botão Saiba Mais Funcionalidades -->
+                    
                 </div>
             </div>
         </div>
 
         <!-- Espaçador -->
-        <div style="height: 60px;" class="d-none d-lg-block spacer-cards"></div>
+        <div style="height: 20px;" class="d-none d-lg-block spacer-cards"></div>
 
         <!-- Seção de Video e Descrição -->
         <section id="sobre" class="py-5 section-bg-gray">
@@ -161,23 +165,38 @@
                                 Com apenas alguns cliques, o porteiro pode registrar a entrada de carros, motos ou caminhões, 
                                 mantendo um histórico preciso e automatizado de todas as movimentações nas dependências.
                             </p>
+
+                            <!-- Vídeo Mobile: Aparece aqui apenas em resoluções menores -->
+                            <div class="video-wrapper shadow-lg rounded-4 overflow-hidden position-relative bg-white mb-4 d-block d-lg-none">
+                                <div class="ratio ratio-16x9">
+                                    <iframe src="https://www.youtube.com/embed/gfzsjcTZlWU?si=n10mSSJwvYUY0Mqv" title="YouTube video player" allowfullscreen style="border:0;"></iframe>
+                                </div>
+                            </div>
+
                             <ul class="list-unstyled mb-4 text-start d-inline-block d-lg-block mx-auto">
+                                <li class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
+                                    <span class="fs-5 fw-medium">Controle de acesso rápido e seguro</span>
+                                </li>
                                 <li class="d-flex align-items-center mb-3">
                                     <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
                                     <span class="fs-5 fw-medium">Painel intuitivo feito para a Portaria</span>
                                 </li>
                                 <li class="d-flex align-items-center mb-3">
                                     <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
-                                    <span class="fs-5 fw-medium">Divisão por Alunos, Professores e Serviços</span>
-                                </li>
-                                <li class="d-flex align-items-center mb-3">
-                                    <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
-                                    <span class="fs-5 fw-medium">Não requer papel, 100% digital</span>
+                                    <span class="fs-5 fw-medium">100% digital</span>
                                 </li>
                             </ul>
+                            
+                            <!-- Botão Saiba Mais Sobre -->
+                            <div class="mt-4 text-center text-lg-start">
+                                <a href="sobre.php" class="btn-capsule">
+                                    Mais detalhes
+                                </a>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 order-1 order-lg-2">
+                    <div class="col-lg-6 order-1 order-lg-2 d-none d-lg-block">
                         <div class="video-wrapper shadow-lg rounded-4 overflow-hidden position-relative bg-white">
                             <div class="ratio ratio-16x9">
                                 <iframe src="https://www.youtube.com/embed/gfzsjcTZlWU?si=n10mSSJwvYUY0Mqv" title="YouTube video player" allowfullscreen style="border:0;"></iframe>
@@ -188,14 +207,24 @@
             </div>
         </section>
         
+    </main>
+
         <!-- Call to Action -->
-        <section class="py-5 bg-gradient-cta text-white text-center">
-            <div class="container py-5">
-                <h2 class="fw-bold mb-3 display-6">Pronto para transformar o acesso da sua unidade?</h2>
-                <p class="fs-5 mb-5 opacity-75 mx-auto" style="max-width: 700px;">Acesse o painel do RAV ETEC com suas credenciais de portaria ou administrativas e simplifique o fluxo de veículos hoje mesmo.</p>
-                <a href="login.php" class="btn btn-light btn-lg text-cps-red px-5 rounded-pill shadow-lg fw-bold text-uppercase hero-btn-acessar">
-                    <i class="bi bi-shield-lock-fill me-2"></i> Ir para o Painel
-                </a>
+        <section class="py-5 section-bg-gray">
+            <div class="container">
+                <div class="rounded-4 shadow p-4 p-md-5 d-flex flex-column flex-md-row align-items-md-center justify-content-md-center gap-md-5 position-relative" style="background-color: #c00000; border: 1px solid #a30000;">
+                    
+                    <div class="text-white position-relative z-1 mb-4 mb-md-0 text-center text-md-start">
+                        <h4 class="fw-bold mb-2">Pronto para transformar o acesso?</h4>
+                        <p class="mb-0 text-white-50" style="font-size: 0.95rem;">Acesse o painel do RAV ETEC com suas credenciais de portaria e simplifique hoje mesmo.</p>
+                    </div>
+                    
+                    <div class="position-relative z-1 flex-shrink-0 text-center">
+                        <a href="login.php" class="btn-capsule-white fs-5 py-3 px-5 shadow-lg">
+                            Acessar
+                        </a>
+                    </div>
+                </div>
             </div>
         </section>
 
@@ -204,19 +233,19 @@
     <!-- Footer -->
     <footer class="bg-dark text-white pt-5 pb-3 footer-cps">
         <div class="container text-center text-md-start">
-            <div class="row align-items-center align-items-md-start justify-content-between g-4 mb-4">
-                <div class="col-12 col-md-5 text-center text-md-start">
+            <div class="row align-items-center g-4 mb-4">
+                
+                <!-- 1. Textos da Marca -->
+                <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     <h3 class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
                        <span class="text-white">RAV</span> <span class="text-cps-red ms-2">ETEC</span>
                     </h3>
-                    <p class="small text-white-50 lh-lg">
+                    <p class="small text-white-50 lh-lg pe-md-3 m-0">
                         Sistema Integrado de Registro de Acesso de Veículos. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria da sua unidade escolar.
                     </p>
                 </div>
-                <!-- Imagem do Guarda no Rodapé para referenciar o sistema antigo, se desejado -->
-                <div class="col-12 col-md-3 text-center text-md-end d-none d-md-block">
-                    <img src="img/guarda2.png" alt="Segurança CPS" class="img-fluid rounded-4 shadow-sm" style="max-height: 120px; object-fit: contain; filter: brightness(0.9);">
-                </div>
+                
+    
             </div>
             
             <hr class="border-white opacity-25">

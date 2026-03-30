@@ -29,14 +29,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $modelo = trim($_POST['modelo_veiculo']);
         $cor = trim($_POST['cor_veiculo']);
 
+        // Gerar um email falso temporário se estiver vazio para satisfazer a constraint unique
+        if (empty($email)) {
+            $email = $cpf . '@rav.tmp';
+        }
+
         // 3. Gerar e Salvar Usuário
         $novo_codigo = gerarCodigoAcesso($pdo);
         $sqlUser = "INSERT INTO usuarios (codigo_acesso, nome_completo, email, senha, cpf, id_empresa, role, contato_valor) 
                     VALUES (?, ?, ?, '123', ?, ?, 'visitante', ?)";
         $stmtUser = $pdo->prepare($sqlUser);
         
-        // Usamos o telefone como contato principal, se não houver, usamos o email
-        $contato_principal = !empty($telefone) ? $telefone : $email;
+        // Usamos o telefone como contato principal, se não houver, usamos o email original
+        $contato_principal = !empty($telefone) ? $telefone : (strpos($email, '@rav.tmp') === false ? $email : '');
         
         $stmtUser->execute([$novo_codigo, $nome, $email, $cpf, $empresa_id, $contato_principal]);
         $novo_usuario_id = $pdo->lastInsertId();
@@ -53,8 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         $pdo->commit();
-        // Redireciona com o código gerado para o alerta de sucesso no index.php
-        header("Location: index.php?sucesso_cadastro=1&codigo=" . $novo_codigo);
+        // Redireciona com o código gerado pro alerta de sucesso no painel-admin
+        header("Location: painel-admin.php?sucesso_cadastro=1&codigo=" . $novo_codigo);
         exit;
 
     } catch (Exception $e) {

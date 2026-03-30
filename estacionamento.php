@@ -151,6 +151,9 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">
+                        <a href="gerenciar_condutores.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-people-fill me-2 me-lg-1"></i>Condutores</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="relatorios.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-bar-chart-line me-2 me-lg-1"></i>Relatórios</a>
                     </li>
                 </ul>
@@ -227,7 +230,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                             
                             <!-- Ação da Vaga -->
                             <div class="card-footer bg-transparent border-top-0 p-3 pt-0">
-                                <a href="registrar_saida.php?id=<?= $reg['id'] ?>" class="btn btn-outline-danger w-100 fw-bold d-flex justify-content-center align-items-center gap-2">
+                                <a href="registrar_saida.php?id=<?= $reg['id'] ?>&origem=estacionamento.php" class="btn btn-outline-danger w-100 fw-bold d-flex justify-content-center align-items-center gap-2">
                                     <i class="bi bi-box-arrow-right fs-5"></i> Confirmar Saída
                                 </a>
                             </div>

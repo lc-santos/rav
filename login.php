@@ -38,7 +38,7 @@
                     <span class="text-dark fs-4 mt-1">ETEC</span>
                 </h1>
             </a>
-            <a href="index.php" class="btn btn-outline-secondary btn-sm d-none d-md-flex align-items-center rounded-pill px-3">
+            <a href="index.php" class="btn-capsule d-none d-md-flex" style="padding: 0.4rem 1.5rem; font-size: 0.8rem;">
                 <i class="bi bi-arrow-left me-2"></i> Voltar à Home
             </a>
         </div>
@@ -47,7 +47,7 @@
     <!-- Main Content -->
     <main class="container flex-grow-1 d-flex align-items-center justify-content-center py-5">
         <div class="row justify-content-center w-100">
-            <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-5">
                 <div class="card shadow-lg border-0 rounded-4 custom-panel-bg">
                     <div class="card-body p-4 p-md-5">
                         <div class="text-center mb-4">
@@ -77,15 +77,15 @@
                             </div>
 
                             <div class="d-grid mt-4">
-                                <button type="submit" class="btn bg-cps-red text-white btn-lg fw-bold rounded-pill shadow-sm login-btn">
-                                    Acessar Painel <i class="bi bi-box-arrow-in-right ms-1"></i>
+                                <button type="submit" class="btn-capsule btn-lg justify-content-center border-0 text-white" style="background-color: var(--cps-red);">
+                                    Acessar Painel <i class="bi bi-box-arrow-in-right ms-2"></i>
                                 </button>
                             </div>
                         </form>
 
                         <div class="text-center mt-4 pt-3 border-top">
-                            <span class="small text-muted">Ainda não possui acesso?</span><br>
-                            <a href="cadastro.php" class="fw-bold text-cps-red text-decoration-none">Cadastre sua unidade</a>
+                            <span class="small text-muted d-block mb-3">Ainda não possui acesso à sua unidade?</span>
+                            <a href="cadastro.php" class="btn-capsule" style="padding: 0.5rem 2rem; font-size: 0.8rem;">Cadastrar Unidade</a>
                         </div>
                     </div>
                 </div>

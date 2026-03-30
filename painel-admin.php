@@ -92,6 +92,9 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">
+                        <a href="gerenciar_condutores.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-people-fill me-2 me-lg-1"></i>Condutores</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="relatorios.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-bar-chart-line me-2 me-lg-1"></i>Relatórios</a>
                     </li>
                 </ul>
@@ -121,6 +124,32 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                     <div class="card-body p-4 flex-grow-1" style="min-height: 0; overflow-y: auto;">
 
+                        <!-- Seção Busca Rápida de Cadastrados -->
+                        <div class="row g-2 mb-3 pb-3 border-bottom align-items-stretch">
+                            <div class="col-12 mb-3">
+                                <span class="d-inline-block px-3 py-2 rounded-pill fw-bold bg-primary text-white shadow-sm" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                                    <i class="bi bi-person-badge-fill me-1"></i> Acesso de cadastrados
+                                </span>
+                            </div>
+                            <div class="col-8 col-md-8">
+                                <input type="text" id="busca_rapida" class="form-control border-primary-subtle h-100 shadow-sm" placeholder="Busca Rápida: CPF ou ID (7 dígitos)">
+                            </div>
+                            <div class="col-4 col-md-4">
+                                <button type="button" id="btnAbrirModal" class="btn btn-primary w-100 h-100 d-flex justify-content-center align-items-center gap-2 px-1 shadow-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modalCadastro" title="Cadastrar Conduzinte Oficial">
+                                    <i class="bi bi-person-plus-fill"></i><span class="d-none d-md-inline fw-bold small">Novo Cadastro</span>
+                                </button>
+                            </div>
+                            <!-- Container para opções de Cadastro (Preenchido via JS) -->
+                            <div class="col-12 mt-2 d-none" id="lista_veiculos_encontrados">
+                                <div id="container_opcoes"></div>
+                            </div>
+                        </div>
+
+                        <div class="mb-3 mt-2">
+                           <span class="d-inline-block px-3 py-2 rounded-pill fw-bold bg-success text-white shadow-sm" style="font-size: 0.85rem; letter-spacing: 0.5px;">
+                               <i class="bi bi-ui-checks me-1"></i> Acesso comum
+                           </span>
+                        </div>
                         <form action="registrar_acesso.php" method="POST" class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Tipo Veículo</label>
@@ -129,8 +158,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                     <option value="" selected disabled>Selecione...</option>
                                     <option value="Carro">Carro</option>
                                     <option value="Moto">Moto</option>
-                                    <option value="Bicicleta">Bicicleta</option>
-                                    <option value="Caminhão">Caminhão</option>
+                                    <option value="Outros">Outros</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
@@ -220,7 +248,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                                 <?= date('H:i', strtotime($reg['data_hora_entrada'])) ?></small>
                                         </div>
                                         <a href="registrar_saida.php?id=<?= $reg['id'] ?>"
-                                            class="btn btn-sm btn-outline-danger">SAÍDA</a>
+                                            class="btn btn-sm btn-outline-danger">Saída</a>
                                     </div>
                                 <?php endforeach; ?>
                             <?php else: ?>
@@ -237,13 +265,13 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" style="color: var(--cps-red);"><i class="bi bi-person-plus me-2"></i>Cadastro Completo</h5>
+                    <h5 class="modal-title text-primary"><i class="bi bi-person-plus-fill me-2"></i>Cadastro Completo</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
                     <form action="processa_cadastro.php" method="POST">
                         <div class="mb-4">
-                            <h6 class="pb-2 mb-3" style="color: var(--cps-red); border-bottom: 2px solid var(--cps-red);">
+                            <h6 class="pb-2 mb-3 text-primary border-bottom border-primary" style="border-width: 2px !important;">
                                 <i class="bi bi-person-lines-fill me-2"></i>Dados do Condutor
                             </h6>
                             <div class="row g-3">
@@ -274,7 +302,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                         </div>
 
                         <div class="mb-4">
-                            <h6 class="pb-2 mb-3" style="color: var(--cps-red); border-bottom: 2px solid var(--cps-red);">
+                            <h6 class="pb-2 mb-3 text-primary border-bottom border-primary" style="border-width: 2px !important;">
                                 <i class="bi bi-car-front-fill me-2"></i>Dados do Veículo
                             </h6>
                             <div class="row g-3">
@@ -284,8 +312,6 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                         class="form-select">
                                         <option value="Carro">Carro</option>
                                         <option value="Moto">Moto</option>
-                                        <option value="Bicicleta">Bicicleta</option>
-                                        <option value="Caminhão">Caminhão</option>
                                         <option value="Outros">Outros</option>
                                     </select>
                                 </div>
@@ -310,7 +336,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                         <div class="text-end mt-4 pt-3 border-top">
                             <button type="button" class="btn btn-secondary px-4"
                                 data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-success px-4 fw-bold">Salvar Cadastro</button>
+                            <button type="submit" class="btn btn-primary px-4 fw-bold">Salvar Cadastro</button>
                         </div>
                     </form>
                 </div>

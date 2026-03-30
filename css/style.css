@@ -2,16 +2,47 @@
 
 :root {
     --cps-red: #b80005;
-    --cps-red-hover: #28a745;
+    --cps-red-hover: #920004;
     --cps-bg-gray: #f4f4f4;
     --cps-black: #212529;
     --cps-border: #e0e0e0;
     --cps-green: #6b8b0b;
+    /* Azul vívido e contemporâneo (Cyan/Teal Escuro da CPS) */
+    --bs-primary: #127187;
+    --bs-primary-rgb: 18, 113, 135;
+    --bs-primary-hover: #0d5363;
+}
+
+/* Overrides de Acessibilidade e Estilo CPS nas classes utilitárias Bootstrap */
+.text-primary { color: var(--bs-primary) !important; }
+.bg-primary { background-color: var(--bs-primary) !important; }
+.border-primary { border-color: var(--bs-primary) !important; }
+.border-primary-subtle { border-color: rgba(20, 108, 130, 0.3) !important; }
+.btn-primary { 
+    background-color: var(--bs-primary) !important; 
+    border-color: var(--bs-primary) !important; 
+    color: #fff !important; 
+}
+.btn-primary:hover {
+    background-color: var(--bs-primary-hover) !important;
+    border-color: var(--bs-primary-hover) !important;
+}
+.btn-outline-primary { 
+    color: var(--bs-primary) !important; 
+    border-color: var(--bs-primary) !important; 
+}
+.btn-outline-primary:hover {
+    background-color: var(--bs-primary) !important;
+    color: #fff !important;
 }
 
 html,
 body {
     background-color: var(--cps-bg-gray) !important;
+    background-image: url("data:image/svg+xml,%3Csvg width='600' height='600' viewBox='0 0 600 600' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23e8e8e8' stroke-width='45' stroke-linecap='round'%3E%3Cpath d='M100 0 v200 a200 200 0 0 0 200 200 h200'/%3E%3Cpath d='M500 600 v-200 a200 200 0 0 0 -200 -200 h-200'/%3E%3C/g%3E%3C/svg%3E") !important;
+    background-attachment: fixed !important;
+    background-position: center !important;
+    background-size: 800px !important;
     color: var(--cps-black);
     margin: 0;
     padding: 0;
@@ -29,8 +60,13 @@ body {
 }
 
 .card:hover {
-    border-color: var(--cps-red-hover) !important;
+    border-color: #28a745 !important;
     box-shadow: 0 6px 16px rgba(40, 167, 69, 0.15) !important;
+}
+
+.card.border-danger-subtle:hover {
+    border-color: #dc3545 !important;
+    box-shadow: 0 6px 16px rgba(220, 53, 69, 0.15) !important;
 }
 
 /* Substituindo as utilitárias de Dark Mode baseadas no código anterior */
