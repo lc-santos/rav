@@ -92,7 +92,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">
-                        <a href="gerenciar_condutores.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-people-fill me-2 me-lg-1"></i>Condutores</a>
+                        <a href="gerenciar_cadastros.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-people-fill me-2 me-lg-1"></i>Cadastros</a>
                     </li>
                     <li class="nav-item">
                         <a href="relatorios.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-bar-chart-line me-2 me-lg-1"></i>Relatórios</a>
@@ -236,12 +236,24 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
             <div class="col-12 col-lg-6">
                 <div class="card bg-dark-card border-danger-subtle mb-4 shadow-lg h-100 d-flex flex-column">
                     <div class="card-header bg-danger text-white text-center py-2 fw-bold flex-shrink-0">Registrar saída</div>
+                    
+                    <!-- Busca de Saída Eficiente -->
+                    <div class="px-3 py-2 bg-light border-bottom border-danger-subtle">
+                        <div class="input-group">
+                            <span class="input-group-text bg-white border-end-0 text-danger"><i class="bi bi-search"></i></span>
+                            <input type="text" id="filtroTextoSaida" class="form-control border-start-0 shadow-none" placeholder="Buscar por placa ou nome do condutor...">
+                        </div>
+                    </div>
+
                     <div class="position-relative flex-grow-1">
-                        <div class="list-group list-group-flush position-absolute w-100 h-100" style="overflow-y: auto; top: 0; left: 0;">
+                        <div id="listaSaidaVeiculos" class="list-group list-group-flush position-absolute w-100 h-100 custom-scrollbar" style="overflow-y: auto; top: 0; left: 0;">
                             <?php if (count($veiculosDentro) > 0): ?>
                                 <?php foreach ($veiculosDentro as $reg): ?>
                                     <div
-                                        class="list-group-item d-flex justify-content-between align-items-center p-3">
+                                        class="list-group-item d-flex justify-content-between align-items-center p-3 item-saida"
+                                        data-placa="<?= htmlspecialchars($reg['placa']) ?>"
+                                        data-nome="<?= htmlspecialchars($reg['nome_condutor']) ?>"
+                                        data-hora="<?= date('H:i', strtotime($reg['data_hora_entrada'])) ?>">
                                         <div>
                                             <h6 class="mb-0 fw-bold" style="color: var(--cps-red);"><?= $reg['placa'] ?></h6>
                                             <small class="text-secondary"><?= $reg['nome_condutor'] ?> - Dentro:

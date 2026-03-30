@@ -15,17 +15,17 @@ if (isset($_GET['id']) && isset($_GET['usuario'])) {
             $stmt = $pdo->prepare("DELETE FROM veiculos WHERE id = ? AND id_usuario = ?");
             $stmt->execute([$id_veiculo, $id_usuario]);
             
-            header("Location: gerenciar_condutores.php?sucesso=" . urlencode("Veículo placa " . $veiculo['placa'] . " desvinculado de " . $veiculo['nome_completo'] . "."));
+            header("Location: gerenciar_cadastros.php?sucesso=" . urlencode("Veículo placa " . $veiculo['placa'] . " desvinculado de " . $veiculo['nome_completo'] . "."));
             exit;
         } else {
-            header("Location: gerenciar_condutores.php?erro=" . urlencode("Veículo não encontrado ou não pertence a este condutor."));
+            header("Location: gerenciar_cadastros.php?erro=" . urlencode("Veículo não encontrado ou não pertence a este condutor."));
             exit;
         }
     } catch (PDOException $e) {
-        header("Location: gerenciar_condutores.php?erro=" . urlencode("Erro no banco de dados ao tentar excluir."));
+        header("Location: gerenciar_cadastros.php?erro=" . urlencode("Erro no banco de dados ao tentar excluir."));
         exit;
     }
 } else {
-    header("Location: gerenciar_condutores.php");
+    header("Location: gerenciar_cadastros.php");
     exit;
 }

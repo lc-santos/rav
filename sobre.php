@@ -110,8 +110,10 @@
                     </div>
                     <div class="col-md-4 text-center">
                         <i class="bi bi-server text-success pb-3 mb-3 border-bottom border-2 border-success d-inline-block" style="font-size: 3rem;"></i>
-                        <h4 class="fw-bold">Consistência de Dados</h4>
-                        <p class="text-secondary">Manutenção de um histórico estruturado e inalterável. A organização impecável dos registros garante cruzamento preciso entre veículos, condutores e horários, facilitando relatórios e auditorias.</p>
+                        <h2 class="fw-bold mb-3">Multi-Veículos e Gestão de Cadastros</h2>
+                        <p class="mb-4">
+                            Problemas com registros que mudam de veículo? O módulo de Gestão de Cadastros permite vincular diversas placas à mesma pessoa com histórico centralizado, evitando duplicidade e retrabalho de cadastro.
+                        </p>
                     </div>
                 </div>
             </div>

@@ -218,6 +218,30 @@ document.addEventListener('DOMContentLoaded', () => {
             window.history.replaceState({}, document.title, window.location.pathname);
         });
     }
+
+    // 7. BUSCA DE SAÍDA EFICIENTE
+    const inputTextoSaida = document.getElementById('filtroTextoSaida');
+    if (inputTextoSaida) {
+        inputTextoSaida.addEventListener('input', function() {
+            const termo = this.value.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
+            const itensSaida = document.querySelectorAll('.item-saida');
+
+            itensSaida.forEach(item => {
+                const placa = (item.getAttribute('data-placa') || "").toLowerCase();
+                const nome = (item.getAttribute('data-nome') || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                
+                const mostrar = placa.includes(termo) || nome.includes(termo);
+
+                if (mostrar) {
+                    item.classList.add('d-flex');
+                    item.classList.remove('d-none');
+                } else {
+                    item.classList.remove('d-flex');
+                    item.classList.add('d-none');
+                }
+            });
+        });
+    }
 });
 
 // Alterado para registrar a entrada IMEDIATAMENTE

@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $placa = strtoupper(preg_replace('/[^a-zA-Z0-9]/', '', $placaParam));
 
     if (empty($id_usuario) || empty($placa)) {
-        header("Location: gerenciar_condutores.php?erro=" . urlencode("Por favor, preencha corretamente a Placa do veículo."));
+        header("Location: gerenciar_cadastros.php?erro=" . urlencode("Por favor, preencha corretamente a Placa do veículo."));
         exit;
     }
 
@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = $stmtU->fetch();
 
         if (!$user) {
-            header("Location: gerenciar_condutores.php?erro=" . urlencode("Usuário não encontrado na base de visitantes."));
+            header("Location: gerenciar_cadastros.php?erro=" . urlencode("Usuário não encontrado na base de visitantes."));
             exit;
         }
         $id_empresa = $user['id_empresa'];
@@ -33,18 +33,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("INSERT INTO veiculos (placa, modelo, cor, tipo_veiculo, id_usuario, id_empresa, tipo) VALUES (?, ?, ?, ?, ?, ?, 'visitante')");
         $stmt->execute([$placa, $modelo, $cor, $tipo, $id_usuario, $id_empresa]);
 
-        header("Location: gerenciar_condutores.php?sucesso=" . urlencode("Veículo ($placa) vinculado à garagem virtual de $nome_condutor com sucesso!"));
+        header("Location: gerenciar_cadastros.php?sucesso=" . urlencode("Veículo ($placa) vinculado à garagem virtual de $nome_condutor com sucesso!"));
         exit;
 
     } catch (PDOException $e) {
         // Se disparar o erro 23000, violação da UNIQUE PLATE constraints
         if ($e->getCode() == 23000) {
-            header("Location: gerenciar_condutores.php?erro=" . urlencode("Ação Bloqueada. A placa ($placaParam) já está registrada para outra pessoa dentro do RAV!"));
+            header("Location: gerenciar_cadastros.php?erro=" . urlencode("Ação Bloqueada. A placa ($placaParam) já está registrada para outra pessoa dentro do RAV!"));
             exit;
         }
-        header("Location: gerenciar_condutores.php?erro=" . urlencode("Erro no banco de dados ao tentar salvar veiculo."));
+        header("Location: gerenciar_cadastros.php?erro=" . urlencode("Erro no banco de dados ao tentar salvar veiculo."));
         exit;
     }
 }
-header("Location: gerenciar_condutores.php");
+header("Location: gerenciar_cadastros.php");
 exit;

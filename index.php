@@ -23,7 +23,7 @@
             </div>
             <div class="accessibility-tools d-flex align-items-center gap-3">
                 <a href="#" class="text-white text-decoration-none small" title="Página no Facebook"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-white text-decoration-none small" title="Página no Instagram"><i class="bi bi-instagram"></i></a>
+                <a href="https://www.instagram.com/governosp" class="text-white text-decoration-none small" title="Página no Instagram"><i class="bi bi-instagram"></i></a>
                 <span class="text-white-50 mx-1">|</span>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font" title="Diminuir Fonte">A-</button>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font" title="Aumentar Fonte">A+</button>

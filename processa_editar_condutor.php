@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $contato = $_POST['contato_valor'] ?? '';
 
     if (empty($id_condutor) || empty($nome) || empty($cpf)) {
-        header("Location: gerenciar_condutores.php?erro=" . urlencode("Dados vazios! Preencha Nome e CPF obrigatórios."));
+        header("Location: gerenciar_cadastros.php?erro=" . urlencode("Dados vazios! Preencha Nome e CPF obrigatórios."));
         exit;
     }
 
@@ -22,17 +22,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare("UPDATE usuarios SET nome_completo = ?, cpf = ?, email = ?, contato_valor = ? WHERE id = ?");
         $stmt->execute([$nome, $cpf, $email, $contato, $id_condutor]);
         
-        header("Location: gerenciar_condutores.php?sucesso=" . urlencode("Dados do condutor $nome atualizados com sucesso!"));
+        header("Location: gerenciar_cadastros.php?sucesso=" . urlencode("Dados do condutor $nome atualizados com sucesso!"));
         exit;
     } catch (PDOException $e) {
         if ($e->getCode() == 23000) {
-            header("Location: gerenciar_condutores.php?erro=" . urlencode("Atenção: Este E-mail ou CPF já está atrelado a outro registro ativo!"));
+            header("Location: gerenciar_cadastros.php?erro=" . urlencode("Atenção: Este E-mail ou CPF já está atrelado a outro registro ativo!"));
             exit;
         }
-        header("Location: gerenciar_condutores.php?erro=" . urlencode("Erro inesperado no BD: " . $e->getMessage()));
+        header("Location: gerenciar_cadastros.php?erro=" . urlencode("Erro inesperado no BD: " . $e->getMessage()));
         exit;
     }
 }
 
-header("Location: gerenciar_condutores.php");
+header("Location: gerenciar_cadastros.php");
 exit;

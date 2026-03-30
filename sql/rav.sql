@@ -1,4 +1,4 @@
--- Active: 1774810650254@@127.0.0.1@3306
+-- Active: 1774910812417@@127.0.0.1@3306@mysql
 -- 1. LIMPEZA TOTAL (Para evitar erros ao re-executar)
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -54,7 +54,7 @@ CREATE TABLE usuarios (
     ) DEFAULT 'admin',
     id_empresa INT NOT NULL,
     contato_valor VARCHAR(100) NULL,
-    CONSTRAINT fk_historico_visitante FOREIGN KEY (id_registro) REFERENCES registros_acesso (id) ON DELETE CASCADE
+    CONSTRAINT fk_usuario_empresa FOREIGN KEY (id_empresa) REFERENCES empresas (id) ON DELETE CASCADE
 );
 
 -- 6. TABELA 'FALE_CONOSCO'
@@ -67,7 +67,11 @@ CREATE TABLE fale_conosco (
     assunto VARCHAR(150) NOT NULL,
     mensagem TEXT NOT NULL,
     data_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('Pendente', 'Lido', 'Respondido') DEFAULT 'Pendente'
+    status ENUM(
+        'Pendente',
+        'Lido',
+        'Respondido'
+    ) DEFAULT 'Pendente'
 );
 
 -- 4. TABELA 'VEICULOS'
