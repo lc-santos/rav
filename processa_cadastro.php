@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nome = trim($_POST['nome_completo']);
         $cpf = preg_replace('/\D/', '', $_POST['cpf']); // Remove pontos e traços do CPF
         $email = trim($_POST['email']);
-        $telefone = trim($_POST['telefone']);
+        $telefone = preg_replace('/\D/', '', $_POST['telefone']); // Remove máscaras do telefone
         $empresa_id = $_SESSION['empresa_id'] ?? 1;
 
         // 2. Captura de Dados do Veículo

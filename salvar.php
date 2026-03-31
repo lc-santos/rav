@@ -1,66 +1,53 @@
 <?php
-include '../includes/conn.php'; // Caminho atualizado
+require_once 'conn.php';
+session_start();
 
-// --- Iniciar Transação ---
-// Isso garante que se o cadastro do usuário falhar, o da empresa também é desfeito.
-$conn->begin_transaction();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    try {
+        $pdo->beginTransaction();
 
-try {
-    // --- PARTE 1: Salvar os dados da EMPRESA ---
-    // Pega os dados da empresa do $_POST
-    $empresaNome = $_POST['empresaNome'];
-    $tipoDocumento = $_POST['tipoDocumento'];
-    $documento = $_POST['documento'];
-    $telefone = $_POST['telefone'];
-    $endereco = $_POST['endereco'];
+        // --- PARTE 1: Salvar os dados da UNIDADE (Empresa) ---
+        $empresaNome = trim($_POST['empresaNome'] ?? '');
+        $tipoDocumento = trim($_POST['tipoDocumento'] ?? '');
+        $documento = preg_replace('/\D/', '', $_POST['documento'] ?? ''); // Limpar CNPJ/INEP
+        $telefone = preg_replace('/\D/', '', $_POST['telefone'] ?? ''); // Limpar Telefone
+        $endereco = trim($_POST['endereco'] ?? '');
 
-    // SQL para inserir na tabela 'empresas'
-    $sql_empresa = "INSERT INTO empresas (nome_empresa, tipoDocumento, documento, telefone, endereco) VALUES (?, ?, ?, ?, ?)";
-    $stmt_empresa = $conn->prepare($sql_empresa);
-    $stmt_empresa->bind_param("sssss", $empresaNome, $tipoDocumento, $documento, $telefone, $endereco);
-    $stmt_empresa->execute();
+        $sql_empresa = "INSERT INTO empresas (nome_empresa, tipoDocumento, documento, telefone, endereco) VALUES (?, ?, ?, ?, ?)";
+        $stmt_empresa = $pdo->prepare($sql_empresa);
+        $stmt_empresa->execute([$empresaNome, $tipoDocumento, $documento, $telefone, $endereco]);
+        
+        $id_nova_empresa = $pdo->lastInsertId();
 
-    // --- Pega o ID da empresa que ACABOU de ser criada ---
-    $id_nova_empresa = $conn->insert_id;
+        // --- PARTE 2: Salvar os dados do USUÁRIO (Admin/Gestor) ---
+        $nomeAdmin = trim($_POST['nome_completo'] ?? '');
+        $cpfAdmin = preg_replace('/\D/', '', $_POST['cpf'] ?? ''); // Limpar CPF
+        $datanasc = $_POST['datanasc'] ?? '';
+        $emailAdmin = trim($_POST['email'] ?? '');
+        $senha_pura = $_POST['senha'] ?? '';
+        
+        // Criptografa a senha
+        $senha_hash = password_hash($senha_pura, PASSWORD_DEFAULT);
+        
+        // Define a 'role' deste primeiro usuário como 'admin'
+        $role = 'admin';
 
-    // --- PARTE 2: Salvar os dados do USUÁRIO (Admin) ---
-    // Pega os dados do admin do $_POST
-    $nomeAdmin = $_POST['nomeAdmin'];
-    $cpfAdmin = $_POST['cpfadmin'];
-    $datanasc = $_POST['datanasc'];
-    $emailAdmin = $_POST['emailAdmin'];
-    $senha_pura = $_POST['senha'];
-    // IMPORTANTE: Verificar se "Confirmar Senha" é igual a "Senha"
-    
-    // Criptografa a senha
-    $senha_hash = password_hash($senha_pura, PASSWORD_DEFAULT);
-    
-    // Define a 'role' deste primeiro usuário como 'admin'
-    $role = 'admin';
+        // SQL para inserir na tabela 'usuarios', ligando-a com o ID da empresa
+        $sql_usuario = "INSERT INTO usuarios (nome_completo, cpf, datanasc, email, senha, role, id_empresa, contato_valor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        $stmt_usuario = $pdo->prepare($sql_usuario);
+        $stmt_usuario->execute([$nomeAdmin, $cpfAdmin, $datanasc, $emailAdmin, $senha_hash, $role, $id_nova_empresa, $telefone]);
+        
+        $pdo->commit();
+        
+        // Redireciona para o login com sucesso
+        header("Location: login.php?sucesso=Unidade cadastrada com sucesso! Faça login para continuar.");
+        exit;
 
-    // SQL para inserir na tabela 'usuarios', ligando-a com o ID da empresa
-    $sql_usuario = "INSERT INTO usuarios (nome_completo, cpf, datanasc, email, senha, role, id_empresa) VALUES (?, ?, ?, ?, ?, ?, ?)";
-    $stmt_usuario = $conn->prepare($sql_usuario);
-    $stmt_usuario->bind_param("ssssssi", $nomeAdmin, $cpfAdmin, $datanasc, $emailAdmin, $senha_hash, $role, $id_nova_empresa);
-    $stmt_usuario->execute();
-    
-    // --- Finalização ---
-    // Se chegou até aqui sem erros, confirma as duas operações
-    $conn->commit();
-    
-    echo "Empresa e Administrador cadastrados com sucesso!";
-    // Redireciona para o login
-    header("Location: ../login.php");
-
-} catch (mysqli_sql_exception $exception) {
-    // Se qualquer uma das inserções falhar, desfaz tudo
-    $conn->rollback();
-    
-    echo "Erro ao cadastrar: " . $exception->getMessage();
+    } catch (Exception $e) {
+        if ($pdo->inTransaction()) $pdo->rollBack();
+        die("Erro ao cadastrar unidade: " . $e->getMessage());
+    }
+} else {
+    header("Location: cadastro.php");
+    exit;
 }
-
-$stmt_empresa->close();
-$stmt_usuario->close();
-$conn->close();
-
-?>

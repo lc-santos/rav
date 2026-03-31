@@ -132,7 +132,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                 </span>
                             </div>
                             <div class="col-8 col-md-8">
-                                <input type="text" id="busca_rapida" class="form-control border-primary-subtle h-100 shadow-sm" placeholder="Busca Rápida: CPF ou ID (7 dígitos)">
+                                <input type="text" id="busca_rapida" class="form-control border-primary-subtle h-100 shadow-sm" data-mask="cpf-id" placeholder="Busca Rápida: CPF ou ID (7 dígitos)">
                             </div>
                             <div class="col-4 col-md-4">
                                 <button type="button" id="btnAbrirModal" class="btn btn-primary w-100 h-100 d-flex justify-content-center align-items-center gap-2 px-1 shadow-sm rounded-pill" data-bs-toggle="modal" data-bs-target="#modalCadastro" title="Cadastrar Conduzinte Oficial">
@@ -145,89 +145,94 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                             </div>
                         </div>
 
-                        <div class="mb-3 mt-2">
-                           <span class="d-inline-block px-3 py-2 rounded-pill fw-bold bg-success text-white shadow-sm" style="font-size: 0.85rem; letter-spacing: 0.5px;">
-                               <i class="bi bi-ui-checks me-1"></i> Acesso comum
+                        <div class="mb-4 mt-2">
+                           <span class="d-inline-block px-4 py-2 rounded-pill fw-bold bg-acesso-comum text-white shadow-sm" style="font-size: 0.9rem; letter-spacing: 0.5px;">
+                               Acesso comum
                            </span>
                         </div>
-                        <form action="registrar_acesso.php" method="POST" class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">Tipo Veículo</label>
-                                <select id="selectTipoVeiculo" name="tipo_veiculo"
-                                    class="form-select">
-                                    <option value="" selected disabled>Selecione...</option>
-                                    <option value="Carro">Carro</option>
-                                    <option value="Moto">Moto</option>
-                                    <option value="Outros">Outros</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">Tipo Acesso</label>
-                                <select name="tipo_acesso" class="form-select">
-                                    <option>Aluno</option>
-                                    <option>Diretoria</option>
-                                    <option>Professor</option>
-                                    <option>Serviço</option>
-                                </select>
-                            </div>
-
-                            <div id="secaoDetalhesVeiculo" class="col-12">
-                                <div class="card bg-light border-0 shadow-sm p-3">
-                                    <div class="row g-3">
-                                        <div class="col-md-4">
-                                            <label id="labelPlaca"
-                                                class="form-label small fw-bold" style="color: var(--cps-red);">Placa</label>
-                                            <input type="text" id="placa" name="placa"
-                                                class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small fw-bold">Modelo/Marca</label>
-                                            <input type="text" name="modelo_veiculo"
-                                                class="form-control">
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label class="form-label small fw-bold">Cor</label>
-                                            <input type="text" name="cor_veiculo"
-                                                class="form-control">
-                                        </div>
+                        <form action="registrar_acesso.php" method="POST" class="row g-2 form-registrar-acesso">
+                            <div class="col-12 d-flex align-items-end flex-wrap mb-2">
+                                <div>
+                                    <label class="form-label small fw-bold mb-3">Tipo veículo:</label>
+                                    <div class="selectable-group" id="groupTipoVeiculo">
+                                        <label class="selectable-item">
+                                            <input type="radio" name="tipo_veiculo" value="Carro" checked>
+                                            <div class="icon-box"><i class="bi bi-car-front-fill"></i></div>
+                                            <span>Carro</span>
+                                        </label>
+                                        <label class="selectable-item">
+                                            <input type="radio" name="tipo_veiculo" value="Moto">
+                                            <div class="icon-box"><i class="bi bi-bicycle"></i></div>
+                                            <span>Moto</span>
+                                        </label>
+                                        <label class="selectable-item">
+                                            <input type="radio" name="tipo_veiculo" value="Outros">
+                                            <div class="icon-box"><i class="bi bi-vinyl-fill"></i></div>
+                                            <span>Outros</span>
+                                        </label>
                                     </div>
                                 </div>
+                                <div class="placa-inline">
+                                    <label class="form-label small fw-bold label-required">Placa :</label>
+                                    <input type="text" id="placa" name="placa" class="form-control" data-mask="placa" placeholder="ABC0A00" required>
+                                </div>
                             </div>
 
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">Nome</label>
-                                <input type="text" name="nome_condutor"
-                                    class="form-control">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">Modelo:</label>
+                                <input type="text" name="modelo_veiculo" class="form-control" style="border-radius: 20px;">
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">Cor:</label>
+                                <input type="text" name="cor_veiculo" class="form-control" style="border-radius: 20px;">
+                            </div>
+
+                            <div class="col-12 mt-4 mb-2">
+                                <label class="form-label small fw-bold mb-3">Tipo acesso:</label>
+                                <div class="selectable-group" id="groupTipoAcesso">
+                                    <label class="selectable-item">
+                                        <input type="radio" name="tipo_acesso" value="Aluno" checked>
+                                        <div class="icon-box"><i class="bi bi-person-fill"></i></div>
+                                        <span>Aluno</span>
+                                    </label>
+                                    <label class="selectable-item">
+                                        <input type="radio" name="tipo_acesso" value="Equipe">
+                                        <div class="icon-box"><i class="bi bi-people-fill"></i></div>
+                                        <span>Equipe</span>
+                                    </label>
+                                    <label class="selectable-item">
+                                        <input type="radio" name="tipo_acesso" value="Outros">
+                                        <div class="icon-box"><i class="bi bi-person"></i></div>
+                                        <span>Outros</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <label class="form-label small fw-bold label-required">Nome</label>
+                                <input type="text" name="nome_condutor" class="form-control" required style="border-radius: 20px;">
+                            </div>
+                            <div class="col-6">
                                 <label class="form-label small fw-bold">Contato</label>
-                                <input type="text" name="contato_valor" id="inputContato"
-                                    class="form-control"
-                                    placeholder="Telefone ou E-mail">
+                                <input type="tel" name="contato_valor" id="inputContato" class="form-control" data-mask="tel" placeholder="(00) 00000-0000" style="border-radius: 20px;">
                             </div>
 
-                            <div class="col-12 mt-4">
-                                <div class="d-flex gap-2 mb-2">
-                                    <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2">
-                                        Registrar Acesso
+                            <div class="col-12 mt-3">
+                                <div class="d-flex gap-3 mb-2">
+                                    <button class="btn btn-obs flex-grow-1 py-2 fw-bold" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#collapseObs" style="font-size: 0.95rem;">
+                                        Observação +
                                     </button>
-                                    <button class="btn btn-outline-secondary py-2 px-3" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseObs">
-                                        <i class="bi bi-chat-left-text"></i>
+                                    <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2" style="background-color: #157347; border: none; border-radius: 20px; font-size: 0.95rem;">
+                                        Registrar acesso
                                     </button>
-
                                 </div>
 
-                                <div class="collapse mt-3" id="collapseObs">
+                                <div class="collapse mt-2" id="collapseObs">
                                     <textarea name="observacao" class="form-control"
-                                        placeholder="Observações ou avarias..." rows="3"></textarea>
+                                        placeholder="Observações ou avarias..." rows="2"></textarea>
                                 </div>
-
-
-
-
                             </div>
-
                         </form>
                     </div>
                 </div>
@@ -293,10 +298,10 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                         class="form-control">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label small">CPF</label>
+                                    <label class="form-label small fw-bold">CPF</label>
                                     <input type="text" id="modalCPF" name="cpf"
-                                        class="form-control"
-                                        placeholder="000.000.000-00">
+                                        class="form-control" data-mask="cpf"
+                                        placeholder="000.000.000-00" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label small">E-mail</label>
@@ -305,9 +310,9 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                         placeholder="exemplo@email.com">
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label small">Telefone/Celular</label>
-                                    <input type="text" id="modalTelefone" name="telefone"
-                                        class="form-control"
+                                    <label class="form-label small fw-bold">Telefone/Celular</label>
+                                    <input type="tel" id="modalTelefone" name="telefone"
+                                        class="form-control" data-mask="tel"
                                         placeholder="(00) 00000-0000">
                                 </div>
                             </div>
@@ -328,9 +333,9 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label class="form-label small">Placa</label>
+                                    <label class="form-label small fw-bold">Placa</label>
                                     <input type="text" id="modalPlacaVeiculo" name="placa"
-                                        class="form-control">
+                                        class="form-control" data-mask="placa" placeholder="ABC0A00" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label small">Marca/Modelo</label>

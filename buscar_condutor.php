@@ -2,7 +2,8 @@
 require_once 'conn.php';
 header('Content-Type: application/json');
 
-$busca = $_GET['busca'] ?? '';
+$buscaRaw = $_GET['busca'] ?? '';
+$busca = preg_replace('/\D/', '', $buscaRaw); // Garante que a busca por CPF/ID seja apenas números
 
 if (empty($busca)) {
     echo json_encode(['sucesso' => false]);

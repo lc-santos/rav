@@ -56,7 +56,7 @@
                             <p class="small text-muted mb-0">Insira os dados da sua instituição de ensino e do primeiro administrador.</p>
                         </div>
 
-                        <form action="processa-cadastro.php" method="POST">
+                        <form action="salvar.php" method="POST">
                             <div class="row g-4">
                                 <!-- Coluna Empresa/Unidade -->
                                 <div class="col-12 col-md-6 border-md-end pe-md-4 custom-border-mode">
@@ -74,11 +74,11 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="documento" class="form-label fw-medium small">Número do Documento</label>
-                                        <input type="text" class="form-control bg-light" id="documento" name="documento" placeholder="00.000.000/0000-00" required>
+                                        <input type="text" class="form-control bg-light" id="documento" name="documento" data-mask="cnpj" placeholder="00.000.000/0000-00" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="telefone" class="form-label fw-medium small">Telefone Institucional</label>
-                                        <input type="text" class="form-control bg-light" id="telefone" name="telefone" placeholder="(11) 0000-0000" required>
+                                        <input type="tel" class="form-control bg-light" id="telefone" name="telefone" data-mask="tel" placeholder="(11) 0000-0000" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="endereco" class="form-label fw-medium small">Endereço Completo</label>
@@ -102,7 +102,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="cpf" class="form-label fw-medium small">CPF</label>
-                                        <input type="text" class="form-control bg-light" id="cpf" name="cpf" placeholder="000.000.000-00" required>
+                                        <input type="text" class="form-control bg-light" id="cpf" name="cpf" data-mask="cpf" placeholder="000.000.000-00" required>
                                     </div>
                                     <div class="mb-3">
                                         <label for="datanasc" class="form-label fw-medium small">Data de Nascimento</label>
@@ -141,6 +141,8 @@
 
     <!-- Bootstrap Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <script src="script/script.js"></script>
 
     <!-- Scripts de Usabilidade Compartilhados -->
     <script>

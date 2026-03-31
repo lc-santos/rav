@@ -292,3 +292,112 @@ body {
 .dark-mode .btn-light .text-dark {
     color: #e0e0e0 !important;
 }
+
+/* ---------------- SELETORES DE ÍCONES (RADIO BUTTONS ESTILIZADOS) ---------------- */
+.selectable-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-end; 
+}
+
+.selectable-item {
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s ease;
+    user-select: none;
+    flex: 0 0 auto;
+}
+
+.selectable-item input[type="radio"] {
+    display: none;
+}
+
+.selectable-item .icon-box {
+    width: 85px; 
+    height: 44px;
+    background-color: #157347;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    color: #ffffff;
+    margin-bottom: 5px;
+    transition: all 0.2s ease;
+}
+
+.selectable-item span {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: #495057;
+}
+
+/* Estado Não Selecionado */
+.selectable-item input[type="radio"]:not(:checked) + .icon-box {
+    opacity: 0.6;
+}
+
+.selectable-item input[type="radio"]:checked + .icon-box {
+    opacity: 1;
+    transform: scale(1.02);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Helper para alinhar placa ao lado */
+.placa-inline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-grow: 1;
+    margin-left: 15px;
+    margin-bottom: 25px; /* Compensa espaço das legendas dos ícones */
+}
+
+.placa-inline label {
+    margin-bottom: 0 !important;
+    white-space: nowrap;
+}
+
+.placa-inline input {
+    max-width: 320px;
+}
+
+.selectable-item input[type="radio"]:not(:checked) + .icon-box {
+    opacity: 0.6;
+}
+
+.selectable-item input[type="radio"]:checked + .icon-box {
+    opacity: 1;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Badge Acesso Comum Customizada */
+.bg-acesso-comum {
+    background-color: #157347 !important;
+}
+
+/* Botão Observação Cinza */
+.btn-obs {
+    background-color: #6c757d !important;
+    border-color: #6c757d !important;
+    color: white !important;
+    border-radius: 20px !important;
+}
+
+/* Layout Form */
+.form-registrar-acesso .form-control {
+    border-radius: 20px !important;
+    border: 1.5px solid #444 !important;
+    padding: 0.6rem 1.2rem;
+}
+
+.label-required::after {
+    content: " *";
+    color: #dc3545;
+    font-weight: bold;
+    font-size: 1.2rem;
+}

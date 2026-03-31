@@ -272,7 +272,7 @@ foreach ($todos_veiculos as $v) {
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">CPF</label>
-                            <input type="text" id="edit_cpf" name="cpf" class="form-control" required>
+                            <input type="text" id="edit_cpf" name="cpf" class="form-control" data-mask="cpf" placeholder="000.000.000-00" required>
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">E-mail</label>
@@ -280,7 +280,7 @@ foreach ($todos_veiculos as $v) {
                         </div>
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Telefone/Contato</label>
-                            <input type="text" id="edit_contato" name="contato_valor" class="form-control">
+                            <input type="tel" id="edit_contato" name="contato_valor" class="form-control" data-mask="tel" placeholder="(00) 00000-0000">
                         </div>
 
                         <!-- Zona de Exclusão de Veículos -->
@@ -320,7 +320,7 @@ foreach ($todos_veiculos as $v) {
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Placa</label>
-                                <input type="text" name="placa" class="form-control" placeholder="ABC-1234" required>
+                                <input type="text" name="placa" class="form-control" data-mask="placa" placeholder="ABC0A00" required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Tipo</label>
@@ -352,6 +352,7 @@ foreach ($todos_veiculos as $v) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/imask"></script>
+    <script src="script/script.js"></script>
     <script>
         // --- FILTRO DE CONDUTORES ---
         const filtroInput = document.getElementById('filtroCondutores');
@@ -438,12 +439,7 @@ foreach ($todos_veiculos as $v) {
             });
         });
 
-        // --- MÁSCARAS ---
-        const elCpf = document.getElementById('edit_cpf');
-        if(elCpf) IMask(elCpf, { mask: '000.000.000-00' });
-        
-        const elContato = document.getElementById('edit_contato');
-        if(elContato) IMask(elContato, { mask: '(00) 00000-0000' });
+        // Máscaras migradas para script.js centralizado
 
         // --- ACESSIBILIDADE E TEMA ---
         document.addEventListener('DOMContentLoaded', () => {

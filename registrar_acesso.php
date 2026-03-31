@@ -9,7 +9,7 @@ $_SESSION['empresa_id']  = 1;
 
 try {
     // 1. Captura dos campos
-    $placa         = strtoupper(trim($_POST['placa'] ?? ''));
+    $placa         = strtoupper(preg_replace('/[^A-Za-z0-9]/', '', $_POST['placa'] ?? ''));
     $nome_condutor = trim($_POST['nome_condutor'] ?? '');
     $tipo_veiculo  = $_POST['tipo_veiculo'] ?? '';
     $modelo        = trim($_POST['modelo_veiculo'] ?? '');
@@ -68,7 +68,7 @@ try {
         $_POST['tipo_acesso'] ?? 'Serviço', 
         $nome_condutor, 
         $_POST['contato_tipo'] ?? 'tel', 
-        $_POST['contato_valor'] ?? ''
+        ($_POST['contato_tipo'] ?? 'tel') === 'tel' ? preg_replace('/\D/', '', $_POST['contato_valor'] ?? '') : trim($_POST['contato_valor'] ?? '')
     ]);
 
     $pdo->commit();

@@ -23,7 +23,6 @@ function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '') {
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- ELEMENTOS ---
-    const selectVeiculo = document.getElementById('selectTipoVeiculo');
     const secaoDetalhes = document.getElementById('secaoDetalhesVeiculo');
     const labelPlaca = document.getElementById('labelPlaca');
     const inputPlaca = document.getElementById('placa');
@@ -32,60 +31,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const buscaGeral = document.querySelector('.custom-search .form-control');
     const btnAbrirModal = document.getElementById('btnAbrirModal');
 
-    // 1. CONTROLE DE EXIBIÇÃO DINÂMICA (Outros)
-    if (selectVeiculo) {
-        selectVeiculo.addEventListener('change', function () {
-            secaoDetalhes.classList.remove('d-none');
-            labelPlaca.innerText = 'Placa (Obrigatório)';
-
-            const elModelo = document.querySelector('input[name="modelo_veiculo"]');
-            const elCor = document.querySelector('input[name="cor_veiculo"]');
-            const elContato = document.getElementById('inputContato');
-            const elNome = document.querySelector('input[name="nome_condutor"]');
-
-            const colPlaca = document.getElementById('placa').closest('div');
-            const contModelo = elModelo ? elModelo.closest('div') : null;
-            const contCor = elCor ? elCor.closest('div') : null;
-            const contContato = elContato ? elContato.closest('div') : null;
-            const colNome = elNome ? elNome.closest('div') : null;
-            
-            const collapseObs = document.getElementById('collapseObs');
-
-            if (this.value === 'Outros') {
-                if (contModelo) contModelo.classList.add('d-none');
-                if (contCor) contCor.classList.add('d-none');
-                if (contContato) contContato.classList.add('d-none');
-                
-                if (colPlaca) {
-                    colPlaca.classList.remove('col-md-4');
-                    colPlaca.classList.add('col-md-12');
+    // 1. CONTROLE DE EXIBIÇÃO DINÂMICA (Radio Buttons)
+    const radiosVeiculo = document.querySelectorAll('input[name="tipo_veiculo"]');
+    if (radiosVeiculo.length > 0) {
+        radiosVeiculo.forEach(radio => {
+            radio.addEventListener('change', function () {
+                const collapseObs = document.getElementById('collapseObs');
+                if (this.value === 'Outros') {
+                    // Abre o campo de observação automaticamente
+                    if (collapseObs && typeof bootstrap !== 'undefined') {
+                        const bsCollapse = new bootstrap.Collapse(collapseObs, {toggle: false});
+                        bsCollapse.show();
+                    } else if (collapseObs) {
+                        collapseObs.classList.add('show');
+                    }
                 }
-                if (colNome) {
-                    colNome.classList.remove('col-md-6');
-                    colNome.classList.add('col-md-12');
-                }
-                
-                // Abre o campo de observação automaticamente
-                if (collapseObs && typeof bootstrap !== 'undefined') {
-                    const bsCollapse = new bootstrap.Collapse(collapseObs, {toggle: false});
-                    bsCollapse.show();
-                } else if (collapseObs) {
-                    collapseObs.classList.add('show');
-                }
-            } else {
-                if (contModelo) contModelo.classList.remove('d-none');
-                if (contCor) contCor.classList.remove('d-none');
-                if (contContato) contContato.classList.remove('d-none');
-                
-                if (colPlaca) {
-                    colPlaca.classList.remove('col-md-12');
-                    colPlaca.classList.add('col-md-4');
-                }
-                if (colNome) {
-                    colNome.classList.remove('col-md-12');
-                    colNome.classList.add('col-md-6');
-                }
-            }
+            });
         });
     }
 
@@ -170,8 +131,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. INTEGRAÇÃO COM MODAL (Puxar dados do formulário principal)
     if (btnAbrirModal) {
         btnAbrirModal.addEventListener('click', () => {
+            const radioChecked = document.querySelector('input[name="tipo_veiculo"]:checked');
             document.getElementById('modalNomeCondutor').value = document.getElementsByName('nome_condutor')[0].value;
-            document.getElementById('modalTipoVeiculo').value = selectVeiculo.value || 'Carro';
+            document.getElementById('modalTipoVeiculo').value = radioChecked ? radioChecked.value : 'Carro';
             document.getElementById('modalPlacaVeiculo').value = inputPlaca.value;
             document.getElementById('modalModelo').value = document.getElementsByName('modelo_veiculo')[0].value;
             document.getElementById('modalCor').value = document.getElementsByName('cor_veiculo')[0].value;
@@ -227,7 +189,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const itensSaida = document.querySelectorAll('.item-saida');
 
             itensSaida.forEach(item => {
-                const placa = (item.getAttribute('data-placa') || "").toLowerCase();
+                const placa = (item.getAttribute('data-placa') || "").toLowerCase().replace(/[^a-z0-9]/g, '');
                 const nome = (item.getAttribute('data-nome') || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                 
                 const mostrar = placa.includes(termo) || nome.includes(termo);
@@ -242,7 +204,62 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+    // 8. INICIAR MÁSCARAS
+    initMasks();
 });
+
+// --- MÁSCARAS GLOBAIS (Padrão Institucional) ---
+function initMasks() {
+    if (typeof IMask === 'undefined') return;
+
+    // CPF
+    document.querySelectorAll('[data-mask="cpf"]').forEach(el => {
+        IMask(el, { mask: '000.000.000-00' });
+    });
+
+    // CNPJ
+    document.querySelectorAll('[data-mask="cnpj"]').forEach(el => {
+        IMask(el, { mask: '00.000.000/0000-00' });
+    });
+
+    // Telefone (Dinâmico: Fixo/Celular)
+    document.querySelectorAll('[data-mask="tel"]').forEach(el => {
+        IMask(el, {
+            mask: [
+                { mask: '(00) 0000-0000' },
+                { mask: '(00) 00000-0000' }
+            ]
+        });
+    });
+
+    // Placa (Suporta Mercosul e Antiga)
+    document.querySelectorAll('[data-mask="placa"]').forEach(el => {
+        IMask(el, {
+            mask: [
+                { mask: 'AAA0A00' }, // Mercosul
+                { mask: 'AAA-0000' }  // Antiga
+            ],
+            prepare: function (str) {
+                return str.toUpperCase();
+            }
+        });
+    });
+
+    // CPF ou ID (7 dígitos)
+    document.querySelectorAll('[data-mask="cpf-id"]').forEach(el => {
+        IMask(el, {
+            mask: [
+                { mask: '0000000' }, // ID
+                { mask: '000.000.000-00' } // CPF
+            ]
+        });
+    });
+
+    // CEP
+    document.querySelectorAll('[data-mask="cep"]').forEach(el => {
+        IMask(el, { mask: '00000-000' });
+    });
+}
 
 // Alterado para registrar a entrada IMEDIATAMENTE
 // Localize esta função no seu script.js e altere a linha do tipo_acesso

@@ -3,10 +3,10 @@ require_once 'conn.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id_condutor = $_POST['id_condutor'] ?? '';
-    $nome = $_POST['nome_completo'] ?? '';
-    $cpf = $_POST['cpf'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $contato = $_POST['contato_valor'] ?? '';
+    $nome = trim($_POST['nome_completo'] ?? '');
+    $cpf = preg_replace('/\D/', '', $_POST['cpf'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $contato = preg_replace('/\D/', '', $_POST['contato_valor'] ?? '');
 
     if (empty($id_condutor) || empty($nome) || empty($cpf)) {
         header("Location: gerenciar_cadastros.php?erro=" . urlencode("Dados vazios! Preencha Nome e CPF obrigatórios."));
