@@ -250,8 +250,8 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                         </div>
                     </div>
 
-                    <div class="position-relative flex-grow-1">
-                        <div id="listaSaidaVeiculos" class="list-group list-group-flush position-absolute w-100 h-100 custom-scrollbar" style="overflow-y: auto; top: 0; left: 0;">
+                    <div class="flex-grow-1" style="overflow-y: auto; min-height: 380px;">
+                        <div id="listaSaidaVeiculos" class="list-group list-group-flush custom-scrollbar">
                             <?php if (count($veiculosDentro) > 0): ?>
                                 <?php foreach ($veiculosDentro as $reg): ?>
                                     <div

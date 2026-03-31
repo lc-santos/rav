@@ -351,8 +351,8 @@ body {
     display: flex;
     align-items: center;
     gap: 12px;
-    flex-grow: 1;
-    margin-left: 15px;
+    flex-grow: 0;
+    margin-left: 20px;
     margin-bottom: 25px; /* Compensa espaço das legendas dos ícones */
 }
 
@@ -362,7 +362,11 @@ body {
 }
 
 .placa-inline input {
-    max-width: 320px;
+    max-width: 155px;
+    text-transform: uppercase;
+    font-weight: 700;
+    text-align: center;
+    letter-spacing: 1px;
 }
 
 .selectable-item input[type="radio"]:not(:checked) + .icon-box {

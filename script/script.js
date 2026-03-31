@@ -232,13 +232,36 @@ function initMasks() {
         });
     });
 
-    // Placa (Suporta Mercosul e Antiga)
+    // Placa (Suporta Mercosul e Antiga dinamicamente)
     document.querySelectorAll('[data-mask="placa"]').forEach(el => {
         IMask(el, {
             mask: [
-                { mask: 'AAA0A00' }, // Mercosul
-                { mask: 'AAA-0000' }  // Antiga
+                { mask: 'AAA0A00' }, // 0: Mercosul
+                { mask: 'AAA0000' }, // 1: Antiga sem traço
+                { mask: 'AAA-0000' } // 2: Antiga com traço
             ],
+            definitions: {
+                'A': /[a-zA-Z]/,
+                '0': /[0-9]/
+            },
+            dispatch: function (appended, dynamicMasked) {
+                const value = dynamicMasked.value + appended;
+                // Se o usuário digitou o traço, usa a máscara correspondente
+                if (value.includes('-')) return dynamicMasked.compiledMasks[2];
+                
+                // Se já temos 5 caracteres, verificamos o quinto caractere
+                if (value.replace(/[^a-zA-Z0-9]/g, '').length >= 5) {
+                    const cleanValue = value.replace(/[^a-zA-Z0-9]/g, '');
+                    const char5 = cleanValue.charAt(4); // Quinto caractere (índice 4)
+                    
+                    if (/[a-zA-Z]/.test(char5)) {
+                        return dynamicMasked.compiledMasks[0]; // Mercosul (Letra no 5º)
+                    } else {
+                        return dynamicMasked.compiledMasks[1]; // Antiga (Número no 5º)
+                    }
+                }
+                return dynamicMasked.compiledMasks[0]; // Padrão
+            },
             prepare: function (str) {
                 return str.toUpperCase();
             }

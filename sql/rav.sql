@@ -1,4 +1,4 @@
--- Active: 1774910812417@@127.0.0.1@3306@mysql
+-- Active: 1774996034755@@127.0.0.1@3306@mysql
 -- 1. LIMPEZA TOTAL (Para evitar erros ao re-executar)
 SET FOREIGN_KEY_CHECKS = 0;
 
