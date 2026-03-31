@@ -11,10 +11,12 @@ if ($id) {
         $stmt->execute([$id]); // Aqui deve ser exatamente o nome da variável acima
     } catch (PDOException $e) {
         // Opcional: tratar erro de banco de dados
-        die("Erro ao registrar saída: " . $e->getMessage());
     }
 }
 
-// Redireciona de volta para o painel
-header("Location: painel-admin.php");
+$origem = $_GET['origem'] ?? 'painel-admin.php';
+
+// Redireciona de volta para a origem
+header("Location: " . $origem);
 exit;
+    
