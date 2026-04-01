@@ -57,7 +57,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
             
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-circle fs-5 text-cps-red"></i>
+                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
                     <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
@@ -174,7 +174,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                 </div>
                                 <div class="placa-inline">
                                     <label class="form-label small fw-bold label-required">Placa :</label>
-                                    <input type="text" id="placa" name="placa" class="form-control" data-mask="placa" placeholder="ABC0A00" required>
+                                    <input type="text" id="placa" name="placa" class="form-control" data-mask="placa" placeholder="AAA-0000" required>
                                 </div>
                             </div>
 
@@ -335,7 +335,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="col-md-4">
                                     <label class="form-label small fw-bold">Placa</label>
                                     <input type="text" id="modalPlacaVeiculo" name="placa"
-                                        class="form-control" data-mask="placa" placeholder="ABC0A00" required>
+                                        class="form-control" data-mask="placa" placeholder="AAA-0000" required>
                                 </div>
                                 <div class="col-md-4">
                                     <label class="form-label small">Marca/Modelo</label>

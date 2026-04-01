@@ -117,7 +117,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
             
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-circle fs-5 text-cps-red"></i>
+                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
                     <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">

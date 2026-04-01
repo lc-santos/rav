@@ -51,7 +51,7 @@
                 <div class="card shadow-lg border-0 rounded-4 custom-panel-bg">
                     <div class="card-body p-4 p-md-5">
                         <div class="text-center mb-4">
-                            <i class="bi bi-person-circle fs-1 text-cps-red mb-2 d-inline-block"></i>
+                            <i class="bi bi-person-badge-fill fs-1 text-cps-red mb-2 d-inline-block"></i>
                             <h3 class="fw-bold">Acesso ao Sistema</h3>
                             <p class="small text-muted">Entre com suas credenciais de portaria ou administração.</p>
                         </div>

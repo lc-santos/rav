@@ -135,6 +135,9 @@ document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('modalNomeCondutor').value = document.getElementsByName('nome_condutor')[0].value;
             document.getElementById('modalTipoVeiculo').value = radioChecked ? radioChecked.value : 'Carro';
             document.getElementById('modalPlacaVeiculo').value = inputPlaca.value;
+            // Notifica o IMask que o valor mudou
+            document.getElementById('modalPlacaVeiculo').dispatchEvent(new Event('input'));
+            
             document.getElementById('modalModelo').value = document.getElementsByName('modelo_veiculo')[0].value;
             document.getElementById('modalCor').value = document.getElementsByName('cor_veiculo')[0].value;
 
@@ -206,6 +209,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // 8. INICIAR MÁSCARAS
     initMasks();
+
+    // Re-garante máscaras ao abrir qualquer modal (Bootstrap 5)
+    document.querySelectorAll('.modal').forEach(m => {
+        m.addEventListener('shown.bs.modal', initMasks);
+    });
 });
 
 // --- MÁSCARAS GLOBAIS (Padrão Institucional) ---
@@ -232,38 +240,49 @@ function initMasks() {
         });
     });
 
-    // Placa (Suporta Mercosul e Antiga dinamicamente)
+    // Placa (Suporta Mercosul e Antiga dinamicamente com Dispatch inteligente)
     document.querySelectorAll('[data-mask="placa"]').forEach(el => {
-        IMask(el, {
+        // Se já existir uma máscara, destrói para evitar duplicidade
+        if (el.iMask) el.iMask.destroy();
+
+        el.iMask = IMask(el, {
             mask: [
-                { mask: 'AAA0A00' }, // 0: Mercosul
-                { mask: 'AAA0000' }, // 1: Antiga sem traço
-                { mask: 'AAA-0000' } // 2: Antiga com traço
+                { mask: 'aaa0000' }, // 0: Antiga sem traço
+                { mask: 'aaa0a00' }, // 1: Mercosul Carro
+                { mask: 'aaa00a0' }, // 2: Mercosul Moto
+                { mask: 'aaa-0000' } // 3: Antiga com traço
             ],
             definitions: {
-                'A': /[a-zA-Z]/,
+                'a': /[a-zA-Z]/,
                 '0': /[0-9]/
             },
             dispatch: function (appended, dynamicMasked) {
-                const value = dynamicMasked.value + appended;
-                // Se o usuário digitou o traço, usa a máscara correspondente
-                if (value.includes('-')) return dynamicMasked.compiledMasks[2];
+                const isHyphen = dynamicMasked.value.includes('-') || appended === '-';
+                if (isHyphen) return dynamicMasked.compiledMasks[3];
+
+                const cleanValue = (dynamicMasked.value + appended).replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
                 
-                // Se já temos 5 caracteres, verificamos o quinto caractere
-                if (value.replace(/[^a-zA-Z0-9]/g, '').length >= 5) {
-                    const cleanValue = value.replace(/[^a-zA-Z0-9]/g, '');
-                    const char5 = cleanValue.charAt(4); // Quinto caractere (índice 4)
+                if (cleanValue.length >= 5) {
+                    const char5 = cleanValue.charAt(4);
+                    const char6 = cleanValue.length >= 6 ? cleanValue.charAt(5) : null;
                     
-                    if (/[a-zA-Z]/.test(char5)) {
-                        return dynamicMasked.compiledMasks[0]; // Mercosul (Letra no 5º)
-                    } else {
-                        return dynamicMasked.compiledMasks[1]; // Antiga (Número no 5º)
-                    }
+                    // Se o 5º char for letra -> Mercosul Carro (ABC1D23)
+                    if (/[A-Z]/.test(char5)) return dynamicMasked.compiledMasks[1];
+                    
+                    // Se o 5º char for número e o 6º for letra -> Mercosul Moto (ABC12D3)
+                    if (char6 && /[A-Z]/.test(char6)) return dynamicMasked.compiledMasks[2];
+
+                    // Caso contrário, tenta o padrão antigo (ABC1234)
+                    return dynamicMasked.compiledMasks[0];
                 }
-                return dynamicMasked.compiledMasks[0]; // Padrão
+                return dynamicMasked.compiledMasks[0];
             },
+            lazy: true,
             prepare: function (str) {
                 return str.toUpperCase();
+            },
+            commit: function (value, masked) {
+                el.value = value.toUpperCase();
             }
         });
     });
