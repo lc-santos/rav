@@ -144,6 +144,9 @@ $registrosAta = $stmtAta->fetchAll(PDO::FETCH_ASSOC);
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
                     </li>
                     <li class="nav-item">
+                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Diários</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">

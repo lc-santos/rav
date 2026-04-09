@@ -98,14 +98,10 @@ CREATE TABLE registros_acesso (
     id_veiculo INT NOT NULL,
     id_usuario_registro INT NULL, -- O operador/porteiro que registrou
     id_empresa INT NOT NULL,
-    tipo_acesso ENUM(
-        'Aluno',
-        'Diretoria',
-        'Professor',
-        'Funcionário',
-        'Serviço',
-        'Visitante'
-    ) NOT NULL,
+    tipo_acesso VARCHAR(50) NOT NULL,
+    curso VARCHAR(50) NULL,
+    periodo VARCHAR(50) NULL,
+    funcao VARCHAR(50) NULL,
     nome_condutor VARCHAR(100) NOT NULL, -- Para casos onde o condutor não é o dono do carro
     contato_tipo ENUM('tel', 'email') NULL,
     contato_valor VARCHAR(100) NULL,

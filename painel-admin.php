@@ -89,6 +89,9 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
                     </li>
                     <li class="nav-item">
+                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Diários</a>
+                    </li>
+                    <li class="nav-item">
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">
@@ -191,7 +194,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                 <label class="form-label small fw-bold mb-3">Tipo acesso:</label>
                                 <div class="selectable-group" id="groupTipoAcesso">
                                     <label class="selectable-item">
-                                        <input type="radio" name="tipo_acesso" value="Aluno" checked>
+                                        <input type="radio" name="tipo_acesso" value="Aluno" required>
                                         <div class="icon-box"><i class="bi bi-person-fill"></i></div>
                                         <span>Aluno</span>
                                     </label>
@@ -205,6 +208,48 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                         <div class="icon-box"><i class="bi bi-person"></i></div>
                                         <span>Outros</span>
                                     </label>
+                                </div>
+                            </div>
+
+                            <!-- Campos dinâmicos para ALUNO -->
+                            <div class="col-12" id="camposAlunoDinamico">
+                                <div class="row g-2">
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold">Curso:</label>
+                                        <select name="curso_aluno" class="form-select" style="border-radius: 20px;">
+                                            <option value="">Selecione...</option>
+                                            <option value="DSI">DSI</option>
+                                            <option value="DSII">DSII</option>
+                                            <option value="DSIII">DSIII</option>
+                                            <option value="RHI">RHI</option>
+                                            <option value="RHII">RHII</option>
+                                            <option value="RHIII">RHIII</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label small fw-bold">Período:</label>
+                                        <select name="periodo_aluno" class="form-select" style="border-radius: 20px;">
+                                            <option value="">Selecione...</option>
+                                            <option value="Matutino">Matutino</option>
+                                            <option value="Vespertino">Vespertino</option>
+                                            <option value="Noturno">Noturno</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campos dinâmicos para EQUIPE -->
+                            <div class="col-12" id="camposEquipeDinamico" style="display: none;">
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="form-label small fw-bold">Cargo / Função:</label>
+                                        <select name="funcao_equipe" class="form-select" style="border-radius: 20px;">
+                                            <option value="">Selecione se aplicável...</option>
+                                            <option value="Secretaria">Secretaria</option>
+                                            <option value="Professor(a)">Professor(a)</option>
+                                            <option value="Funcionários">Funcionários</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 

@@ -50,6 +50,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 1.5 CONTROLE DE EXIBIÇÃO DINÂMICA (Tipos de Acesso)
+    const radiosAcesso = document.querySelectorAll('input[name="tipo_acesso"]');
+    const camposAlunoDinamico = document.getElementById('camposAlunoDinamico');
+    const camposEquipeDinamico = document.getElementById('camposEquipeDinamico');
+
+    if (radiosAcesso.length > 0) {
+        // Função para atualizar visibilidade
+        function atualizarCamposDinamicos(valor) {
+            if (camposAlunoDinamico) camposAlunoDinamico.style.display = (valor === 'Aluno') ? 'block' : 'none';
+            if (camposEquipeDinamico) camposEquipeDinamico.style.display = (valor === 'Equipe') ? 'block' : 'none';
+        }
+
+        // Estado inicial
+        const acessoSelecionado = document.querySelector('input[name="tipo_acesso"]:checked');
+        atualizarCamposDinamicos(acessoSelecionado ? acessoSelecionado.value : '');
+
+        radiosAcesso.forEach(radio => {
+            radio.addEventListener('change', function () {
+                atualizarCamposDinamicos(this.value);
+            });
+        });
+    }
 
     // 2. BUSCA RÁPIDA (CPF ou ID de 7 dígitos)
     if (campoBuscaRapida) {
