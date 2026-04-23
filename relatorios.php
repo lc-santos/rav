@@ -104,23 +104,23 @@ $registrosAta = $stmtAta->fetchAll(PDO::FETCH_ASSOC);
                 </button>
                 <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
                     <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                        <span class="text-cps-red fs-2 me-1">RAV</span>
+                        <span class="text-brand-blue fs-2 me-1">RAV</span>
                         <span class="text-dark fs-4 mt-1">ETEC</span>
-                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
+                        <span class="badge bg-brand-blue text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
                     </h1>
                 </a>
             </div>
             
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
+                    <i class="bi bi-person-badge-fill fs-5 text-brand-blue"></i>
                     <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                     <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
+                    <li><a class="dropdown-item text-brand-blue fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
                 </ul>
             </div>
         </div>
@@ -163,7 +163,7 @@ $registrosAta = $stmtAta->fetchAll(PDO::FETCH_ASSOC);
     <main class="container py-4 flex-grow-1">
         <div class="row mb-3">
             <div class="col-12">
-                <h2 class="text-dark border-bottom pb-2 mb-3" style="border-color: var(--cps-border) !important;"><i class="bi bi-file-earmark-text-fill me-2" style="color: var(--cps-red);"></i>Ata de Acessos e Relatórios</h2>
+                <h2 class="text-dark border-bottom pb-2 mb-3" style="border-color: var(--cps-border) !important;"><i class="bi bi-file-earmark-text-fill me-2" style="color: var(--brand-blue);"></i>Ata de Acessos e Relatórios</h2>
             </div>
         </div>
 
@@ -189,7 +189,7 @@ $registrosAta = $stmtAta->fetchAll(PDO::FETCH_ASSOC);
                                 <input type="date" name="data_fim" class="form-control form-control-sm" value="<?= htmlspecialchars($_GET['data_fim'] ?? '') ?>">
                             </div>
                             <div class="col-12 col-lg-3 d-flex gap-2">
-                                <button type="submit" class="btn btn-sm text-white flex-grow-1 fw-bold shadow-sm" style="background-color: var(--cps-red);"><i class="bi bi-funnel-fill me-1"></i> Filtrar Ata</button>
+                                <button type="submit" class="btn btn-sm text-white flex-grow-1 fw-bold shadow-sm" style="background-color: var(--brand-blue);"><i class="bi bi-funnel-fill me-1"></i> Filtrar Ata</button>
                                 <a href="relatorios.php" class="btn btn-sm btn-light border text-secondary" title="Limpar Filtros"><i class="bi bi-eraser text-dark"></i></a>
                             </div>
                         </form>
@@ -235,7 +235,7 @@ $registrosAta = $stmtAta->fetchAll(PDO::FETCH_ASSOC);
                                                 <?php endif; ?>
                                             </td>
                                             <td class="fw-medium text-dark" style="font-size: 0.9rem;"><?= htmlspecialchars($reg['nome_condutor']) ?></td>
-                                            <td class="fw-bold" style="color: var(--cps-red); font-size: 0.9rem;">
+                                            <td class="fw-bold" style="color: var(--brand-blue); font-size: 0.9rem;">
                                                 <?= !empty($reg['placa']) ? htmlspecialchars($reg['placa']) : '<span class="text-secondary fw-normal"><i class="bi bi-person-walking me-1"></i>Acesso a pé</span>' ?>
                                             </td>
                                             <td class="small text-secondary">
@@ -276,7 +276,7 @@ $registrosAta = $stmtAta->fetchAll(PDO::FETCH_ASSOC);
                                     <label class="form-label small text-secondary fw-bold mb-1">Até (Inclusive)</label>
                                     <input type="date" name="data_fim" required class="form-control form-control-sm border-secondary">
                                 </div>
-                                <button type="submit" class="btn btn-sm btn-danger fw-bold shadow-sm d-flex align-items-center h-100 mt-auto px-3 py-2" style="background-color: var(--cps-red);">
+                                <button type="submit" class="btn btn-sm btn-brand-blue fw-bold shadow-sm d-flex align-items-center h-100 mt-auto px-3 py-2" style="background-color: var(--brand-blue);">
                                     <i class="bi bi-printer-fill me-2"></i> Gerar e Imprimir
                                 </button>
                             </form>

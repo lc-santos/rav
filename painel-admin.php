@@ -48,23 +48,23 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                 </button>
                 <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
                     <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                        <span class="text-cps-red fs-2 me-1">RAV</span>
+                        <span class="text-brand-blue fs-2 me-1">RAV</span>
                         <span class="text-dark fs-4 mt-1">ETEC</span>
-                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
+                        <span class="badge bg-brand-blue text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
                     </h1>
                 </a>
             </div>
             
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
+                    <i class="bi bi-person-badge-fill fs-5 text-brand-blue"></i>
                     <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                     <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
+                    <li><a class="dropdown-item text-brand-blue fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
                 </ul>
             </div>
         </div>
@@ -290,7 +290,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                     <!-- Busca de Saída Eficiente -->
                     <div class="px-3 py-2 bg-light border-bottom border-danger-subtle">
                         <div class="input-group">
-                            <span class="input-group-text bg-white border-end-0 text-danger"><i class="bi bi-search"></i></span>
+                            <span class="input-group-text bg-white border-end-0 text-brand-blue"><i class="bi bi-search"></i></span>
                             <input type="text" id="filtroTextoSaida" class="form-control border-start-0 shadow-none" placeholder="Buscar por placa ou nome do condutor...">
                         </div>
                     </div>
@@ -305,7 +305,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                         data-nome="<?= htmlspecialchars($reg['nome_condutor']) ?>"
                                         data-hora="<?= date('H:i', strtotime($reg['data_hora_entrada'])) ?>">
                                         <div>
-                                            <h6 class="mb-0 fw-bold" style="color: var(--cps-red);"><?= $reg['placa'] ?></h6>
+                                            <h6 class="mb-0 fw-bold" style="color: var(--brand-blue);"><?= $reg['placa'] ?></h6>
                                             <small class="text-secondary"><?= $reg['nome_condutor'] ?> - Dentro:
                                                 <?= date('H:i', strtotime($reg['data_hora_entrada'])) ?></small>
                                         </div>

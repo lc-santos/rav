@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 session_start();
 require_once "conn.php";
 
@@ -29,10 +29,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             }
             exit();
         } else {
-            echo "<script>alert('Senha incorreta'); window.location.href='login.php';</script>";
+            echo "<meta charset='UTF-8'><script>alert('Senha incorreta'); window.location.href='login.php';</script>";
         }
     } else {
-        echo "<script>alert('Usuário não encontrado'); window.location.href='login.php';</script>";
+        echo "<meta charset='UTF-8'><script>alert('Usuário não encontrado'); window.location.href='login.php';</script>";
     }
 }
 ?>

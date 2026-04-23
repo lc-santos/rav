@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once 'conn.php';
 try {
     $pdo->exec("ALTER TABLE registros_acesso ADD COLUMN curso VARCHAR(50) NULL AFTER tipo_acesso;");

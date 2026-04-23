@@ -38,14 +38,14 @@
             <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3 mb-md-0">
                 <!-- Logotipo em texto, estilo CPS -->
                 <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-cps-red fs-1 me-1">RAV</span>
+                    <span class="text-brand-blue fs-1 me-1">RAV</span>
                     <span class="text-dark fs-3 mt-1">ETEC</span>
                 </h1>
             </a>
             
             <div class="search-bar position-relative" style="min-width: 300px;">
                 <input type="text" class="form-control rounded-pill pe-5 py-2" placeholder="O que deseja localizar?">
-                <button class="btn position-absolute end-0 top-0 h-100 text-cps-red" type="button">
+                <button class="btn position-absolute end-0 top-0 h-100 text-brand-blue" type="button">
                     <i class="bi bi-search"></i>
                 </button>
             </div>
@@ -64,7 +64,7 @@
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="sobre.php">Sobre o Sistema</a></li>
 
                         <li class="nav-item ms-lg-auto d-flex align-items-center py-2 py-lg-0">
-                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
+                            <a class="btn btn-light text-brand-blue fw-bold rounded-pill px-4 bg-white" href="login.php">
                                 <i class="bi bi-person-fill me-1"></i> Acessar Sistema
                             </a>
                         </li>
@@ -76,12 +76,12 @@
 
     <main>
         <!-- Hero Section -->
-        <section class="hero-section position-relative" style="border-bottom: 2px solid var(--cps-red);">
+        <section class="hero-section position-relative" style="border-bottom: 2px solid var(--brand-blue);">
             <div class="hero-bg position-absolute w-100 h-100"></div>
             <div class="container position-relative h-100">
                 <div class="row h-100 align-items-center">
                     <div class="col-lg-7 text-white py-5 py-lg-0 hero-content text-center text-lg-start">
-                        <span class="badge bg-cps-red text-white mb-4 fs-6 px-4 py-2 rounded-pill shadow-sm" style="margin-top: 20px">RAV ETEC - Portaria Inteligente</span>
+                        <span class="badge bg-brand-blue text-white mb-4 fs-6 px-4 py-2 rounded-pill shadow-sm" style="margin-top: 20px">RAV ETEC - Portaria Inteligente</span>
                         <h2 class="display-4 fw-bold mb-4" style="letter-spacing: -1px;">Gerenciamento de acesso de veículos com segurança</h2>
                         <p class="fs-5 mb-5 opacity-75 fw-light lh-lg d-none d-md-block">
                             O Sistema RAV (Registro de Acesso de Veículos) moderniza o controle da portaria das ETECs, 
@@ -104,7 +104,7 @@
                         <!-- Func 1 -->
                         <div class="col-10 col-md-5 col-lg-3 panel-item px-lg-4">
                             <div class="d-flex flex-column flex-lg-row align-items-center gap-3 text-center text-lg-start">
-                                <i class="bi bi-laptop fs-2 text-cps-red opacity-75"></i>
+                                <i class="bi bi-laptop fs-2 text-brand-blue opacity-75"></i>
                                 <div>
                                     <h6 class="fw-bold mb-1">100% Web</h6>
                                     <p class="small text-muted mb-0 lh-sm">Sem instalação de apps ou aparelhos.</p>
@@ -158,7 +158,7 @@
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6 order-2 order-lg-1">
                         <div class="pe-lg-5 text-center text-lg-start">
-                            <h6 class="text-cps-red fw-bold text-uppercase mb-2">Conheça o sistema</h6>
+                            <h6 class="text-brand-blue fw-bold text-uppercase mb-2">Conheça o sistema</h6>
                             <h2 class="fw-bold mb-4 display-6">Gerenciamento de Acesso Prático</h2>
                             <p class="fs-5 text-muted mb-4">
                                 Projetado exclusivamente para a rotina das Escolas Técnicas (ETECs), o <b>RAV</b> minimiza gargalos nas portarias.
@@ -238,7 +238,7 @@
                 <!-- 1. Textos da Marca -->
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     <h3 class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
-                       <span class="text-white">RAV</span> <span class="text-cps-red ms-2">ETEC</span>
+                       <span class="text-white">RAV</span> <span class="text-brand-blue ms-2">ETEC</span>
                     </h3>
                     <p class="small text-white-50 lh-lg pe-md-3 m-0">
                         Sistema Integrado de Registro de Acesso de Veículos. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria da sua unidade escolar.

@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="css/index.css">
     <style>
         .feature-card { transition: all 0.3s ease; border-top: 4px solid transparent; }
-        .feature-card:hover { transform: translateY(-5px); border-top-color: var(--cps-red); box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important; }
+        .feature-card:hover { transform: translateY(-5px); border-top-color: var(--brand-blue); box-shadow: 0 15px 30px rgba(0,0,0,0.1) !important; }
         .feature-icon-wrapper { width: 60px; height: 60px; display: flex; align-items: center; justify-content: center; border-radius: 15px; background: rgba(204, 0, 0, 0.1); }
     </style>
 </head>
@@ -38,13 +38,13 @@
         <div class="container py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3 mb-md-0">
                 <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-cps-red fs-1 me-1">RAV</span>
+                    <span class="text-brand-blue fs-1 me-1">RAV</span>
                     <span class="text-dark fs-3 mt-1">ETEC</span>
                 </h1>
             </a>
             <div class="search-bar position-relative" style="min-width: 300px;">
                 <input type="text" class="form-control rounded-pill pe-5 py-2" placeholder="O que deseja localizar?">
-                <button class="btn position-absolute end-0 top-0 h-100 text-cps-red" type="button"><i class="bi bi-search"></i></button>
+                <button class="btn position-absolute end-0 top-0 h-100 text-brand-blue" type="button"><i class="bi bi-search"></i></button>
             </div>
         </div>
         
@@ -61,7 +61,7 @@
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="sobre.php">Sobre o Sistema</a></li>
 
                         <li class="nav-item ms-lg-auto d-flex align-items-center py-2 py-lg-0">
-                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
+                            <a class="btn btn-light text-brand-blue fw-bold rounded-pill px-4 bg-white" href="login.php">
                                 <i class="bi bi-person-fill me-1"></i> Acessar Sistema
                             </a>
                         </li>
@@ -93,7 +93,7 @@
                 </div>
                 <div class="col-lg-5 ms-auto">
                     <div class="feature-icon-wrapper mb-3">
-                        <i class="bi bi-stopwatch fs-2 text-cps-red"></i>
+                        <i class="bi bi-stopwatch fs-2 text-brand-blue"></i>
                     </div>
                     <h2 class="fw-bold mb-3 text-contrast">Controle em Tempo Real no Estacionamento</h2>
                     <p class="text-secondary fs-6 lh-lg mb-4 text-contrast-secondary">
@@ -183,7 +183,7 @@
             <div class="row align-items-center g-4 mb-4">
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     <h3 class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
-                       <span class="text-white">RAV</span> <span class="text-cps-red ms-2">ETEC</span>
+                       <span class="text-white">RAV</span> <span class="text-brand-blue ms-2">ETEC</span>
                     </h3>
                     <p class="small text-white-50 lh-lg pe-md-3">
                         Sistema Integrado de Registro de Acesso de Veículos. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria da sua unidade escolar.

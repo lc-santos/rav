@@ -30,11 +30,11 @@
     </div>
 
     <!-- Header Foco Total -->
-    <header class="main-header bg-white shadow-sm sticky-top border-bottom border-cps-red" style="border-bottom: 3px solid var(--cps-red);">
+    <header class="main-header bg-white shadow-sm sticky-top border-bottom border-brand-blue" style="border-bottom: 3px solid var(--brand-blue);">
         <div class="container py-3 d-flex justify-content-center justify-content-md-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center">
                 <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-cps-red fs-2 me-1">RAV</span>
+                    <span class="text-brand-blue fs-2 me-1">RAV</span>
                     <span class="text-dark fs-4 mt-1">ETEC</span>
                 </h1>
             </a>
@@ -51,7 +51,7 @@
                 <div class="card shadow-lg border-0 rounded-4 custom-panel-bg">
                     <div class="card-body p-4 p-md-5">
                         <div class="text-center mb-4">
-                            <i class="bi bi-person-badge-fill fs-1 text-cps-red mb-2 d-inline-block"></i>
+                            <i class="bi bi-person-badge-fill fs-1 text-brand-blue mb-2 d-inline-block"></i>
                             <h3 class="fw-bold">Acesso ao Sistema</h3>
                             <p class="small text-muted">Entre com suas credenciais de portaria ou administração.</p>
                         </div>
@@ -68,7 +68,7 @@
                             <div class="mb-4">
                                 <label for="senha" class="form-label fw-medium small d-flex justify-content-between">
                                     Senha 
-                                    <a href="#" class="text-cps-red text-decoration-none">Esqueceu?</a>
+                                    <a href="#" class="text-brand-blue text-decoration-none">Esqueceu?</a>
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock"></i></span>
@@ -77,7 +77,7 @@
                             </div>
 
                             <div class="d-grid mt-4">
-                                <button type="submit" class="btn-capsule btn-lg justify-content-center border-0 text-white" style="background-color: var(--cps-red);">
+                                <button type="submit" class="btn-capsule btn-lg justify-content-center border-0 text-white" style="background-color: var(--brand-blue);">
                                     Acessar Painel <i class="bi bi-box-arrow-in-right ms-2"></i>
                                 </button>
                             </div>
@@ -164,7 +164,7 @@
             transition: all 0.3s ease;
         }
         .login-btn:hover {
-            background-color: var(--cps-red-dark) !important;
+            background-color: var(--brand-blue-dark) !important;
             transform: translateY(-2px);
         }
         

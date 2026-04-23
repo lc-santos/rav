@@ -2,8 +2,8 @@
 
 /* Variáveis de Tema - Light Mode (Padrão) */
 :root {
-    --cps-red: #cc0000;
-    --cps-red-dark: #b80005;
+    --brand-blue: #1c5288;
+    --brand-blue-dark: #1a4674;
     --cps-black: #1a1a1a;
     --cps-bg-gray: #f4f6f8;
     --cps-teal: #008080;
@@ -19,8 +19,8 @@
 
 /* Variáveis de Tema - Dark Mode / Alto Contraste */
 body.dark-mode {
-    --cps-red: #ff4d4d;
-    --cps-red-dark: #cc0000;
+    --brand-blue: #4fa0df;
+    --brand-blue-dark: #1c5288;
     --cps-bg-gray: #121212;
     --card-bg: #1e1e1e;
     --text-main: #ffffff; /* Branco puro no Dark */
@@ -93,8 +93,8 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 }
 
 /* Utilidades de Cores */
-.text-cps-red {
-    color: var(--cps-red) !important;
+.text-brand-blue {
+    color: var(--brand-blue) !important;
 }
 
 .text-contrast {
@@ -115,8 +115,8 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
     text-transform: uppercase;
     font-size: 0.85rem;
     letter-spacing: 0.5px;
-    border: 2px solid var(--cps-red);
-    color: var(--cps-red);
+    border: 2px solid var(--brand-blue);
+    color: var(--brand-blue);
     background-color: transparent;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
@@ -124,10 +124,10 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 }
 
 .btn-capsule:hover {
-    background-color: var(--cps-red);
+    background-color: var(--brand-blue);
     color: #ffffff !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(204, 0, 0, 0.4);
+    box-shadow: 0 4px 15px rgba(28, 82, 136, 0.4);
 }
 
 /* Cápsula Branca/Vermelha para Seções Escuras */
@@ -141,7 +141,7 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
     font-size: 0.85rem;
     letter-spacing: 0.5px;
     background-color: #ffffff;
-    color: #cc0000;
+    color: var(--brand-blue);
     border: 2px solid #ffffff;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-decoration: none;
@@ -149,7 +149,7 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 }
 
 .btn-capsule-white:hover {
-    background-color: var(--cps-red-dark);
+    background-color: var(--brand-blue-dark);
     color: #ffffff !important;
     border-color: #ffffff; /* Borda branca no hover solicitada */
     transform: translateY(-2px);
@@ -168,8 +168,8 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
     box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
 }
 
-.bg-cps-red {
-    background-color: var(--cps-red) !important;
+.bg-brand-blue {
+    background-color: var(--brand-blue) !important;
 }
 
 .text-cps-teal {
@@ -184,12 +184,12 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 /* Acessibilidade Bar */
 .accessibility-bar {
     background-color: var(--cps-black);
-    border-bottom: 2px solid var(--cps-red);
+    border-bottom: 2px solid var(--brand-blue);
 }
 
 .accessibility-tools button:hover,
 .accessibility-tools a:hover {
-    color: var(--cps-red) !important;
+    color: var(--brand-blue) !important;
 }
 
 /* Main Header */
@@ -212,19 +212,19 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 
 .search-bar input:focus {
     box-shadow: none;
-    border-color: var(--cps-red);
+    border-color: var(--brand-blue);
 }
 
 /* Navbar CPS */
 .nav-cps {
-    background-color: var(--cps-red-dark);
+    background-color: var(--brand-blue-dark);
     transition: background-color 0.3s;
 }
 
 .dark-mode .nav-cps {
     background-color: #000000;
     border-top: 1px solid #333;
-    border-bottom: 1px solid var(--cps-red-dark);
+    border-bottom: 1px solid var(--brand-blue-dark);
 }
 
 .nav-cps .nav-link {
@@ -239,7 +239,7 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 /* Modificações Mobile Navbar */
 @media (max-width: 991px) {
     .nav-cps .navbar-collapse {
-        background-color: var(--cps-red-dark);
+        background-color: var(--brand-blue-dark);
         padding: 10px;
         border-radius: 0 0 10px 10px;
     }
@@ -271,7 +271,7 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 }
 
 .hero-btn-acessar:hover {
-    background-color: var(--cps-red) !important;
+    background-color: var(--brand-blue) !important;
     color: white !important;
     transform: translateY(-2px);
 }
@@ -381,19 +381,19 @@ body.dark-mode .form-control::placeholder {
 
 /* CTA Gradient Baseado na identidade SP/CPS */
 .bg-gradient-cta {
-    background: linear-gradient(135deg, var(--cps-red-dark) 0%, var(--cps-red) 100%);
+    background: linear-gradient(135deg, var(--brand-blue-dark) 0%, var(--brand-blue) 100%);
 }
 
 .dark-mode .bg-gradient-cta {
     background: linear-gradient(135deg, #111 0%, #222 100%);
-    border-top: 2px solid var(--cps-red);
-    border-bottom: 2px solid var(--cps-red);
+    border-top: 2px solid var(--brand-blue);
+    border-bottom: 2px solid var(--brand-blue);
 }
 
 /* Footer */
 .footer-cps {
     background-color: var(--cps-black) !important;
-    border-top: 4px solid var(--cps-red);
+    border-top: 4px solid var(--brand-blue);
 }
 
 .social-icons a {
@@ -405,7 +405,7 @@ body.dark-mode .form-control::placeholder {
 
 .social-icons a:hover {
     opacity: 1;
-    color: var(--cps-red);
+    color: var(--brand-blue);
 }
 
 /* Modais e Dropdowns no Dark Mode */
@@ -428,7 +428,7 @@ body.dark-mode .dropdown-item {
 body.dark-mode .dropdown-item:hover,
 body.dark-mode .dropdown-item:active,
 body.dark-mode .dropdown-item:focus {
-    background-color: var(--cps-red) !important;
+    background-color: var(--brand-blue) !important;
     color: #fff !important;
 }
 
@@ -436,7 +436,7 @@ body.dark-mode .dropdown-item:focus {
 .dropdown-item:hover,
 .dropdown-item:active,
 .dropdown-item:focus {
-    background-color: var(--cps-red) !important;
+    background-color: var(--brand-blue) !important;
     color: #fff !important;
 }
 
@@ -474,3 +474,4 @@ body.dark-mode .table-hover tbody tr:hover td,
 body.dark-mode .table-hover tbody tr:hover th {
     background-color: rgba(255, 255, 255, 0.05) !important;
 }
+.border-brand-blue { border-color: var(--brand-blue) !important; }
