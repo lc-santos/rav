@@ -33,13 +33,13 @@
         <div class="container py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3 mb-md-0">
                 <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-brand-blue fs-1 me-1">RAV</span>
+                    <span class="text-cps-red fs-1 me-1">RAV</span>
                     <span class="text-dark fs-3 mt-1">ETEC</span>
                 </h1>
             </a>
             <div class="search-bar position-relative" style="min-width: 300px;">
                 <input type="text" class="form-control rounded-pill pe-5 py-2" placeholder="O que deseja localizar?">
-                <button class="btn position-absolute end-0 top-0 h-100 text-brand-blue" type="button"><i class="bi bi-search"></i></button>
+                <button class="btn position-absolute end-0 top-0 h-100 text-cps-red" type="button"><i class="bi bi-search"></i></button>
             </div>
         </div>
         
@@ -56,7 +56,7 @@
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3 active border-bottom border-3 border-white" href="sobre.php">Sobre o Sistema</a></li>
 
                         <li class="nav-item ms-lg-auto d-flex align-items-center py-2 py-lg-0">
-                            <a class="btn btn-light text-brand-blue fw-bold rounded-pill px-4 bg-white" href="login.php">
+                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
                                 <i class="bi bi-person-fill me-1"></i> Acessar Sistema
                             </a>
                         </li>
@@ -70,7 +70,7 @@
         <div class="container mb-5">
             <div class="row align-items-center">
                 <div class="col-lg-6 mb-5 mb-lg-0">
-                    <h6 class="text-brand-blue fw-bold text-uppercase tracking-wider">Histórico e Propósito</h6>
+                    <h6 class="text-cps-red fw-bold text-uppercase tracking-wider">Histórico e Propósito</h6>
                     <h1 class="display-5 fw-bold text-contrast mb-4">Por que criamos o RAV?</h1>
                     <p class="fs-5 text-contrast-secondary lh-lg mb-4">
                         Por anos, as portarias institucionais basearam-se em cadernos físicos. Isso gerava falhas, perdas de histórico e dificuldade enorme em realizar auditorias de segurança.
@@ -99,7 +99,7 @@
                 </div>
                 <div class="row g-5">
                     <div class="col-md-4 text-center">
-                        <i class="bi bi-shield-lock-fill text-brand-blue pb-3 mb-3 border-bottom border-2 border-brand-blue d-inline-block" style="font-size: 3rem;"></i>
+                        <i class="bi bi-shield-lock-fill text-cps-red pb-3 mb-3 border-bottom border-2 border-danger d-inline-block" style="font-size: 3rem;"></i>
                         <h4 class="fw-bold">Segurança</h4>
                         <p class="text-secondary">Arquitetura focada em proteção de senhas e identificação em conformidade com as exigências LGPD e de segurança estudantil.</p>
                     </div>
@@ -126,7 +126,7 @@
             <div class="row align-items-center g-4 mb-4">
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     <h3 class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
-                       <span class="text-white">RAV</span> <span class="text-brand-blue ms-2">ETEC</span>
+                       <span class="text-white">RAV</span> <span class="text-cps-red ms-2">ETEC</span>
                     </h3>
                     <p class="small text-white-50 lh-lg pe-md-3">
                         Sistema Integrado de Registro de Acesso de Veículos. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria da sua unidade escolar.

@@ -115,33 +115,21 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             opacity: 1;
         }
         .btn-edit-acesso:hover {
-            color: var(--brand-blue) !important;
+            color: var(--cps-red) !important;
             transform: scale(1.1);
         }
-        
-        /* Dark Mode Adapts para os Elementos Locais */
-        .dark-mode .chat-container { background-color: #1e1e1e !important; border: 1px solid #333; }
-        .dark-mode .chat-header { background-color: #2a2a2a; border-bottom: 1px solid #333; color: #e0e0e0 !important; }
-        .dark-mode .chat-bubble { background-color: #2a2a2a; border: 1px solid #444; color: #e0e0e0; }
-        .dark-mode .chat-bubble::before { border-color: transparent #2a2a2a transparent transparent; }
-        .dark-mode .list-acesso-item:hover { background-color: #2a2a2a; }
-        .dark-mode .list-acesso-item.active-item { background-color: #333; border-left-color: #198754; border-right-color: #198754; }
-        .dark-mode .btn-edit-acesso { color: #aaa !important; }
-        .dark-mode .chat-placeholder { color: #666; }
     </style>
 </head>
 <body class="light-mode section-bg-gray d-flex flex-column min-vh-100">
 
-    <!-- Acessibilidade / Barra Gov -->
+    <!-- Navegação / Header Idêntico ao Painel Admin -->
     <div class="accessibility-bar py-1 d-none d-md-block">
-        <div class="container d-flex flex-column flex-sm-row justify-content-between align-items-center">
-            <div class="gov-logo mb-2 mb-sm-0">
-                <span class="fw-bold text-white small">RAV - PROJETO INSTITUCIONAL</span>
-            </div>
-            <div class="accessibility-tools d-flex align-items-center gap-3">
-                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font" title="Diminuir Fonte">A-</button>
-                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font" title="Aumentar Fonte">A+</button>
-                <button type="button" class="btn btn-sm text-white p-0 ms-2" id="btn-toggle-contrast" title="Alto Contraste / Dark Mode"><i class="bi bi-moon-stars-fill fs-6"></i></button>
+        <div class="container d-flex justify-content-between align-items-center">
+            <span class="fw-bold text-white small">RAV - PROJETO INSTITUCIONAL</span>
+            <div class="accessibility-tools gap-3 d-flex align-items-center">
+                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font">A-</button>
+                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font">A+</button>
+                <button type="button" class="btn btn-sm text-white p-0 ms-2" id="btn-toggle-contrast"><i class="bi bi-moon-stars-fill"></i></button>
             </div>
         </div>
     </div>
@@ -154,22 +142,19 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                 </button>
                 <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
                     <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                        <span class="text-brand-blue fs-2 me-1">RAV</span>
+                        <span class="text-cps-red fs-2 me-1">RAV</span>
                         <span class="text-dark fs-4 mt-1">ETEC</span>
                         <span class="badge bg-success text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Acessos</span>
                     </h1>
                 </a>
             </div>
             <div class="dropdown">
-                <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <i class="bi bi-person-badge-fill fs-5 text-brand-blue"></i>
+                <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
                     <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                    <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
-                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-brand-blue fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
+                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                 </ul>
             </div>
         </div>
@@ -178,16 +163,6 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
     <nav class="navbar navbar-expand-lg nav-cps p-0" style="z-index: 1010;">
         <div class="container flex-column flex-lg-row">
             <div class="collapse navbar-collapse w-100" id="adminNavbar">
-                <!-- Mobile only Accessibility Links -->
-                <div class="d-md-none bg-dark p-3 text-white d-flex justify-content-between align-items-center mb-2 mx-3 mt-3 rounded border">
-                    <span class="small fw-bold">Acessibilidade:</span>
-                    <div class="d-flex gap-3">
-                        <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font-mobile">A-</button>
-                        <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font-mobile">A+</button>
-                        <button type="button" class="btn btn-sm text-white p-0" id="btn-toggle-contrast-mobile"><i class="bi bi-moon-stars-fill"></i></button>
-                    </div>
-                </div>
-
                 <ul class="navbar-nav w-100 d-flex flex-lg-row gap-lg-1 py-1 py-lg-0 ms-lg-n3">
                     <li class="nav-item">
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
@@ -214,7 +189,7 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             
             <!-- LISTA DE ACESSOS (COR DIRETA VERDE) -->
             <div class="col-12 col-lg-7">
-                <div class="card bg-dark-card border-0 shadow-lg h-100">
+                <div class="card border-0 shadow-lg h-100 bg-white">
                     <div class="card-header bg-success text-white py-3 px-4 d-flex justify-content-between align-items-center">
                         <div class="fw-bold"><i class="bi bi-ui-checks-grid me-2"></i>Lista de Acessos</div>
                         <div class="input-group input-group-sm w-50">
@@ -303,9 +278,9 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
 
             <!-- CHAT FEED DE OBSERVAÇÕES (CINZA CLARO) -->
             <div class="col-12 col-lg-5">
-                <div class="chat-container bg-dark-card">
+                <div class="chat-container">
                     <div class="chat-header text-dark fw-bold d-flex align-items-center">
-                        <i class="bi bi-chat-dots-fill me-2 fs-5" style="color: var(--brand-blue);"></i> 
+                        <i class="bi bi-chat-dots-fill me-2 fs-5" style="color: var(--cps-red);"></i> 
                         Feed de Observação
                     </div>
                     
@@ -460,8 +435,8 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                         
                         <div class="d-flex align-items-start gap-3 w-100">
                             <!-- Avatar de guarita generico -->
-                            <div class="bg-secondary bg-opacity-25 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">
-                                <i class="bi bi-person-badge-fill text-secondary"></i>
+                            <div class="bg-dark bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">
+                                <i class="bi bi-person-badge-fill text-dark"></i>
                             </div>
                             
                             <div class="w-100">
@@ -493,78 +468,15 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                         const nome = (item.dataset.nome || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
                         const placa = (item.dataset.placa || "").toLowerCase();
                         
+                        // Se o termo estiver em branco, ou placa, ou nome contiver o termo...
                         if (!termo || nome.includes(termo) || placa.includes(termo)) {
-                            item.style.display = 'block'; 
+                            item.style.display = 'block'; // Mostra (como bootstrap usa d-block)
                         } else {
-                            item.style.display = 'none'; 
+                            item.style.display = 'none'; // Esconde
                         }
                     });
                 });
             }
-        });
-
-        // --- Scripts de Usabilidade Compartilhados (RAV ETEC) ---
-        document.addEventListener('DOMContentLoaded', () => {
-            const body = document.body;
-            
-            const btnContrast = document.getElementById('btn-toggle-contrast');
-            const btnContrastMobile = document.getElementById('btn-toggle-contrast-mobile');
-            const btnIncrease = document.getElementById('btn-increase-font');
-            const btnDecrease = document.getElementById('btn-decrease-font');
-            const btnIncreaseMobile = document.getElementById('btn-increase-font-mobile');
-            const btnDecreaseMobile = document.getElementById('btn-decrease-font-mobile');
-
-            if (localStorage.getItem('theme') === 'dark') {
-                body.classList.remove('light-mode');
-                body.classList.add('dark-mode');
-                if(btnContrast) btnContrast.innerHTML = '<i class="bi bi-sun-fill fs-6"></i>';
-                if(btnContrastMobile) btnContrastMobile.innerHTML = '<i class="bi bi-sun-fill"></i>';
-            }
-            
-            function toggleTheme() {
-                if (body.classList.contains('dark-mode')) {
-                    body.classList.remove('dark-mode');
-                    body.classList.add('light-mode');
-                    if(btnContrast) btnContrast.innerHTML = '<i class="bi bi-moon-stars-fill fs-6"></i>';
-                    if(btnContrastMobile) btnContrastMobile.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    body.classList.remove('light-mode');
-                    body.classList.add('dark-mode');
-                    if(btnContrast) btnContrast.innerHTML = '<i class="bi bi-sun-fill fs-6"></i>';
-                    if(btnContrastMobile) btnContrastMobile.innerHTML = '<i class="bi bi-sun-fill"></i>';
-                    localStorage.setItem('theme', 'dark');
-                }
-            }
-
-            if(btnContrast) btnContrast.addEventListener('click', toggleTheme);
-            if(btnContrastMobile) btnContrastMobile.addEventListener('click', toggleTheme);
-
-            const maxScale = 1.3; 
-            const minScale = 0.8; 
-            let currentScale = parseFloat(localStorage.getItem('fontScale')) || 1.0;
-            document.documentElement.style.setProperty('--font-scale', currentScale);
-
-            function increaseFont() {
-                if (currentScale < maxScale) {
-                    currentScale += 0.1;
-                    document.documentElement.style.setProperty('--font-scale', currentScale);
-                    localStorage.setItem('fontScale', currentScale.toFixed(1));
-                }
-            }
-
-            function decreaseFont() {
-                if (currentScale > minScale) {
-                    currentScale -= 0.1;
-                    document.documentElement.style.setProperty('--font-scale', currentScale);
-                    localStorage.setItem('fontScale', currentScale.toFixed(1));
-                }
-            }
-
-            if(btnIncrease) btnIncrease.addEventListener('click', increaseFont);
-            if(btnIncreaseMobile) btnIncreaseMobile.addEventListener('click', increaseFont);
-            if(btnDecrease) btnDecrease.addEventListener('click', decreaseFont);
-            if(btnDecreaseMobile) btnDecreaseMobile.addEventListener('click', decreaseFont);
         });
     </script>
 </body>

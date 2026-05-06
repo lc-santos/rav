@@ -37,13 +37,13 @@ $msg = $_GET['msg'] ?? '';
         <div class="container py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3 mb-md-0">
                 <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-brand-blue fs-1 me-1">RAV</span>
+                    <span class="text-cps-red fs-1 me-1">RAV</span>
                     <span class="text-dark fs-3 mt-1">ETEC</span>
                 </h1>
             </a>
             <div class="search-bar position-relative" style="min-width: 300px;">
                 <input type="text" class="form-control rounded-pill pe-5 py-2" placeholder="O que deseja localizar?">
-                <button class="btn position-absolute end-0 top-0 h-100 text-brand-blue" type="button"><i class="bi bi-search"></i></button>
+                <button class="btn position-absolute end-0 top-0 h-100 text-cps-red" type="button"><i class="bi bi-search"></i></button>
             </div>
         </div>
         
@@ -60,7 +60,7 @@ $msg = $_GET['msg'] ?? '';
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="sobre.php">Sobre o Sistema</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3 active border-bottom border-3 border-white" href="contato.php">Fale Conosco</a></li>
                         <li class="nav-item ms-lg-auto d-flex align-items-center py-2 py-lg-0">
-                            <a class="btn btn-light text-brand-blue fw-bold rounded-pill px-4 bg-white" href="login.php">
+                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
                                 <i class="bi bi-person-fill me-1"></i> Acessar Sistema
                             </a>
                         </li>
@@ -73,7 +73,7 @@ $msg = $_GET['msg'] ?? '';
     <main class="py-5">
         <div class="container mb-5">
             <div class="text-center mb-5">
-                <h6 class="text-brand-blue fw-bold text-uppercase tracking-wider">Suporte Direto</h6>
+                <h6 class="text-cps-red fw-bold text-uppercase tracking-wider">Suporte Direto</h6>
                 <h1 class="display-5 fw-bold text-dark mb-4">Fale Conosco</h1>
                 <p class="fs-5 text-secondary mx-auto" style="max-width: 700px;">Dúvidas sobre integração, sugestões de novas funcionalidades ou suporte à nossa plataforma escolar? Mande uma mensagem e o time de desenvolvimento entrará em contato.</p>
             </div>
@@ -82,7 +82,7 @@ $msg = $_GET['msg'] ?? '';
                 <div class="col-lg-5 mb-4 mb-lg-0">
                     <div class="h-100 pe-lg-4">
                         <div class="d-flex align-items-center mb-4">
-                            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm text-brand-blue border border-light-subtle me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
+                            <div class="bg-white rounded-circle d-flex align-items-center justify-content-center shadow-sm text-cps-red border border-light-subtle me-3" style="width: 50px; height: 50px; font-size: 1.2rem;">
                                 <i class="bi bi-geo-alt-fill"></i>
                             </div>
                             <div>
@@ -109,7 +109,7 @@ $msg = $_GET['msg'] ?? '';
                             </div>
                         </div>
                         
-                        <div class="card bg-brand-blue text-white border-0 shadow-sm rounded-4 mt-5 p-4" style="background-image: var(--bg-pattern); background-size: 200px;">
+                        <div class="card bg-cps-red text-white border-0 shadow-sm rounded-4 mt-5 p-4" style="background-image: var(--bg-pattern); background-size: 200px;">
                             <h5 class="fw-bold">Para ETECs e FATECs</h5>
                             <p class="small opacity-75 mb-0">Se a sua unidade escolar ainda não aderiu à modernização da portaria, preencha o formulário para solicitar o piloto de implementação gratuito no próximo semestre.</p>
                         </div>
@@ -182,7 +182,7 @@ $msg = $_GET['msg'] ?? '';
             <div class="row align-items-center g-4 mb-4">
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     <h3 class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
-                       <span class="text-white">RAV</span> <span class="text-brand-blue ms-2">ETEC</span>
+                       <span class="text-white">RAV</span> <span class="text-cps-red ms-2">ETEC</span>
                     </h3>
                     <p class="small text-white-50 lh-lg pe-md-3">
                         Sistema Integrado de Registro de Acesso de Veículos. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria da sua unidade escolar.

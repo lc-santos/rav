@@ -73,22 +73,22 @@ foreach ($todos_veiculos as $v) {
                 </button>
                 <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
                     <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                        <span class="text-brand-blue fs-2 me-1">RAV</span>
+                        <span class="text-cps-red fs-2 me-1">RAV</span>
                         <span class="text-dark fs-4 mt-1">ETEC</span>
-                        <span class="badge bg-brand-blue text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
+                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
                     </h1>
                 </a>
             </div>
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-badge-fill fs-5 text-brand-blue"></i>
+                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
                     <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                     <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-brand-blue fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
+                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
                 </ul>
             </div>
         </div>
@@ -110,9 +110,6 @@ foreach ($todos_veiculos as $v) {
                 <ul class="navbar-nav w-100 d-flex flex-lg-row gap-lg-1 py-1 py-lg-0 ms-lg-n3">
                     <li class="nav-item">
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Diários</a>
                     </li>
                     <li class="nav-item">
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
@@ -288,7 +285,7 @@ foreach ($todos_veiculos as $v) {
 
                         <!-- Zona de Exclusão de Veículos -->
                         <div class="mt-4 pt-3 border-top">
-                            <label class="form-label small fw-bold text-brand-blue mb-2"><i class="bi bi-exclamation-octagon-fill me-1"></i> Remover Veículos Atuais</label>
+                            <label class="form-label small fw-bold text-danger mb-2"><i class="bi bi-exclamation-octagon-fill me-1"></i> Remover Veículos Atuais</label>
                             <div id="edit_veiculos_list" class="d-flex flex-column gap-2">
                                 <!-- Preenchido via JS -->
                             </div>
@@ -409,13 +406,13 @@ foreach ($todos_veiculos as $v) {
                         let veiculos = JSON.parse(veiculosStr);
                         if (veiculos && veiculos.length > 0) {
                             veiculos.forEach(v => {
-                                divLista.innerHTML += `<div class="d-flex justify-content-between align-items-center p-2 border border-secondary-subtle rounded bg-white shadow-sm">
+                                divLista.innerHTML += `<div class="d-flex justify-content-between align-items-center p-2 border border-danger-subtle rounded bg-white shadow-sm">
                                     <div>
                                         <span class="badge bg-dark fw-bold me-2"><i class="bi bi-car-front-fill me-1"></i>${v.placa}</span>
                                         <span class="small text-muted">${v.tipo_veiculo} - ${v.modelo}</span>
                                     </div>
                                     <a href="processa_remover_veiculo.php?id=${v.id}&usuario=${v.id_usuario}" 
-                                       class="btn btn-sm btn-outline-secondary shadow-sm fw-bold d-flex align-items-center" 
+                                       class="btn btn-sm btn-outline-danger shadow-sm fw-bold d-flex align-items-center" 
                                        onclick="return confirm('ATENÇÃO: Deseja realmente excluir de forma irreversível APENAS a placa ${v.placa} deste condutor?');">
                                         <i class="bi bi-trash-fill"></i>
                                     </a>

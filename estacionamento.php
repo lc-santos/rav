@@ -67,7 +67,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
         .vaga-card {
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             border: 1px solid rgba(0,0,0,0.08);
-            border-top: 4px solid var(--brand-blue);
+            border-top: 4px solid var(--cps-red);
         }
         .vaga-card:hover {
             transform: translateY(-4px);
@@ -108,23 +108,23 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                 </button>
                 <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
                     <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                        <span class="text-brand-blue fs-2 me-1">RAV</span>
+                        <span class="text-cps-red fs-2 me-1">RAV</span>
                         <span class="text-dark fs-4 mt-1">ETEC</span>
-                        <span class="badge bg-brand-blue text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
+                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
                     </h1>
                 </a>
             </div>
             
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-badge-fill fs-5 text-brand-blue"></i>
+                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
                     <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                     <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
                     <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-brand-blue fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
+                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
                 </ul>
             </div>
         </div>
@@ -148,9 +148,6 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
                     </li>
                     <li class="nav-item">
-                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Diários</a>
-                    </li>
-                    <li class="nav-item">
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">
@@ -169,13 +166,13 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
         <!-- Header Rápido e KPIs -->
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 gap-3">
             <div>
-                <h2 class="text-dark mb-1 fw-bold"><i class="bi bi-p-circle-fill me-2" style="color: var(--brand-blue);"></i>Pátio de Veículos</h2>
+                <h2 class="text-dark mb-1 fw-bold"><i class="bi bi-p-circle-fill me-2" style="color: var(--cps-red);"></i>Pátio de Veículos</h2>
                 <p class="text-secondary small mb-0">Visão geral e controle em tempo real do estacionamento</p>
             </div>
             <div class="d-flex gap-3">
                 <div class="bg-white px-4 py-2 rounded shadow-sm border text-center">
                     <span class="d-block small text-secondary fw-bold text-uppercase">Ocupação Atual</span>
-                    <span class="fs-4 fw-bold" style="color: var(--brand-blue);"><?= count($veiculosDentro) ?> <i class="bi bi-car-front-fill ms-1 fs-5"></i></span>
+                    <span class="fs-4 fw-bold" style="color: var(--cps-red);"><?= count($veiculosDentro) ?> <i class="bi bi-car-front-fill ms-1 fs-5"></i></span>
                 </div>
                 <?php if (count($veiculosDentro) > 0): ?>
                 <div class="bg-white px-4 py-2 rounded shadow-sm border text-center d-none d-sm-block">

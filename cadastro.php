@@ -30,11 +30,11 @@
     </div>
 
     <!-- Header Foco Total -->
-    <header class="main-header bg-white shadow-sm sticky-top border-bottom border-brand-blue" style="border-bottom: 3px solid var(--brand-blue);">
+    <header class="main-header bg-white shadow-sm sticky-top border-bottom border-cps-red" style="border-bottom: 3px solid var(--cps-red);">
         <div class="container py-3 d-flex justify-content-center justify-content-md-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center">
                 <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-brand-blue fs-2 me-1">RAV</span>
+                    <span class="text-cps-red fs-2 me-1">RAV</span>
                     <span class="text-dark fs-4 mt-1">ETEC</span>
                 </h1>
             </a>
@@ -51,7 +51,7 @@
                 <div class="card shadow-lg border-0 rounded-4 custom-panel-bg">
                     <div class="card-body p-4 p-md-5">
                         <div class="text-center mb-5 border-bottom pb-4">
-                            <i class="bi bi-building fs-1 text-brand-blue mb-2 d-inline-block"></i>
+                            <i class="bi bi-building fs-1 text-cps-red mb-2 d-inline-block"></i>
                             <h3 class="fw-bold">Cadastro de Unidade e Gestor</h3>
                             <p class="small text-muted mb-0">Insira os dados da sua instituição de ensino e do primeiro administrador.</p>
                         </div>
@@ -60,7 +60,7 @@
                             <div class="row g-4">
                                 <!-- Coluna Empresa/Unidade -->
                                 <div class="col-12 col-md-6 border-md-end pe-md-4 custom-border-mode">
-                                    <h5 class="fw-bold text-brand-blue mb-3 d-flex align-items-center">
+                                    <h5 class="fw-bold text-cps-red mb-3 d-flex align-items-center">
                                         <i class="bi bi-geo-alt-fill me-2"></i> Dados da Unidade
                                     </h5>
                                     
@@ -116,7 +116,7 @@
                             </div>
 
                                 <div class="col-12 text-center mt-3 pt-3 border-top">
-                                    <button type="submit" class="btn-capsule btn-lg px-5 shadow border-0 text-white" style="background-color: var(--brand-blue);">
+                                    <button type="submit" class="btn-capsule btn-lg px-5 shadow border-0 text-white" style="background-color: var(--cps-red);">
                                         Finalizar Cadastro <i class="bi bi-check-circle-fill ms-2"></i>
                                     </button>
                                 </div>
@@ -205,7 +205,7 @@
             transition: all 0.3s ease;
         }
         .login-btn:hover {
-            background-color: var(--brand-blue-dark) !important;
+            background-color: var(--cps-red-dark) !important;
             transform: translateY(-2px);
         }
         

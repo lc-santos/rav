@@ -160,7 +160,7 @@ $dataEmissao = date('d/m/Y H:i:s');
         <div class="doc-header">
             <div>
                 <h1 class="cps-logo">RAV <span class="text-dark">ETEC</span></h1>
-                <p class="cps-subtitle">Sistema de Registro de Acessos e Veículos - <strong class="text-brand-blue">Centro Paula Souza</strong></p>
+                <p class="cps-subtitle">Sistema de Registro de Acessos e Veículos - <strong class="text-danger">Centro Paula Souza</strong></p>
                 <div class="mt-3">
                     <h4 class="mb-0 fw-bold">Ata Consolidada de Movimentação</h4>
                     <span class="text-secondary fw-bold">Período Referência: <?= $dInicioBR ?> a <?= $dFimBR ?></span>

@@ -1,8 +1,8 @@
 /* style.css - Tema Centro Paula Souza (Light) */
 
 :root {
-    --brand-blue: #1a4674;
-    --brand-blue-hover: #102d4d;
+    --cps-red: #b80005;
+    --cps-red-hover: #920004;
     --cps-bg-gray: #f4f4f4;
     --cps-black: #212529;
     --cps-border: #e0e0e0;
@@ -118,7 +118,7 @@ body {
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover,
 .list-group::-webkit-scrollbar-thumb:hover {
-    background: var(--brand-blue-hover);
+    background: var(--cps-red-hover);
 }
 
 /* Botões Custom (opcional para botões de sucesso ficarem mais 'CPS' ou normais) */
@@ -182,7 +182,7 @@ body {
 
 #resultado_busca_geral .list-group-item:hover {
     background-color: #f8f9fa !important;
-    color: var(--brand-blue-hover) !important;
+    color: var(--cps-red-hover) !important;
 }
 
 #secaoDetalhesVeiculo {
@@ -204,13 +204,13 @@ body {
 
 /* Modificadores Navbar CPS (Admin) */
 .nav-cps {
-    background-color: var(--brand-blue) !important;
+    background-color: var(--cps-red) !important;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dark-mode .nav-cps {
     background-color: #0d0d0d !important;
-    border-bottom: 2px solid var(--brand-blue);
+    border-bottom: 2px solid var(--cps-red);
 }
 
 .nav-cps .nav-link {
@@ -223,13 +223,13 @@ body {
 }
 
 .nav-cps .nav-link.active {
-    background-color: var(--brand-blue-dark) !important;
+    background-color: var(--cps-red-dark) !important;
     border-bottom: 3px solid #ffffff;
 }
 
 .dark-mode .nav-cps .nav-link.active {
     background-color: #1a1a1a !important;
-    border-bottom: 3px solid var(--brand-blue);
+    border-bottom: 3px solid var(--cps-red);
 }
 
 /* ---------------- DARK MODE OVERRIDES ADMIN ---------------- */
