@@ -62,9 +62,9 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
                     <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
-                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i>Configurações</a></li>
+                    <li><a class="dropdown-item" href="configuracoes.php"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                     <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair do Sistema</a></li>
+                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                 </ul>
             </div>
         </div>
@@ -121,7 +121,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
         <div class="row g-4 align-items-stretch">
             <div class="col-12 col-lg-6">
 
-                <div class="card bg-dark-card border-success-subtle mb-4 shadow-lg h-100 d-flex flex-column">
+                <div class="card bg-dark-card border-success-subtle mb-4 shadow-lg h-100 d-flex flex-column prancheta-card">
                     <div class="card-header bg-success text-white py-2 px-3 d-flex align-items-center flex-shrink-0">
                         <i class="bi bi-plus-circle-fill me-2"></i> <span class="fw-bold">Registrar Acesso</span>
                     </div>
@@ -284,7 +284,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
             </div>
 
             <div class="col-12 col-lg-6">
-                <div class="card bg-dark-card border-danger-subtle mb-4 shadow-lg h-100 d-flex flex-column">
+                <div class="card bg-dark-card border-danger-subtle mb-4 shadow-lg h-100 d-flex flex-column prancheta-card">
                     <div class="card-header bg-danger text-white text-center py-2 fw-bold flex-shrink-0">Registrar saída</div>
                     
                     <!-- Busca de Saída Eficiente -->

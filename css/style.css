@@ -407,3 +407,49 @@ body {
     font-weight: bold;
     font-size: 1.2rem;
 }
+
+/* ---------------- EFEITO PRANCHETA (CLIPBOARD MINIMALISTA) ---------------- */
+.prancheta-card {
+    position: relative;
+    margin-top: 20px; /* Espaço para o clipe */
+    border-radius: 10px !important;
+}
+
+/* Permitir que o pseudo-elemento vaze */
+.prancheta-card .card-header {
+    position: relative;
+    overflow: visible !important;
+}
+
+/* O clipe no topo (herdando a cor do header) */
+.prancheta-card .card-header::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 20px;
+    background-color: inherit; /* Herda a cor do header (verde, vermelho, etc) */
+    border-radius: 10px 10px 0 0;
+    z-index: 10;
+}
+
+/* O furo para pendurar a prancheta */
+.prancheta-card .card-header::after {
+    content: '';
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 10px;
+    height: 10px;
+    background-color: #ffffff; /* Furo branco na versão light */
+    border-radius: 50%;
+    z-index: 11;
+}
+
+/* Ajuste Furo Dark Mode */
+.dark-mode .prancheta-card .card-header::after {
+    background-color: #1e1e1e !important;
+}
