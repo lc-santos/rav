@@ -15,43 +15,64 @@ try {
     $modelo        = trim($_POST['modelo_veiculo'] ?? '');
     $cor           = trim($_POST['cor_veiculo'] ?? '');
 
-    // 2. Validação de segurança básica
-    if (empty($placa) || empty($nome_condutor)) {
-        echo json_encode(['sucesso' => false, 'erro' => 'Placa e Nome são obrigatórios.']);
+    // 2. Normaliza tipo_veiculo para o ENUM do banco
+    $tipoMap = [
+        'Carro'  => 'CARRO',
+        'Moto'   => 'MOTO',
+        'Outros' => 'OUTRO',
+        'CARRO'  => 'CARRO',
+        'MOTO'   => 'MOTO',
+        'OUTRO'  => 'OUTRO',
+    ];
+    $tipo_veiculo = $tipoMap[$tipo_veiculo] ?? 'OUTRO';
+
+    // 3. Validação: nome obrigatório sempre; placa obrigatória exceto para tipo 'OUTRO'
+    if (empty($nome_condutor)) {
+        echo json_encode(['sucesso' => false, 'erro' => 'O nome do condutor é obrigatório.']);
+        exit;
+    }
+    if (empty($placa) && $tipo_veiculo !== 'OUTRO') {
+        echo json_encode(['sucesso' => false, 'erro' => 'Placa é obrigatória para este tipo de veículo.']);
         exit;
     }
 
     // ============================================================
-    // INSERIR AQUI: VERIFICAÇÃO DE DUPLICIDADE
+    // VERIFICAÇÃO DE DUPLICIDADE (apenas quando há placa informada)
     // ============================================================
-    $stmtCheck = $pdo->prepare("
-        SELECT id FROM registros_acesso 
-        WHERE id_veiculo = (SELECT id FROM veiculos WHERE placa = :placa LIMIT 1)
-        AND status = 'Dentro'
-        LIMIT 1
-    ");
-    $stmtCheck->execute([':placa' => $placa]);
-    
-    if ($stmtCheck->fetch()) {
-        echo json_encode([
-            'sucesso' => false, 
-            'erro' => 'Este veículo ('.$placa.') já está no pátio. Registre a saída antes de uma nova entrada.'
-        ]);
-        exit;
+    if (!empty($placa)) {
+        $stmtCheck = $pdo->prepare("
+            SELECT id FROM registros_acesso 
+            WHERE id_veiculo = (SELECT id FROM veiculos WHERE placa = :placa LIMIT 1)
+            AND status = 'Dentro'
+            LIMIT 1
+        ");
+        $stmtCheck->execute([':placa' => $placa]);
+        
+        if ($stmtCheck->fetch()) {
+            echo json_encode([
+                'sucesso' => false, 
+                'erro' => 'Este veículo ('.$placa.') já está no pátio. Registre a saída antes de uma nova entrada.'
+            ]);
+            exit;
+        }
     }
     // ============================================================
 
+    // 4. Se tipo 'OUTRO' sem placa informada, gera placa única temporária
+    if (empty($placa)) {
+        $placa = 'OUT' . strtoupper(substr(uniqid(), -5));
+    }
+
+    // 5. Verifica ou Cria/Atualiza o Veículo
     $pdo->beginTransaction();
-
-    // 1. Verifica ou Cria/Atualiza o Veículo
     $stmt = $pdo->prepare("SELECT id FROM veiculos WHERE placa = :placa LIMIT 1");
     $stmt->execute([':placa' => $placa]);
     $veiculo = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if (!$veiculo) {
-        $stmt = $pdo->prepare("INSERT INTO veiculos (placa, tipo_veiculo, modelo, cor, id_empresa) 
-                               VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$placa, $tipo_veiculo, $modelo, $cor, 1]);
+        $stmt = $pdo->prepare("INSERT INTO veiculos (placa, tipo_veiculo, modelo, cor, id_empresa, id_unidade) 
+                               VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$placa, $tipo_veiculo, $modelo, $cor, 1, 1]);
         $veiculo_id = $pdo->lastInsertId();
     } else {
         $stmt = $pdo->prepare("UPDATE veiculos SET modelo = ?, cor = ?, tipo_veiculo = ? WHERE id = ?");

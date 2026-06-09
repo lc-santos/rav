@@ -109,11 +109,22 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
 
         <div class="row mb-4">
             <div class="col-12">
-                <div class="input-group input-group-lg custom-search position-relative">
-                    <span class="busca-icon">
-                        <i class="bi bi-search"></i>
-                    </span>
-                    <input type="text" class="form-control" placeholder="Placa, Veículo, Nome...">
+                <div class="position-relative">
+                    <div class="input-group input-group-lg custom-search">
+                        <span class="busca-icon">
+                            <i class="bi bi-search" id="busca-icon-estado"></i>
+                        </span>
+                        <input type="text" class="form-control" id="buscaGeral"
+                               placeholder="Placa, Veículo, Nome..."
+                               autocomplete="off">
+                        <button class="btn btn-outline-secondary border-0 bg-transparent position-absolute end-0 top-50 translate-middle-y me-2 d-none" 
+                                type="button" id="btnLimparBusca" style="z-index:5;">
+                            <i class="bi bi-x-lg text-secondary"></i>
+                        </button>
+                    </div>
+                    <!-- Painel de Resultados da Busca -->
+                    <div id="painelResultadosBusca" class="busca-resultado-painel d-none shadow-lg border-0 rounded-3 overflow-hidden">
+                    </div>
                 </div>
             </div>
         </div>
@@ -175,8 +186,8 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                         </label>
                                     </div>
                                 </div>
-                                <div class="placa-inline">
-                                    <label class="form-label small fw-bold label-required">Placa :</label>
+                                <div class="placa-inline" id="wrapperPlaca">
+                                    <label class="form-label small fw-bold label-required" id="labelPlacaRequired">Placa :</label>
                                     <input type="text" id="placa" name="placa" class="form-control" data-mask="placa" placeholder="AAA-0000" required>
                                 </div>
                             </div>
@@ -263,11 +274,17 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <div class="col-12 mt-3">
-                                <div class="d-flex gap-3 mb-2">
-                                    <button class="btn btn-obs flex-grow-1 py-2 fw-bold" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#collapseObs" style="font-size: 0.95rem;">
-                                        Observação +
-                                    </button>
+                                <div class="d-flex gap-3 mb-2 position-relative">
+                                    <div class="flex-grow-1 position-relative">
+                                        <button class="btn btn-obs w-100 py-2 fw-bold" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#collapseObs" style="font-size: 0.95rem;">
+                                            Observação +
+                                        </button>
+                                        <!-- Balão sutil para tipo 'Outros' -->
+                                        <div id="balaoObsHint" class="obs-hint-balloon d-none">
+                                            <i class="bi bi-lightbulb-fill me-1"></i> Recomenda-se adicionar uma observação
+                                        </div>
+                                    </div>
                                     <button type="submit" class="btn btn-success flex-grow-1 fw-bold py-2" style="background-color: #157347; border: none; border-radius: 20px; font-size: 0.95rem;">
                                         Registrar acesso
                                     </button>

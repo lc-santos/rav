@@ -1,16 +1,32 @@
 <?php
 require_once 'conn.php';
 
-// Fetch all accesses to display on the list
-$stmtAcessos = $pdo->query("
-    SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.observacao, r.status, 
-           r.curso, r.periodo, r.funcao, r.contato_tipo, r.contato_valor,
-           v.placa, v.tipo_veiculo, v.modelo, v.cor
-    FROM registros_acesso r 
-    LEFT JOIN veiculos v ON r.id_veiculo = v.id 
-    ORDER BY r.data_hora_entrada DESC 
-    LIMIT 200
-");
+// Filtro opcional via GET (vindo da busca do painel-admin)
+$filtroNome = trim($_GET['nome'] ?? '');
+
+if (!empty($filtroNome)) {
+    $stmtAcessos = $pdo->prepare("
+        SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.observacao, r.status, 
+               r.curso, r.periodo, r.funcao, r.contato_tipo, r.contato_valor,
+               v.placa, v.tipo_veiculo, v.modelo, v.cor
+        FROM registros_acesso r 
+        LEFT JOIN veiculos v ON r.id_veiculo = v.id 
+        WHERE r.nome_condutor LIKE :nome OR v.placa LIKE :nome
+        ORDER BY r.data_hora_entrada DESC 
+        LIMIT 200
+    ");
+    $stmtAcessos->execute([':nome' => "%$filtroNome%"]);
+} else {
+    $stmtAcessos = $pdo->query("
+        SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.observacao, r.status, 
+               r.curso, r.periodo, r.funcao, r.contato_tipo, r.contato_valor,
+               v.placa, v.tipo_veiculo, v.modelo, v.cor
+        FROM registros_acesso r 
+        LEFT JOIN veiculos v ON r.id_veiculo = v.id 
+        ORDER BY r.data_hora_entrada DESC 
+        LIMIT 200
+    ");
+}
 $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>

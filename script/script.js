@@ -33,22 +33,65 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 1. CONTROLE DE EXIBIÇÃO DINÂMICA (Radio Buttons)
     const radiosVeiculo = document.querySelectorAll('input[name="tipo_veiculo"]');
+    const inputPlacaEl  = document.getElementById('placa');
+    const labelPlacaEl  = document.getElementById('labelPlacaRequired');
+    const wrapperPlacaEl = document.getElementById('wrapperPlaca');
+    const balaoObsHint  = document.getElementById('balaoObsHint');
+
+    function aplicarEstadoOutros(isOutros) {
+        if (!inputPlacaEl) return;
+
+        if (isOutros) {
+            // Placa: remover required e indicar visualmente como opcional
+            inputPlacaEl.removeAttribute('required');
+            if (wrapperPlacaEl) wrapperPlacaEl.classList.add('placa-opcional');
+            if (labelPlacaEl)  {
+                labelPlacaEl.classList.remove('label-required');
+                labelPlacaEl.classList.add('label-optional');
+            }
+
+            // Mostrar balão sutil (re-trigger animation)
+            if (balaoObsHint) {
+                balaoObsHint.classList.remove('d-none');
+                // Restart animation by cloning
+                balaoObsHint.style.animation = 'none';
+                balaoObsHint.offsetHeight; // reflow
+                balaoObsHint.style.animation = '';
+            }
+
+            // Abrir collapse de observação automaticamente
+            const collapseObs = document.getElementById('collapseObs');
+            if (collapseObs && typeof bootstrap !== 'undefined') {
+                const bsCollapse = new bootstrap.Collapse(collapseObs, {toggle: false});
+                bsCollapse.show();
+            } else if (collapseObs) {
+                collapseObs.classList.add('show');
+            }
+        } else {
+            // Placa: restaurar required
+            inputPlacaEl.setAttribute('required', '');
+            if (wrapperPlacaEl) wrapperPlacaEl.classList.remove('placa-opcional');
+            if (labelPlacaEl) {
+                labelPlacaEl.classList.add('label-required');
+                labelPlacaEl.classList.remove('label-optional');
+            }
+
+            // Esconder balão
+            if (balaoObsHint) balaoObsHint.classList.add('d-none');
+        }
+    }
+
     if (radiosVeiculo.length > 0) {
         radiosVeiculo.forEach(radio => {
             radio.addEventListener('change', function () {
-                const collapseObs = document.getElementById('collapseObs');
-                if (this.value === 'Outros') {
-                    // Abre o campo de observação automaticamente
-                    if (collapseObs && typeof bootstrap !== 'undefined') {
-                        const bsCollapse = new bootstrap.Collapse(collapseObs, {toggle: false});
-                        bsCollapse.show();
-                    } else if (collapseObs) {
-                        collapseObs.classList.add('show');
-                    }
-                }
+                aplicarEstadoOutros(this.value === 'Outros');
             });
         });
+        // Estado inicial
+        const checkedVeiculo = document.querySelector('input[name="tipo_veiculo"]:checked');
+        aplicarEstadoOutros(checkedVeiculo && checkedVeiculo.value === 'Outros');
     }
+
 
     // 1.5 CONTROLE DE EXIBIÇÃO DINÂMICA (Tipos de Acesso)
     const radiosAcesso = document.querySelectorAll('input[name="tipo_acesso"]');
@@ -116,39 +159,197 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 3. BUSCA GERAL (Barra Superior)
-    if (buscaGeral) {
-        const resultOverlay = document.createElement('div');
-        resultOverlay.id = 'resultado_busca_geral';
-        resultOverlay.className = 'list-group position-absolute w-100 d-none shadow-lg';
-        resultOverlay.style.zIndex = '9999';
-        buscaGeral.parentElement.appendChild(resultOverlay);
+    // 3. BUSCA GERAL — Painel de Resultados Rico
+    const buscaGeralInput  = document.getElementById('buscaGeral');
+    const painelResultados = document.getElementById('painelResultadosBusca');
+    const btnLimparBusca   = document.getElementById('btnLimparBusca');
+    const buscaIconEstado  = document.getElementById('busca-icon-estado');
 
-        buscaGeral.addEventListener('input', function () {
-            const termo = this.value.trim();
-            if (termo.length >= 2) {
-                fetch(`buscar_geral.php?termo=${termo}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        resultOverlay.innerHTML = '';
-                        if (data && data.length > 0) {
-                            resultOverlay.classList.remove('d-none');
-                            data.forEach(item => {
-                                const corS = item.status === 'Dentro' ? 'text-success' : 'text-info';
-                                resultOverlay.innerHTML += `
-                                <a href="#" class="list-group-item list-group-item-action bg-dark text-white border-secondary py-3" 
-                                   onclick="selecionarVeiculo('${item.nome_condutor}', '${item.placa}', '', '${item.modelo}', '${item.cor}')">
-                                    <div class="d-flex justify-content-between">
-                                        <div><strong class="${corS}">${item.placa}</strong> - <small>${item.nome_condutor}</small></div>
-                                        <span class="badge bg-secondary opacity-75">${item.status}</span>
-                                    </div>
-                                </a>`;
-                            });
-                        } else { resultOverlay.classList.add('d-none'); }
-                    });
-            } else { resultOverlay.classList.add('d-none'); }
+    let buscaTimeout = null;
+
+    function iconeVeiculo(tipo) {
+        if (!tipo) return 'bi-person-fill';
+        const t = tipo.toUpperCase();
+        if (t === 'MOTO') return 'bi-bicycle';
+        if (t === 'CARRO') return 'bi-car-front-fill';
+        return 'bi-box-seam';
+    }
+
+    function badgeStatus(status) {
+        if (status === 'Dentro')
+            return `<span class="busca-badge-dentro"><i class="bi bi-circle-fill" style="font-size:0.5rem;"></i> No pátio</span>`;
+        if (status === 'Cadastrado')
+            return `<span class="busca-badge-cadastrado"><i class="bi bi-person-check-fill" style="font-size:0.7rem;"></i> Cadastrado</span>`;
+        return `<span class="busca-badge-fora"><i class="bi bi-circle" style="font-size:0.5rem;"></i> Fora</span>`;
+    }
+
+    function renderResultados(dados) {
+        painelResultados.innerHTML = '';
+
+        if (!dados || dados.length === 0) {
+            painelResultados.innerHTML = `
+                <div class="busca-vazio">
+                    <i class="bi bi-search fs-3 d-block mb-2 opacity-30"></i>
+                    Nenhum resultado encontrado.<br>
+                    <a href="#" class="text-primary fw-bold small mt-2 d-inline-block"
+                       data-bs-toggle="modal" data-bs-target="#modalCadastro"
+                       onclick="painelResultados.classList.add('d-none')">
+                        <i class="bi bi-person-plus me-1"></i> Fazer novo cadastro
+                    </a>
+                </div>`;
+            return;
+        }
+
+        // Cabeçalho
+        painelResultados.innerHTML = `<div class="busca-header">${dados.length} resultado${dados.length > 1 ? 's' : ''} encontrado${dados.length > 1 ? 's' : ''}</div>`;
+
+        dados.forEach(item => {
+            const nomeSafe    = (item.nome_condutor || '').replace(/'/g, "\\'");
+            const placaSafe   = (item.placa || '').replace(/'/g, "\\'");
+            const modeloSafe  = (item.modelo || '').replace(/'/g, "\\'");
+            const corSafe     = (item.cor || '').replace(/'/g, "\\'");
+            const tipoVeic    = item.tipo_veiculo || '';
+            const totalAcessos = parseInt(item.total_acessos) || 0;
+            const status       = item.ultimo_status || 'Fora';
+            const idUsuario    = item.id_usuario_lookup || '';
+
+            const icoClass = iconeVeiculo(tipoVeic);
+            const icoColor = status === 'Dentro' ? '#28a745' : (tipoVeic ? '#6c757d' : '#127187');
+            const icoBg    = status === 'Dentro' ? '#eafaf1' : (tipoVeic ? '#f5f5f5' : '#e3f2fd');
+
+            const subInfo  = item.placa && item.placa !== '---'
+                ? `${item.placa}${item.modelo ? ' · ' + item.modelo : ''}${totalAcessos ? ' · ' + totalAcessos + ' acesso(s)' : ''}`
+                : `Sem veículo vinculado · ${totalAcessos} acesso(s)`;
+
+            // Botões de ação contextuais
+            const btnEntrada = (status !== 'Dentro' && item.placa && item.placa !== '---')
+                ? `<button class="btn btn-success btn-sm"
+                       onclick="preencherFormulario('${nomeSafe}','${placaSafe}','${modeloSafe}','${corSafe}'); fecharPainelBusca();">
+                       <i class="bi bi-box-arrow-in-right me-1"></i>Entrada
+                   </button>` : '';
+
+            const btnAcessos = totalAcessos > 0
+                ? `<a class="btn btn-outline-secondary btn-sm"
+                       href="acessos.php?nome=${encodeURIComponent(item.nome_condutor || '')}">
+                       <i class="bi bi-clock-history me-1"></i>Acessos
+                   </a>` : '';
+
+            const btnCadastro = idUsuario
+                ? `<a class="btn btn-outline-primary btn-sm"
+                       href="gerenciar_cadastros.php?busca=${encodeURIComponent(item.nome_condutor || '')}">
+                       <i class="bi bi-person-fill me-1"></i>Cadastro
+                   </a>`
+                : `<button class="btn btn-outline-primary btn-sm"
+                       data-bs-toggle="modal" data-bs-target="#modalCadastro"
+                       onclick="fecharPainelBusca()">
+                       <i class="bi bi-person-plus me-1"></i>Cadastrar
+                   </button>`;
+
+            const dentroAlerta = status === 'Dentro'
+                ? `<div class="text-success small fw-bold mt-1"><i class="bi bi-p-circle-fill me-1"></i>Veículo no pátio agora</div>` : '';
+
+            painelResultados.innerHTML += `
+                <div class="busca-resultado-item">
+                    <div class="busca-icone" style="background:${icoBg}; color:${icoColor};">
+                        <i class="bi ${icoClass}"></i>
+                    </div>
+                    <div class="busca-info">
+                        <div class="busca-nome">${item.nome_condutor || '—'}</div>
+                        <div class="busca-sub">${subInfo}</div>
+                        <div class="d-flex align-items-center gap-2 mt-1">
+                            ${badgeStatus(status)}
+                            ${dentroAlerta}
+                        </div>
+                    </div>
+                    <div class="busca-acoes">
+                        ${btnEntrada}
+                        ${btnAcessos}
+                        ${btnCadastro}
+                    </div>
+                </div>`;
         });
     }
+
+    function fecharPainelBusca() {
+        if (painelResultados) painelResultados.classList.add('d-none');
+    }
+
+    function preencherFormulario(nome, placa, modelo, cor) {
+        const campoNome   = document.querySelector('[name="nome_condutor"]');
+        const campoPlaca  = document.getElementById('placa');
+        const campoModelo = document.querySelector('[name="modelo_veiculo"]');
+        const campoCor    = document.querySelector('[name="cor_veiculo"]');
+        if (campoNome)  campoNome.value  = nome;
+        if (campoPlaca) campoPlaca.value = placa;
+        if (campoModelo) campoModelo.value = modelo;
+        if (campoCor)   campoCor.value   = cor;
+        // Scroll suave até o formulário
+        const form = document.querySelector('form[action="registrar_acesso.php"]');
+        if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    if (buscaGeralInput && painelResultados) {
+        buscaGeralInput.addEventListener('input', function () {
+            const termo = this.value.trim();
+
+            // Mostrar/ocultar botão limpar
+            if (btnLimparBusca) btnLimparBusca.classList.toggle('d-none', termo.length === 0);
+
+            if (termo.length < 2) {
+                painelResultados.classList.add('d-none');
+                if (buscaIconEstado) buscaIconEstado.className = 'bi bi-search';
+                clearTimeout(buscaTimeout);
+                return;
+            }
+
+            // Spinner de carregamento
+            if (buscaIconEstado) buscaIconEstado.className = 'bi bi-arrow-repeat spin-animation';
+            painelResultados.classList.remove('d-none');
+            painelResultados.innerHTML = '<div class="busca-digitando"><i class="bi bi-hourglass-split me-2"></i>Buscando...</div>';
+
+            clearTimeout(buscaTimeout);
+            buscaTimeout = setTimeout(() => {
+                fetch(`buscar_geral.php?termo=${encodeURIComponent(termo)}`)
+                    .then(res => res.json())
+                    .then(dados => {
+                        if (buscaIconEstado) buscaIconEstado.className = 'bi bi-search';
+                        renderResultados(dados);
+                    })
+                    .catch(() => {
+                        if (buscaIconEstado) buscaIconEstado.className = 'bi bi-search';
+                        painelResultados.innerHTML = '<div class="busca-vazio text-danger"><i class="bi bi-exclamation-triangle me-2"></i>Erro ao buscar. Tente novamente.</div>';
+                    });
+            }, 300);
+        });
+
+        // Botão limpar
+        if (btnLimparBusca) {
+            btnLimparBusca.addEventListener('click', () => {
+                buscaGeralInput.value = '';
+                painelResultados.classList.add('d-none');
+                btnLimparBusca.classList.add('d-none');
+                if (buscaIconEstado) buscaIconEstado.className = 'bi bi-search';
+                buscaGeralInput.focus();
+            });
+        }
+
+        // Fechar ao clicar fora
+        document.addEventListener('click', (e) => {
+            if (!buscaGeralInput.closest('.position-relative').contains(e.target)) {
+                painelResultados.classList.add('d-none');
+            }
+        });
+
+        // Esc fecha
+        buscaGeralInput.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') fecharPainelBusca();
+        });
+    }
+
+    // Expor para uso global (chamado pelos botões nos resultados)
+    window.fecharPainelBusca   = fecharPainelBusca;
+    window.preencherFormulario = preencherFormulario;
+
 
     // 4. INTEGRAÇÃO COM MODAL (Puxar dados do formulário principal)
     if (btnAbrirModal) {

@@ -60,7 +60,10 @@
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3 active border-bottom border-3 border-white" href="funcionalidades.php">Funcionalidades</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="sobre.php">Sobre o Sistema</a></li>
 
-                        <li class="nav-item ms-lg-auto d-flex align-items-center py-2 py-lg-0">
+                        <li class="nav-item ms-lg-auto d-flex flex-column flex-lg-row align-items-center gap-2 py-2 py-lg-0">
+                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="cadastro.php">
+                                <i class="bi bi-building-fill me-1"></i> Cadastrar Unidade
+                            </a>
                             <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
                                 <i class="bi bi-person-fill me-1"></i> Acessar Sistema
                             </a>

@@ -1,3 +1,10 @@
+<?php
+session_start();
+$sucesso = $_GET['sucesso'] ?? '';
+$error = $_GET['error'] ?? '';
+$login_error = $_SESSION['login_error'] ?? '';
+unset($_SESSION['login_error']);
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -56,19 +63,49 @@
                             <p class="small text-muted">Entre com suas credenciais de portaria ou administração.</p>
                         </div>
 
-                        <form action="processa-login.php" method="POST">
+                        <?php if (!empty($sucesso)): ?>
+                            <div class="alert alert-success alert-dismissible fade show text-start small mb-4" role="alert">
+                                <i class="bi bi-check-circle-fill me-2"></i>
+                                <?= htmlspecialchars($sucesso) ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($login_error)): ?>
+                            <div class="alert alert-danger alert-dismissible fade show text-start small mb-4" role="alert">
+                                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                                <?= htmlspecialchars($login_error) ?>
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($error === 'acesso_negado'): ?>
+                            <div class="alert alert-danger alert-dismissible fade show text-start small mb-4" role="alert">
+                                <i class="bi bi-shield-lock-fill me-2"></i>
+                                Acesso restrito a administradores.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php elseif ($error === 'nao_autenticado'): ?>
+                            <div class="alert alert-warning alert-dismissible fade show text-start small mb-4" role="alert">
+                                <i class="bi bi-exclamation-circle-fill me-2"></i>
+                                Por favor, realize o login para acessar o sistema.
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <?php endif; ?>
+
+                        <form action="login_process.php" method="POST">
                             <div class="mb-3">
-                                <label for="email" class="form-label fw-medium small">E-mail</label>
+                                <label for="codigo_identificador" class="form-label fw-medium small">Código Identificador (Etec)</label>
                                 <div class="input-group">
-                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-envelope"></i></span>
-                                    <input type="email" class="form-control border-start-0 ps-0 bg-light" id="email" name="email" placeholder="nome@etec.sp.gov.br" required>
+                                    <span class="input-group-text bg-light border-end-0"><i class="bi bi-building"></i></span>
+                                    <input type="text" class="form-control border-start-0 ps-0 bg-light" id="codigo_identificador" name="codigo_identificador" placeholder="Ex: etec123" required>
                                 </div>
+                                <div class="form-text x-small text-muted text-start mt-1">Insira o código identificador definido no cadastro da unidade.</div>
                             </div>
 
                             <div class="mb-4">
                                 <label for="senha" class="form-label fw-medium small d-flex justify-content-between">
-                                    Senha 
-                                    <a href="#" class="text-cps-red text-decoration-none">Esqueceu?</a>
+                                    Senha
                                 </label>
                                 <div class="input-group">
                                     <span class="input-group-text bg-light border-end-0"><i class="bi bi-lock"></i></span>

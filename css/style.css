@@ -157,21 +157,136 @@ body {
     font-size: 1.1rem;
 }
 
-/* LISTA DE RESULTADOS FLUTUANTE */
-#resultado_busca_geral {
-    position: absolute !important;
-    top: 100% !important;
+
+/* ============================================================
+   PAINEL DE RESULTADOS DA BUSCA GERAL (Novo)
+   ============================================================ */
+.busca-resultado-painel {
+    position: absolute;
+    top: calc(100% + 6px);
     left: 0;
     width: 100%;
-    z-index: 9999 !important;
-    background-color: #ffffff !important;
-    border: 1px solid #ddd !important;
-    border-top: none !important;
-    border-radius: 0 0 10px 10px;
-    max-height: 400px;
+    z-index: 9999;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 12px;
+    max-height: 480px;
     overflow-y: auto;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.13);
+    animation: fadeSlideDown 0.18s ease;
 }
+
+@keyframes fadeSlideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.busca-resultado-painel .busca-header {
+    padding: 10px 16px 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #999;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.busca-resultado-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #f5f5f5;
+    transition: background 0.15s;
+    cursor: default;
+}
+
+.busca-resultado-item:last-child { border-bottom: none; }
+.busca-resultado-item:hover { background: #f8f9fa; }
+
+.busca-resultado-item .busca-icone {
+    width: 42px; height: 42px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.busca-resultado-item .busca-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.busca-resultado-item .busca-info .busca-nome {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #212529;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.busca-resultado-item .busca-info .busca-sub {
+    font-size: 0.76rem;
+    color: #888;
+    margin-top: 2px;
+}
+
+.busca-resultado-item .busca-acoes {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
+.busca-resultado-item .busca-acoes .btn {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.busca-badge-dentro {
+    background: #d4edda; color: #155724;
+    font-size: 0.68rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 3px;
+}
+
+.busca-badge-fora {
+    background: #f8f9fa; color: #6c757d;
+    font-size: 0.68rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 3px;
+}
+
+.busca-badge-cadastrado {
+    background: #cce5ff; color: #004085;
+    font-size: 0.68rem; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px;
+    display: inline-flex; align-items: center; gap: 3px;
+}
+
+.busca-vazio {
+    text-align: center;
+    padding: 28px 16px;
+    color: #aaa;
+    font-size: 0.88rem;
+}
+
+.busca-digitando {
+    text-align: center;
+    padding: 16px;
+    color: #aaa;
+    font-size: 0.85rem;
+}
+
+.dark-mode .busca-resultado-painel {
+    background: #1e1e1e;
+    border-color: #333;
+}
+.dark-mode .busca-resultado-item:hover { background: #2a2a2a; }
+.dark-mode .busca-resultado-item .busca-info .busca-nome { color: #f4f4f4; }
 
 #resultado_busca_geral .list-group-item {
     background-color: transparent !important;
@@ -452,4 +567,55 @@ body {
 /* Ajuste Furo Dark Mode */
 .dark-mode .prancheta-card .card-header::after {
     background-color: #1e1e1e !important;
+}
+
+/* ---- Balão de Sugestão para tipo "Outros" ---- */
+@keyframes hintBounceIn {
+    0%   { opacity: 0; transform: translateX(-50%) translateY(6px) scale(0.9); }
+    60%  { opacity: 1; transform: translateX(-50%) translateY(-3px) scale(1.03); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0)   scale(1); }
+}
+
+.obs-hint-balloon {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(135deg, #fff3cd, #ffe69c);
+    color: #856404;
+    border: 1px solid #ffc107;
+    border-radius: 12px;
+    padding: 5px 14px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(255, 193, 7, 0.30);
+    pointer-events: none;
+    z-index: 20;
+    animation: hintBounceIn 0.35s ease forwards;
+}
+
+/* Setinha apontando para baixo */
+.obs-hint-balloon::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 6px solid transparent;
+    border-top-color: #ffc107;
+}
+
+/* Placa opcional quando "Outros" */
+#wrapperPlaca.placa-opcional input {
+    border-color: #adb5bd !important;
+    opacity: 0.75;
+}
+
+/* Quando o label de placa torna-se opcional, substituímos o asterisco vermelho */
+#labelPlacaRequired.label-optional::after {
+    content: " (opcional)";
+    color: #6c757d;
+    font-size: 0.75rem;
+    font-weight: normal;
 }

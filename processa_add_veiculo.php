@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $nome_condutor = $user['nome_completo'];
 
         // Tentar Inserir o veículo
-        $stmt = $pdo->prepare("INSERT INTO veiculos (placa, modelo, cor, tipo_veiculo, id_usuario, id_empresa, tipo) VALUES (?, ?, ?, ?, ?, ?, 'visitante')");
-        $stmt->execute([$placa, $modelo, $cor, $tipo, $id_usuario, $id_empresa]);
+        $stmt = $pdo->prepare("INSERT INTO veiculos (placa, modelo, cor, tipo_veiculo, id_usuario, id_empresa, id_unidade) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$placa, $modelo, $cor, $tipo, $id_usuario, $id_empresa, $id_empresa]);
 
         header("Location: gerenciar_cadastros.php?sucesso=" . urlencode("Veículo ($placa) vinculado à garagem virtual de $nome_condutor com sucesso!"));
         exit;

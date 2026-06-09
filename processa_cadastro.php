@@ -47,13 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $novo_usuario_id = $pdo->lastInsertId();
 
         // 4. Salvar Veículo Vinculado
-        $sqlVei = "INSERT INTO veiculos (placa, modelo, cor, tipo_veiculo, id_empresa, id_usuario) 
-                   VALUES (?, ?, ?, ?, ?, ?) 
+        $sqlVei = "INSERT INTO veiculos (placa, modelo, cor, tipo_veiculo, id_empresa, id_unidade, id_usuario) 
+                   VALUES (?, ?, ?, ?, ?, ?, ?) 
                    ON DUPLICATE KEY UPDATE modelo = ?, cor = ?, id_usuario = ?, tipo_veiculo = ?";
         
         $stmtVei = $pdo->prepare($sqlVei);
         $stmtVei->execute([
-            $placa, $modelo, $cor, $tipo_veiculo, $empresa_id, $novo_usuario_id,
+            $placa, $modelo, $cor, $tipo_veiculo, $empresa_id, $empresa_id, $novo_usuario_id,
             $modelo, $cor, $novo_usuario_id, $tipo_veiculo
         ]);
 
