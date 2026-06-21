@@ -1,54 +1,52 @@
--- =========================================================================
--- SISTEMA RAV (REGISTRO DE ACESSO DE VEÍCULOS)
--- Script de Criação e Refinamento do Banco de Dados para MySQL / Workbench
--- =========================================================================
+DROP DATABASE IF EXISTS rav;
 
 CREATE DATABASE IF NOT EXISTS rav CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 USE rav;
 
--- Desativa checagem de chaves estrangeiras para recriação limpa
+-- Desativa checagem de FK para permitir recriação sem erros de ordem
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS registros_acesso;
-DROP TABLE IF EXISTS veiculos;
+
 DROP TABLE IF EXISTS usuarios;
+
+DROP TABLE IF EXISTS acesso_academico;
+
+DROP TABLE IF EXISTS acessos;
+
+DROP TABLE IF EXISTS veiculos;
+
+DROP TABLE IF EXISTS contatos;
+
+DROP TABLE IF EXISTS condutores;
+
+DROP TABLE IF EXISTS funcoes;
+
+DROP TABLE IF EXISTS periodos;
+
+DROP TABLE IF EXISTS cursos;
+
+DROP TABLE IF EXISTS documentos;
+
 DROP TABLE IF EXISTS enderecos;
+
 DROP TABLE IF EXISTS unidades;
-DROP TABLE IF EXISTS fale_conosco;
 
-SET FOREIGN_KEY_CHECKS = 1;
-
--- =========================================================================
--- 1. UNIDADES (ETECs)
--- Armazena as unidades escolares, dados do gestor e credenciais de acesso.
--- =========================================================================
 CREATE TABLE unidades (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    
-    -- Dados da Unidade (Institucional)
     empresaNome VARCHAR(100) NOT NULL,
     tipoDocumento VARCHAR(50) NOT NULL,
-    documento VARCHAR(50) NOT NULL UNIQUE, -- CNPJ ou INEP
+    documento VARCHAR(50) NOT NULL UNIQUE, -- CNPJ ou equivalente
     telefone VARCHAR(20) NULL,
-    
-    -- Dados do Gestor Principal
-    nome_completo VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    cpf VARCHAR(14) NOT NULL,
-    datanasc DATE NULL,
-    
-    -- Credenciais de Acesso da Unidade (Guarita/Admin)
-    codigo_identificador VARCHAR(20) NOT NULL UNIQUE, -- Código de Login da Unidade (ex: etec123)
-    senha_admin VARCHAR(255) NOT NULL,    -- Hash bcrypt para acesso administrativo
-    senha_portaria VARCHAR(255) NOT NULL, -- Hash bcrypt para acesso operacional (guarita)
-    
+    codigo_identificador VARCHAR(20) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB;
+);
 
--- =========================================================================
--- 2. ENDEREÇOS
--- Armazena o endereço físico de cada unidade escolar (Relacionamento 1:1)
--- =========================================================================
+-- ============================================================
+-- 1.1 ENDEREÇOS
+-- Relacionamento 1-para-1 com unidades.
+-- ============================================================
 CREATE TABLE enderecos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_unidade INT NOT NULL UNIQUE,
@@ -59,237 +57,331 @@ CREATE TABLE enderecos (
     bairro VARCHAR(80) NOT NULL,
     cidade VARCHAR(80) NOT NULL,
     uf CHAR(2) NOT NULL,
-    CONSTRAINT fk_endereco_unidade
-        FOREIGN KEY (id_unidade)
-        REFERENCES unidades(id)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
+    CONSTRAINT fk_endereco_unidade FOREIGN KEY (id_unidade) REFERENCES unidades (id) ON DELETE CASCADE
+);
 
--- =========================================================================
--- 3. USUÁRIOS / CONDUTORES
--- Pessoas cadastradas no sistema (Visitantes, Alunos, Professores ou Administradores)
--- =========================================================================
-CREATE TABLE usuarios (
+-- ============================================================
+-- 2. DOCUMENTOS
+-- Cadastro unificado de documentos de condutores (CNH, RG, etc.)
+-- ============================================================
+CREATE TABLE documentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo_acesso VARCHAR(20) NOT NULL UNIQUE, -- Identificador único de 7 dígitos gerado pelo sistema
-    nome_completo VARCHAR(150) NOT NULL,
-    email VARCHAR(100) NOT NULL UNIQUE,
-    senha VARCHAR(255) NOT NULL DEFAULT '123',
-    cpf VARCHAR(14) NOT NULL UNIQUE,
-    id_empresa INT NULL, -- Associação com a unidade à qual pertence
-    role VARCHAR(50) DEFAULT 'visitante', -- Nível de acesso/perfil
-    contato_valor VARCHAR(100) NULL, -- Telefone ou meio de contato principal
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_usuario_unidade
-        FOREIGN KEY (id_empresa)
-        REFERENCES unidades(id)
-        ON DELETE SET NULL
-) ENGINE=InnoDB;
+    tipo_documento VARCHAR(20) NOT NULL,
+    numero_documento VARCHAR(30) NOT NULL UNIQUE
+);
 
--- =========================================================================
--- 4. VEÍCULOS
--- Veículos associados a uma unidade e vinculados a um condutor cadastrado
--- =========================================================================
+-- ============================================================
+-- 3. CURSOS
+-- ============================================================
+CREATE TABLE cursos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ============================================================
+-- 4. PERÍODOS (Matutino, Vespertino, Noturno…)
+-- ============================================================
+CREATE TABLE periodos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    descricao VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- ============================================================
+-- 5. FUNÇÕES / CARGOS (Aluno, Professor, Funcionário, Visitante…)
+-- ============================================================
+CREATE TABLE funcoes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- ============================================================
+-- 6. CONDUTORES
+-- Pessoas autorizadas a acessar a Etec com veículo.
+-- ============================================================
+CREATE TABLE condutores (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL,
+    id_documento INT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_condutor_documento FOREIGN KEY (id_documento) REFERENCES documentos (id) ON DELETE SET NULL
+);
+
+-- ============================================================
+-- 7. CONTATOS
+-- Telefones, e-mails ou WhatsApp vinculados ao Condutor.
+-- ============================================================
+CREATE TABLE contatos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_condutor INT NOT NULL,
+    tipo ENUM(
+        'EMAIL',
+        'TELEFONE',
+        'WHATSAPP'
+    ) NOT NULL,
+    valor VARCHAR(150) NOT NULL,
+    CONSTRAINT fk_contato_condutor FOREIGN KEY (id_condutor) REFERENCES condutores (id) ON DELETE CASCADE
+);
+
+-- ============================================================
+-- 8. VEÍCULOS
+-- Veículos vinculados à Unidade; opcionalmente a um condutor.
+-- Colunas legadas `id_usuario` e `id_empresa` preservadas para
+-- compatibilidade com telas antigas do painel.
+-- [FIX-2] Índice manual em `placa` NÃO é criado aqui; o UNIQUE
+--         já garante o índice implicitamente no MySQL.
+-- ============================================================
 CREATE TABLE veiculos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_unidade INT NOT NULL,
-    id_usuario INT NULL, -- Dono/Condutor associado na tabela usuarios
-    id_empresa INT NULL, -- Campo redundante legado para compatibilidade do PHP
+    id_condutor INT NULL,
+    id_usuario INT NULL, -- Campo legado
+    id_empresa INT NULL, -- Campo legado
     placa VARCHAR(10) NOT NULL UNIQUE,
+    marca VARCHAR(80) NULL, -- NULL para compatibilidade legado
     modelo VARCHAR(80) NOT NULL,
     cor VARCHAR(30) NULL,
-    tipo_veiculo VARCHAR(50) NOT NULL, -- Tipo do veículo (ex: Carro, Moto, Van, Pedestre)
+    ano INT NULL,
+    tipo_veiculo ENUM(
+        'CARRO',
+        'MOTO',
+        'CAMINHAO',
+        'ONIBUS',
+        'VAN',
+        'OUTRO'
+    ) NOT NULL,
+    observacoes TEXT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_veiculo_unidade
-        FOREIGN KEY (id_unidade)
-        REFERENCES unidades(id)
-        ON DELETE CASCADE,
-    CONSTRAINT fk_veiculo_empresa
-        FOREIGN KEY (id_empresa)
-        REFERENCES unidades(id)
-        ON DELETE SET NULL,
-    CONSTRAINT fk_veiculo_usuario
-        FOREIGN KEY (id_usuario)
-        REFERENCES usuarios(id)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
+    CONSTRAINT fk_veiculo_unidade FOREIGN KEY (id_unidade) REFERENCES unidades (id) ON DELETE CASCADE,
+    CONSTRAINT fk_veiculo_condutor FOREIGN KEY (id_condutor) REFERENCES condutores (id) ON DELETE SET NULL
+);
 
--- =========================================================================
--- 5. REGISTROS DE ACESSO (FLUXO DO PÁTIO)
--- Histórico e controle em tempo real das entradas e saídas de veículos na portaria
--- =========================================================================
+-- ============================================================
+-- 9. ACESSOS
+-- Histórico normalizado de entradas/saídas na portaria.
+-- [FIX-3] data_hora_entrada convertida para TIMESTAMP com
+--         DEFAULT CURRENT_TIMESTAMP para portabilidade total.
+--         data_hora_saida permanece anulável (sem default).
+-- ============================================================
+CREATE TABLE acessos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_unidade INT NOT NULL,
+    id_veiculo INT NOT NULL,
+    id_condutor INT NOT NULL,
+    tipo_acesso ENUM(
+        'ENTRADA',
+        'SAIDA',
+        'ENTRADA_SAIDA'
+    ) NOT NULL,
+    data_hora_entrada TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- [FIX-3]
+    data_hora_saida TIMESTAMP NULL,
+    status ENUM(
+        'ABERTO',
+        'EM_ANDAMENTO',
+        'FINALIZADO',
+        'CANCELADO'
+    ) DEFAULT 'ABERTO',
+    observacao TEXT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_acesso_unidade FOREIGN KEY (id_unidade) REFERENCES unidades (id) ON DELETE CASCADE,
+    CONSTRAINT fk_acesso_veiculo FOREIGN KEY (id_veiculo) REFERENCES veiculos (id) ON DELETE CASCADE,
+    CONSTRAINT fk_acesso_condutor FOREIGN KEY (id_condutor) REFERENCES condutores (id) ON DELETE CASCADE
+);
+
+-- ============================================================
+-- 10. DADOS ACADÊMICOS DO ACESSO
+-- Detalhes acadêmicos opcionais vinculados a um registro de acesso.
+-- ============================================================
+CREATE TABLE acesso_academico (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_acesso INT NOT NULL,
+    id_curso INT NULL,
+    id_periodo INT NULL,
+    id_funcao INT NULL,
+    CONSTRAINT fk_academico_acesso FOREIGN KEY (id_acesso) REFERENCES acessos (id) ON DELETE CASCADE,
+    CONSTRAINT fk_academico_curso FOREIGN KEY (id_curso) REFERENCES cursos (id) ON DELETE SET NULL,
+    CONSTRAINT fk_academico_periodo FOREIGN KEY (id_periodo) REFERENCES periodos (id) ON DELETE SET NULL,
+    CONSTRAINT fk_academico_funcao FOREIGN KEY (id_funcao) REFERENCES funcoes (id) ON DELETE SET NULL
+);
+
+-- ============================================================
+-- 12. USUÁRIOS  ← TABELA CENTRAL DE AUTENTICAÇÃO (v2.0)
+--
+-- Esta tabela unifica DOIS fluxos de login:
+--
+--   a) LEGADO (processa-login.php):
+--      Usa `email` + `senha` + `role` + `id_empresa`.
+--      Campos `codigo_acesso` e `contato_valor` preservados.
+--
+--   b) NOVO (login_process.php):
+--      O operador informa o `codigo_identificador` da Etec
+--      (localiza a unidade) e depois a senha do seu perfil.
+--      A consulta filtra por `id_unidade` + `role`.
+--
+-- [FIX-1] `id_unidade` FK adicionado → vincula cada usuário
+--         à sua Etec.  `role` promovido a ENUM com os perfis
+--         oficiais do sistema. Senhas `senha_admin` e
+--         `senha_portaria` foram REMOVIDAS de `unidades`.
+-- ============================================================
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_unidade INT NULL,
+    codigo_acesso VARCHAR(20) NOT NULL UNIQUE,
+    nome_completo VARCHAR(150) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    senha VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) NOT NULL,
+    role ENUM(
+        'admin',
+        'portaria',
+        'usuario',
+        'aluno'
+    ) NOT NULL DEFAULT 'usuario',
+    id_empresa INT NULL,
+    contato_valor VARCHAR(100) NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT fk_usuario_unidade FOREIGN KEY (id_unidade) REFERENCES unidades (id) ON DELETE SET NULL
+);
+
+-- ============================================================
+-- 13. REGISTROS DE ACESSO  (LEGADO)
+-- Utilizado pelo painel operacional guarita, relatórios e
+-- controle de pátio das telas antigas do TCC.
+-- NÃO ALTERAR A ESTRUTURA — mantida para retrocompatibilidade.
+-- [FIX-3] data_hora_entrada convertida para TIMESTAMP para
+--         garantir portabilidade; comportamento idêntico ao DATETIME.
+-- ============================================================
 CREATE TABLE registros_acesso (
     id INT AUTO_INCREMENT PRIMARY KEY,
     id_veiculo INT NOT NULL,
-    id_usuario_registro INT NULL, -- Operador que registrou (opcional)
-    id_empresa INT NULL, -- Unidade da Etec à qual pertence o registro
-    tipo_acesso VARCHAR(50) NOT NULL, -- Perfil (ex: Aluno, Equipe, Outros)
-    curso VARCHAR(50) NULL, -- Acadêmico (opcional)
-    periodo VARCHAR(50) NULL, -- Acadêmico (opcional)
-    funcao VARCHAR(50) NULL, -- Acadêmico (opcional)
+    id_usuario_registro INT NULL, -- Campo legado
+    id_empresa INT NULL, -- Campo legado
+    tipo_acesso VARCHAR(50) NOT NULL,
+    curso VARCHAR(50) NULL,
+    periodo VARCHAR(50) NULL,
+    funcao VARCHAR(50) NULL,
     nome_condutor VARCHAR(150) NOT NULL,
-    contato_tipo VARCHAR(20) DEFAULT 'tel',
+    contato_tipo VARCHAR(20) NULL,
     contato_valor VARCHAR(50) NULL,
     observacao TEXT NULL,
-    status VARCHAR(20) DEFAULT 'Dentro', -- Estado (Dentro, Saiu)
-    data_hora_entrada DATETIME DEFAULT CURRENT_TIMESTAMP,
-    data_hora_saida DATETIME NULL,
-    CONSTRAINT fk_registro_veiculo
-        FOREIGN KEY (id_veiculo)
-        REFERENCES veiculos(id)
-        ON DELETE CASCADE,
-    CONSTRAINT fk_registro_empresa
-        FOREIGN KEY (id_empresa)
-        REFERENCES unidades(id)
-        ON DELETE CASCADE
-) ENGINE=InnoDB;
+    status VARCHAR(20) DEFAULT 'Dentro',
+    data_hora_entrada TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP, -- [FIX-3]
+    data_hora_saida TIMESTAMP NULL,
+    CONSTRAINT fk_registro_veiculo FOREIGN KEY (id_veiculo) REFERENCES veiculos (id) ON DELETE CASCADE
+);
 
--- =========================================================================
--- 6. FALE CONOSCO
--- Armazena as mensagens enviadas através do formulário de contato do site
--- =========================================================================
-CREATE TABLE fale_conosco (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nome VARCHAR(100) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    telefone VARCHAR(20) NULL,
-    assunto VARCHAR(150) NOT NULL,
-    mensagem TEXT NOT NULL,
-    data_envio DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('Pendente', 'Lido', 'Respondido') DEFAULT 'Pendente'
-) ENGINE=InnoDB;
+-- ============================================================
+-- 14. ÍNDICES DE PERFORMANCE
+-- [FIX-2] `idx_veiculo_placa` REMOVIDO — a declaração UNIQUE em
+--         `veiculos(placa)` já cria o índice automaticamente no MySQL.
+--         Os demais índices abaixo são válidos (colunas sem UNIQUE).
+-- ============================================================
+CREATE INDEX idx_veiculo_unidade ON veiculos (id_unidade);
 
--- =========================================================================
--- 7. ÍNDICES DE PERFORMANCE E PESQUISA RÁPIDA
--- =========================================================================
-CREATE INDEX idx_veiculo_placa ON veiculos(placa);
-CREATE INDEX idx_usuario_cpf ON usuarios(cpf);
-CREATE INDEX idx_usuario_codigo ON usuarios(codigo_acesso);
-CREATE INDEX idx_registro_status ON registros_acesso(status);
-CREATE INDEX idx_registro_entrada ON registros_acesso(data_hora_entrada);
+CREATE INDEX idx_acesso_entrada ON acessos (data_hora_entrada);
 
--- =========================================================================
--- 8. CARGA INICIAL DE DADOS (AMBIENTE DE TESTE / APRESENTAÇÃO)
--- Credenciais padrões do sistema:
--- Código identificador: etec123
--- Senha de Admin: admin123 (Hash correspondente gerado via bcrypt)
--- Senha de Portaria: portaria123 (Hash correspondente gerado via bcrypt)
--- =========================================================================
+CREATE INDEX idx_acesso_status ON acessos (status);
 
--- Inserindo Unidade Escolar de Teste
-INSERT INTO unidades (id, empresaNome, tipoDocumento, documento, telefone, nome_completo, email, cpf, datanasc, codigo_identificador, senha_admin, senha_portaria)
+CREATE INDEX idx_condutor_nome ON condutores (nome);
+-- Índice composto para a nova query de login (unidade + perfil)
+CREATE INDEX idx_usuario_unidade_role ON usuarios (id_unidade, role);
+
+-- ============================================================
+-- 15. DADOS DE EXEMPLO — UNIDADE DE TESTE
+--
+-- Credenciais padrão (para apresentação do TCC):
+--   Código da Etec : etec123
+--   Admin   → email: admin@etec.sp.gov.br   / senha: admin123
+--   Portaria→ email: portaria@etec.sp.gov.br / senha: portaria123
+--
+-- COMO A NOVA LÓGICA DE LOGIN FUNCIONA (login_process.php v2.0):
+--   1. Usuário informa `codigo_identificador` → localiza a unidade.
+--   2. Sistema busca em `usuarios` WHERE id_unidade = ? AND role IN (…).
+--   3. Itera os registros e testa password_verify(senha_digitada, hash).
+--   4. Redireciona conforme `role` (admin → painel-admin / portaria → estacionamento).
+-- ============================================================
+
+-- 15.1 Unidade (apenas dados institucionais — sem senhas)
+INSERT INTO
+    unidades (
+        empresaNome,
+        tipoDocumento,
+        documento,
+        telefone,
+        codigo_identificador
+    )
 VALUES (
-    1,
-    'ETEC Centro Paula Souza',
-    'CNPJ',
-    '00000000000100',
-    '1133243000',
-    'Gestor Principal Teste',
-    'gestor@etec.sp.gov.br',
-    '00000000000',
-    '1985-05-15',
-    'etec123',
-    '$2y$10$Tosc652lOCjvqzMKX9ap5uHPZJOW6A3SgegPpXu7B9sK0O3IIr6ny', -- admin123
-    '$2y$10$Bz0iJKkhIp8/21/H3a9Cce3TSQ41PIzIHSup3yLCMxwISOZXDcRiC'  -- portaria123
-);
+        'ETEC Centro Paula Souza',
+        'CNPJ',
+        '00000000000100',
+        '1133243000',
+        'etec123'
+    );
 
--- Inserindo Endereço da Unidade
-INSERT INTO enderecos (id_unidade, cep, logradouro, numero, complemento, bairro, cidade, uf)
+-- 15.2 Endereço da unidade
+INSERT INTO
+    enderecos (
+        id_unidade,
+        cep,
+        logradouro,
+        numero,
+        complemento,
+        bairro,
+        cidade,
+        uf
+    )
 VALUES (
-    1,
-    '01108-000',
-    'Avenida Tiradentes',
-    '524',
-    'Luz',
-    'Bom Retiro',
-    'São Paulo',
-    'SP'
-);
+        1,
+        '01108-000',
+        'Avenida Tiradentes',
+        '524',
+        'Luz',
+        'Bom Retiro',
+        'São Paulo',
+        'SP'
+    );
 
--- Inserindo Condutores Fictícios (Visitante/Aluno)
-INSERT INTO usuarios (id, codigo_acesso, nome_completo, email, senha, cpf, id_empresa, role, contato_valor)
-VALUES 
-(
-    1,
-    '1234567',
-    'Lucas Silva',
-    'lucas@gmail.com',
-    '123',
-    '11111111111',
-    1,
-    'visitante',
-    '11999999999'
-),
-(
-    2,
-    '7654321',
-    'Mariana Costa',
-    'mariana@gmail.com',
-    '123',
-    '22222222222',
-    1,
-    'visitante',
-    '11988888888'
-);
+-- 15.3 Usuário ADMIN — corresponde ao antigo `senha_admin` de unidades
+--      role='admin' → redirecionado para painel-admin.php
+INSERT INTO
+    usuarios (
+        id_unidade,
+        codigo_acesso,
+        nome_completo,
+        email,
+        senha,
+        cpf,
+        role
+    )
+VALUES (
+        1,
+        'ADM-ETEC1',
+        'Gestor Principal Teste',
+        'admin@etec.sp.gov.br',
+        '$2y$10$Tosc652lOCjvqzMKX9ap5uHPZJOW6A3SgegPpXu7B9sK0O3IIr6ny', -- admin123
+        '00000000000',
+        'admin'
+    );
 
--- Inserindo Veículos Vinculados aos Condutores
-INSERT INTO veiculos (id, id_unidade, id_usuario, id_empresa, placa, modelo, cor, tipo_veiculo)
-VALUES 
-(
-    1,
-    1,
-    1,
-    1,
-    'ABC1D23',
-    'Honda Civic',
-    'Preto',
-    'Carro'
-),
-(
-    2,
-    1,
-    2,
-    1,
-    'XYZ9H87',
-    'CG 160 Fan',
-    'Vermelho',
-    'Moto'
-);
+-- 15.4 Usuário PORTARIA — corresponde ao antigo `senha_portaria` de unidades
+--      role='portaria' → redirecionado para estacionamento.php
+INSERT INTO
+    usuarios (
+        id_unidade,
+        codigo_acesso,
+        nome_completo,
+        email,
+        senha,
+        cpf,
+        role
+    )
+VALUES (
+        1,
+        'PORT-ETEC1',
+        'Operador Portaria Turno A',
+        'portaria@etec.sp.gov.br',
+        '$2y$10$Bz0iJKkhIp8/21/H3a9Cce3TSQ41PIzIHSup3yLCMxwISOZXDcRiC', -- portaria123
+        '11111111111',
+        'portaria'
+    );
 
--- Inserindo Registros Iniciais de Fluxo (Estacionamento populado)
-INSERT INTO registros_acesso (id, id_veiculo, id_usuario_registro, id_empresa, tipo_acesso, curso, periodo, funcao, nome_condutor, contato_tipo, contato_valor, observacao, status, data_hora_entrada, data_hora_saida)
-VALUES
-(
-    1,
-    1,
-    1,
-    1,
-    'Aluno',
-    'DSI',
-    'Noturno',
-    NULL,
-    'Lucas Silva',
-    'tel',
-    '11999999999',
-    'Nenhuma avaria visível.',
-    'Dentro',
-    NOW() - INTERVAL 1 HOUR,
-    NULL
-),
-(
-    2,
-    2,
-    1,
-    1,
-    'Aluno',
-    'RHIII',
-    'Matutino',
-    NULL,
-    'Mariana Costa',
-    'tel',
-    '11988888888',
-    'Capacete no guidão.',
-    'Saiu',
-    NOW() - INTERVAL 4 HOUR,
-    NOW() - INTERVAL 3 HOUR
-);
+SET FOREIGN_KEY_CHECKS = 1;

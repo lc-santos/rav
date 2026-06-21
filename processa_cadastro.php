@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 3. Gerar e Salvar Usuário
         $novo_codigo = gerarCodigoAcesso($pdo);
         $sqlUser = "INSERT INTO usuarios (codigo_acesso, nome_completo, email, senha, cpf, id_empresa, role, contato_valor) 
-                    VALUES (?, ?, ?, '123', ?, ?, 'visitante', ?)";
+                    VALUES (?, ?, ?, '123', ?, ?, 'usuario', ?)";
         $stmtUser = $pdo->prepare($sqlUser);
         
         // Usamos o telefone como contato principal, se não houver, usamos o email original

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Obter id corporativo do usuário selecionado para atrelar a mesma 'empresa' (escola) ao novo veiculo
-        $stmtU = $pdo->prepare("SELECT id_empresa, nome_completo FROM usuarios WHERE id = ? AND role = 'visitante'");
+        $stmtU = $pdo->prepare("SELECT id_empresa, nome_completo FROM usuarios WHERE id = ? AND role = 'usuario'");
         $stmtU->execute([$id_usuario]);
         $user = $stmtU->fetch();
 

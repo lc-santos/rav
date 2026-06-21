@@ -1,8 +1,8 @@
 <?php
 require_once 'conn.php';
 
-// Busca todos os usuários visitantes
-$stmt = $pdo->query("SELECT id, codigo_acesso, nome_completo, cpf, email, contato_valor FROM usuarios WHERE role = 'visitante' ORDER BY nome_completo ASC");
+// Busca todos os usuários cadastrados (condutores/visitantes do sistema)
+$stmt = $pdo->query("SELECT id, codigo_acesso, nome_completo, cpf, email, contato_valor FROM usuarios WHERE role = 'usuario' ORDER BY nome_completo ASC");
 $condutores = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmtV = $pdo->query("SELECT id, id_usuario, placa, modelo, cor, tipo_veiculo FROM veiculos WHERE id_usuario IS NOT NULL");
