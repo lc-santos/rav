@@ -1,4 +1,5 @@
 <?php
+require_once 'trava_seguranca.php';
 require_once 'conn.php';
 
 // Verificação Básica

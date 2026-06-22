@@ -36,14 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 3. Gerar e Salvar Usuário
         $novo_codigo = gerarCodigoAcesso($pdo);
-        $sqlUser = "INSERT INTO usuarios (codigo_acesso, nome_completo, email, senha, cpf, id_empresa, role, contato_valor) 
-                    VALUES (?, ?, ?, '123', ?, ?, 'usuario', ?)";
+        $sqlUser = "INSERT INTO usuarios (codigo_acesso, nome_completo, email, senha, cpf, id_empresa, id_unidade, role, contato_valor) 
+                    VALUES (?, ?, ?, '123', ?, ?, ?, 'usuario', ?)";
         $stmtUser = $pdo->prepare($sqlUser);
         
         // Usamos o telefone como contato principal, se não houver, usamos o email original
         $contato_principal = !empty($telefone) ? $telefone : (strpos($email, '@rav.tmp') === false ? $email : '');
         
-        $stmtUser->execute([$novo_codigo, $nome, $email, $cpf, $empresa_id, $contato_principal]);
+        $stmtUser->execute([$novo_codigo, $nome, $email, $cpf, $empresa_id, $empresa_id, $contato_principal]);
         $novo_usuario_id = $pdo->lastInsertId();
 
         // 4. Salvar Veículo Vinculado

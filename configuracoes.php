@@ -11,13 +11,14 @@ require_once 'conn.php';
 // ============================================================
 // TRAVA DE SEGURANÇA — Apenas administradores
 // ============================================================
-if (!isset($_SESSION['acesso']) || $_SESSION['acesso'] !== 'admin') {
+if (!isset($_SESSION['acesso']) || !in_array($_SESSION['acesso'], ['admin', 'portaria'])) {
     http_response_code(403);
     header('Location: login.php');
     exit('HTTP/1.1 403 Forbidden');
 }
 
 $etec_id   = $_SESSION['etec_id']  ?? 0;
+$is_portaria = (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria');
 $mensagens = []; // ['tipo' => 'success|danger', 'texto' => '...']
 
 // ============================================================
@@ -25,9 +26,7 @@ $mensagens = []; // ['tipo' => 'success|danger', 'texto' => '...']
 // ============================================================
 try {
     $stmtEtec = $pdo->prepare("
-        SELECT id, empresaNome, email, telefone,
-               codigo_identificador, senha_admin, senha_portaria,
-               nome_completo
+        SELECT id, empresaNome, telefone, codigo_identificador
         FROM unidades WHERE id = :id LIMIT 1
     ");
     $stmtEtec->execute([':id' => $etec_id]);
@@ -38,6 +37,33 @@ try {
         header('Location: login.php');
         exit;
     }
+
+    // Busca dados do gestor (admin) na tabela de usuários
+    $stmtAdmin = $pdo->prepare("
+        SELECT nome_completo, email, senha
+        FROM usuarios
+        WHERE id_unidade = :id_unidade AND role = 'admin'
+        LIMIT 1
+    ");
+    $stmtAdmin->execute([':id_unidade' => $etec_id]);
+    $adminUser = $stmtAdmin->fetch(PDO::FETCH_ASSOC);
+
+    // Busca senha do perfil portaria para verificação dupla
+    $stmtPortaria = $pdo->prepare("
+        SELECT senha
+        FROM usuarios
+        WHERE id_unidade = :id_unidade AND role = 'portaria'
+        LIMIT 1
+    ");
+    $stmtPortaria->execute([':id_unidade' => $etec_id]);
+    $portariaUser = $stmtPortaria->fetch(PDO::FETCH_ASSOC);
+
+    // Mescla os dados para retrocompatibilidade do layout/lógica
+    $etec['nome_completo']   = $adminUser['nome_completo'] ?? '';
+    $etec['email']           = $adminUser['email'] ?? '';
+    $etec['senha_admin']     = $adminUser['senha'] ?? '';
+    $etec['senha_portaria']  = $portariaUser['senha'] ?? '';
+
 } catch (PDOException $e) {
     die('<div class="alert alert-danger m-4">Erro crítico de banco de dados: ' . htmlspecialchars($e->getMessage()) . '</div>');
 }
@@ -47,35 +73,56 @@ try {
 // ============================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'atualizar_conta') {
     try {
-        $conf_senha = $_POST['confirmacao_senha_admin_conta'] ?? '';
-        $novo_nome  = trim($_POST['nome_completo']  ?? '');
-        $novo_email = trim($_POST['email']           ?? '');
-        $novo_tel   = preg_replace('/\D/', '', $_POST['telefone'] ?? '');
-
-        // 1. Verificar senha administrativa atual
-        if (!password_verify($conf_senha, $etec['senha_admin'])) {
+        if (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria') {
             $mensagens[] = ['tipo' => 'danger', 'card' => 'conta',
-                'texto' => '<i class="bi bi-shield-x me-2"></i>Senha administrativa incorreta. Alteração bloqueada.'];
-        } elseif (empty($novo_nome) || empty($novo_email)) {
-            $mensagens[] = ['tipo' => 'danger', 'card' => 'conta',
-                'texto' => '<i class="bi bi-exclamation-triangle me-2"></i>Nome e e-mail são obrigatórios.'];
+                'texto' => '<i class="bi bi-shield-x me-2"></i>Ação bloqueada: operadores de portaria não têm permissão para editar credenciais institucionais.'];
         } else {
-            $stmtUp = $pdo->prepare("
-                UPDATE unidades SET nome_completo = :nome, email = :email, telefone = :tel
-                WHERE id = :id
-            ");
-            $stmtUp->execute([
-                ':nome'  => $novo_nome,
-                ':email' => $novo_email,
-                ':tel'   => $novo_tel,
-                ':id'    => $etec_id
-            ]);
-            // Recarrega os dados
-            $etec['nome_completo'] = $novo_nome;
-            $etec['email']         = $novo_email;
-            $etec['telefone']      = $novo_tel;
-            $mensagens[] = ['tipo' => 'success', 'card' => 'conta',
-                'texto' => '<i class="bi bi-check-circle me-2"></i>Perfil atualizado com sucesso.'];
+            $conf_senha = $_POST['confirmacao_senha_admin_conta'] ?? '';
+            $novo_nome  = trim($_POST['nome_completo']  ?? '');
+            $novo_email = trim($_POST['email']           ?? '');
+            $novo_tel   = preg_replace('/\D/', '', $_POST['telefone'] ?? '');
+
+            // 1. Verificar senha administrativa atual
+            if (!password_verify($conf_senha, $etec['senha_admin'])) {
+                $mensagens[] = ['tipo' => 'danger', 'card' => 'conta',
+                    'texto' => '<i class="bi bi-shield-x me-2"></i>Senha administrativa incorreta. Alteração bloqueada.'];
+            } elseif (empty($novo_nome) || empty($novo_email)) {
+                $mensagens[] = ['tipo' => 'danger', 'card' => 'conta',
+                    'texto' => '<i class="bi bi-exclamation-triangle me-2"></i>Nome e e-mail são obrigatórios.'];
+            } else {
+                // Atualiza o nome e email do gestor (admin) na tabela usuarios
+                $stmtUpUser = $pdo->prepare("
+                    UPDATE usuarios SET nome_completo = :nome, email = :email
+                    WHERE id_unidade = :id_unidade AND role = 'admin'
+                ");
+                $stmtUpUser->execute([
+                    ':nome'       => $novo_nome,
+                    ':email'      => $novo_email,
+                    ':id_unidade' => $etec_id
+                ]);
+
+                // Atualiza o telefone na tabela unidades
+                $stmtUpEtec = $pdo->prepare("
+                    UPDATE unidades SET telefone = :tel
+                    WHERE id = :id
+                ");
+                $stmtUpEtec->execute([
+                    ':tel' => $novo_tel,
+                    ':id'  => $etec_id
+                ]);
+
+                // Atualiza a sessão se for o admin logado
+                if (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'admin') {
+                    $_SESSION['usuario_nome'] = $novo_nome;
+                }
+
+                // Recarrega os dados
+                $etec['nome_completo'] = $novo_nome;
+                $etec['email']         = $novo_email;
+                $etec['telefone']      = $novo_tel;
+                $mensagens[] = ['tipo' => 'success', 'card' => 'conta',
+                    'texto' => '<i class="bi bi-check-circle me-2"></i>Perfil atualizado com sucesso.'];
+            }
         }
     } catch (PDOException $e) {
         $mensagens[] = ['tipo' => 'danger', 'card' => 'conta',
@@ -88,35 +135,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['ac
 // ============================================================
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['acao']) && $_POST['acao'] === 'alterar_senha') {
     try {
-        $conf_senha_atual = $_POST['confirmacao_senha_admin_seg'] ?? '';
-        $qual_senha       = $_POST['qual_senha']          ?? 'admin'; // 'admin' ou 'portaria'
-        $nova_senha       = $_POST['nova_senha']           ?? '';
-        $confirmar_nova   = $_POST['confirmar_nova_senha'] ?? '';
-
-        // 1. Verificar senha administrativa atual
-        if (!password_verify($conf_senha_atual, $etec['senha_admin'])) {
+        if (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria') {
             $mensagens[] = ['tipo' => 'danger', 'card' => 'seguranca',
-                'texto' => '<i class="bi bi-shield-x me-2"></i>Senha administrativa atual incorreta. Alteração bloqueada por segurança.'];
-        } elseif (strlen($nova_senha) < 6) {
-            $mensagens[] = ['tipo' => 'danger', 'card' => 'seguranca',
-                'texto' => '<i class="bi bi-exclamation-triangle me-2"></i>A nova senha deve ter pelo menos 6 caracteres.'];
-        } elseif ($nova_senha !== $confirmar_nova) {
-            $mensagens[] = ['tipo' => 'danger', 'card' => 'seguranca',
-                'texto' => '<i class="bi bi-x-circle me-2"></i>A nova senha e a confirmação não coincidem.'];
+                'texto' => '<i class="bi bi-shield-x me-2"></i>Ação bloqueada: operadores de portaria não têm permissão para alterar senhas.'];
         } else {
-            $hash_novo = password_hash($nova_senha, PASSWORD_BCRYPT);
-            $campo     = ($qual_senha === 'portaria') ? 'senha_portaria' : 'senha_admin';
+            $conf_senha_atual = $_POST['confirmacao_senha_admin_seg'] ?? '';
+            $qual_senha       = $_POST['qual_senha']          ?? 'admin'; // 'admin' ou 'portaria'
+            $nova_senha       = $_POST['nova_senha']           ?? '';
+            $confirmar_nova   = $_POST['confirmar_nova_senha'] ?? '';
 
-            $stmtSenha = $pdo->prepare("UPDATE unidades SET {$campo} = :hash WHERE id = :id");
-            $stmtSenha->execute([':hash' => $hash_novo, ':id'  => $etec_id]);
+            // 1. Verificar senha administrativa atual
+            if (!password_verify($conf_senha_atual, $etec['senha_admin'])) {
+                $mensagens[] = ['tipo' => 'danger', 'card' => 'seguranca',
+                    'texto' => '<i class="bi bi-shield-x me-2"></i>Senha administrativa atual incorreta. Alteração bloqueada por segurança.'];
+            } elseif (strlen($nova_senha) < 6) {
+                $mensagens[] = ['tipo' => 'danger', 'card' => 'seguranca',
+                    'texto' => '<i class="bi bi-exclamation-triangle me-2"></i>A nova senha deve ter pelo menos 6 caracteres.'];
+            } elseif ($nova_senha !== $confirmar_nova) {
+                $mensagens[] = ['tipo' => 'danger', 'card' => 'seguranca',
+                    'texto' => '<i class="bi bi-x-circle me-2"></i>A nova senha e a confirmação não coincidem.'];
+            } else {
+                $hash_novo = password_hash($nova_senha, PASSWORD_BCRYPT);
+                $role_alvo = ($qual_senha === 'portaria') ? 'portaria' : 'admin';
 
-            $nomeAmigavel = ($qual_senha === 'portaria') ? 'Portaria' : 'Administrativa';
-            $mensagens[] = ['tipo' => 'success', 'card' => 'seguranca',
-                'texto' => "<i class='bi bi-check-circle me-2'></i>Senha {$nomeAmigavel} alterada com sucesso."];
+                $stmtSenha = $pdo->prepare("
+                    UPDATE usuarios SET senha = :hash 
+                    WHERE id_unidade = :id_unidade AND role = :role
+                ");
+                $stmtSenha->execute([
+                    ':hash'       => $hash_novo,
+                    ':id_unidade' => $etec_id,
+                    ':role'       => $role_alvo
+                ]);
 
-            // Atualiza hash em memória se for a admin
-            if ($qual_senha === 'admin') $etec['senha_admin'] = $hash_novo;
-            else $etec['senha_portaria'] = $hash_novo;
+                $nomeAmigavel = ($qual_senha === 'portaria') ? 'Portaria' : 'Administrativa';
+                $mensagens[] = ['tipo' => 'success', 'card' => 'seguranca',
+                    'texto' => "<i class='bi bi-check-circle me-2'></i>Senha {$nomeAmigavel} alterada com sucesso."];
+
+                // Atualiza hash em memória se for a admin
+                if ($qual_senha === 'admin') $etec['senha_admin'] = $hash_novo;
+                else $etec['senha_portaria'] = $hash_novo;
+            }
         }
     } catch (PDOException $e) {
         $mensagens[] = ['tipo' => 'danger', 'card' => 'seguranca',
@@ -263,16 +322,22 @@ function alertasDoCard(array $mensagens, string $card): string {
             <div class="d-flex align-items-center gap-3">
                 <div class="d-none d-md-flex flex-column align-items-end">
                     <span class="fw-bold small text-dark"><?= htmlspecialchars($etec['empresaNome']) ?></span>
-                    <span class="badge badge-admin rounded-pill px-2 small">
-                        <i class="bi bi-shield-check me-1"></i> Administrador
-                    </span>
+                    <?php if ($is_portaria): ?>
+                        <span class="badge badge-portaria rounded-pill px-2 small">
+                            <i class="bi bi-door-open me-1"></i> Portaria
+                        </span>
+                    <?php else: ?>
+                        <span class="badge badge-admin rounded-pill px-2 small">
+                            <i class="bi bi-shield-check me-1"></i> Administrador
+                        </span>
+                    <?php endif; ?>
                 </div>
                 <div class="dropdown">
                     <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2"
                             type="button" data-bs-toggle="dropdown">
                         <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
                         <span class="d-none d-md-inline fw-medium text-dark small">
-                            <?= htmlspecialchars($etec['nome_completo']) ?>
+                            <?= htmlspecialchars($_SESSION['usuario_nome'] ?? $etec['nome_completo']) ?>
                         </span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
@@ -292,9 +357,18 @@ function alertasDoCard(array $mensagens, string $card): string {
     <nav class="navbar navbar-expand-lg nav-cps p-0" style="z-index:1010;">
         <div class="container flex-column flex-lg-row">
             <div class="collapse navbar-collapse w-100" id="adminNavbar">
+                <!-- Mobile only Accessibility Links -->
+                <div class="d-md-none bg-dark p-3 text-white d-flex justify-content-between align-items-center mb-2 mx-3 mt-3 rounded border">
+                    <span class="small fw-bold">Acessibilidade:</span>
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font-mobile">A-</button>
+                        <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font-mobile">A+</button>
+                        <button type="button" class="btn btn-sm text-white p-0" id="btn-toggle-contrast-mobile"><i class="bi bi-moon-stars-fill"></i></button>
+                    </div>
+                </div>
                 <ul class="navbar-nav w-100 d-flex flex-lg-row gap-lg-1 py-1 py-lg-0 ms-lg-n3">
                     <li class="nav-item"><a href="painel-admin.php"    class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-1"></i>Painel</a></li>
-                    <li class="nav-item"><a href="acessos.php"         class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-1"></i>Acessos</a></li>
+                    <li class="nav-item"><a href="acessos.php"         class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-1"></i>Acessos Rápidos</a></li>
                     <li class="nav-item"><a href="estacionamento.php"  class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-1"></i>Estacionamento</a></li>
                     <li class="nav-item"><a href="gerenciar_cadastros.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-people-fill me-1"></i>Cadastros</a></li>
                     <li class="nav-item"><a href="relatorios.php"      class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-bar-chart-line me-1"></i>Relatórios</a></li>
@@ -342,6 +416,13 @@ function alertasDoCard(array $mensagens, string $card): string {
 
                         <?= alertasDoCard($mensagens, 'conta') ?>
 
+                        <?php if ($is_portaria): ?>
+                            <div class="alert alert-info d-flex align-items-center gap-2 py-2 small mb-3" role="alert">
+                                <i class="bi bi-info-circle-fill"></i>
+                                <div>Visualização apenas. Alterações de credenciais administrativas estão bloqueadas para o perfil Portaria.</div>
+                            </div>
+                        <?php endif; ?>
+
                         <form method="POST" action="configuracoes.php" novalidate id="formConta">
                             <input type="hidden" name="acao" value="atualizar_conta">
 
@@ -351,20 +432,20 @@ function alertasDoCard(array $mensagens, string $card): string {
                                         Nome do Gestor <span class="text-danger">*</span>
                                     </label>
                                     <input type="text" class="form-control" id="nome_completo" name="nome_completo"
-                                           value="<?= htmlspecialchars($etec['nome_completo']) ?>" required>
+                                           value="<?= htmlspecialchars($etec['nome_completo']) ?>" required <?= $is_portaria ? 'disabled' : '' ?>>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="email_conta" class="form-label small fw-bold">
                                         E-mail Administrativo <span class="text-danger">*</span>
                                     </label>
                                     <input type="email" class="form-control" id="email_conta" name="email"
-                                           value="<?= htmlspecialchars($etec['email']) ?>" required>
+                                           value="<?= htmlspecialchars($etec['email']) ?>" required <?= $is_portaria ? 'disabled' : '' ?>>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label for="telefone_conta" class="form-label small fw-bold">Telefone Institucional</label>
                                     <input type="tel" class="form-control" id="telefone_conta" name="telefone"
                                            data-mask="tel"
-                                           value="<?= htmlspecialchars($etec['telefone'] ?? '') ?>">
+                                           value="<?= htmlspecialchars($etec['telefone'] ?? '') ?>" <?= $is_portaria ? 'disabled' : '' ?>>
                                 </div>
                                 <div class="col-12 col-sm-6">
                                     <label class="form-label small fw-bold text-secondary">Código de Acesso (Login)</label>
@@ -384,9 +465,9 @@ function alertasDoCard(array $mensagens, string $card): string {
                                     <div class="input-group">
                                         <input type="password" class="form-control" id="conf_senha_conta"
                                                name="confirmacao_senha_admin_conta"
-                                               placeholder="••••••••" required autocomplete="current-password">
+                                               placeholder="••••••••" required autocomplete="current-password" <?= $is_portaria ? 'disabled' : '' ?>>
                                         <button class="btn btn-toggle-pass" type="button"
-                                                onclick="toggleSenha('conf_senha_conta', this)">
+                                                onclick="toggleSenha('conf_senha_conta', this)" <?= $is_portaria ? 'disabled' : '' ?>>
                                             <i class="bi bi-eye"></i>
                                         </button>
                                     </div>
@@ -398,7 +479,7 @@ function alertasDoCard(array $mensagens, string $card): string {
                             </div>
 
                             <div class="d-flex justify-content-end mt-4">
-                                <button type="submit" class="btn btn-primary fw-bold px-4 rounded-pill">
+                                <button type="submit" class="btn btn-primary fw-bold px-4 rounded-pill" <?= $is_portaria ? 'disabled' : '' ?>>
                                     <i class="bi bi-save me-2"></i>Salvar Alterações
                                 </button>
                             </div>
@@ -581,6 +662,13 @@ function alertasDoCard(array $mensagens, string $card): string {
 
                         <?= alertasDoCard($mensagens, 'seguranca') ?>
 
+                        <?php if ($is_portaria): ?>
+                            <div class="alert alert-info d-flex align-items-center gap-2 py-2 small mb-3" role="alert">
+                                <i class="bi bi-info-circle-fill"></i>
+                                <div>Visualização apenas. Alterações de senhas estão bloqueadas para o perfil Portaria.</div>
+                            </div>
+                        <?php endif; ?>
+
                         <form method="POST" action="configuracoes.php" novalidate id="formSeguranca">
                             <input type="hidden" name="acao" value="alterar_senha">
 
@@ -592,14 +680,14 @@ function alertasDoCard(array $mensagens, string $card): string {
                                     <div class="d-flex gap-3 flex-wrap">
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="qual_senha"
-                                                   id="qual_admin" value="admin" checked>
+                                                   id="qual_admin" value="admin" checked <?= $is_portaria ? 'disabled' : '' ?>>
                                             <label class="form-check-label small fw-semibold" for="qual_admin">
                                                 <i class="bi bi-shield-fill me-1 text-danger"></i>Senha Administrativa
                                             </label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="qual_senha"
-                                                   id="qual_portaria" value="portaria">
+                                                   id="qual_portaria" value="portaria" <?= $is_portaria ? 'disabled' : '' ?>>
                                             <label class="form-check-label small fw-semibold" for="qual_portaria">
                                                 <i class="bi bi-door-open me-1" style="color:#127187;"></i>Senha da Portaria
                                             </label>
@@ -621,9 +709,9 @@ function alertasDoCard(array $mensagens, string $card): string {
                                     <div class="input-group">
                                         <input type="password" class="form-control" id="conf_senha_seg"
                                                name="confirmacao_senha_admin_seg"
-                                               placeholder="••••••••" required autocomplete="current-password">
+                                               placeholder="••••••••" required autocomplete="current-password" <?= $is_portaria ? 'disabled' : '' ?>>
                                         <button class="btn btn-toggle-pass" type="button"
-                                                onclick="toggleSenha('conf_senha_seg', this)">
+                                                onclick="toggleSenha('conf_senha_seg', this)" <?= $is_portaria ? 'disabled' : '' ?>>
                                             <i class="bi bi-eye"></i>
                                         </button>
                                     </div>
@@ -643,9 +731,9 @@ function alertasDoCard(array $mensagens, string $card): string {
                                         <input type="password" class="form-control" id="nova_senha" name="nova_senha"
                                                placeholder="Mínimo 6 caracteres" required minlength="6"
                                                oninput="medirForca(this.value)"
-                                               autocomplete="new-password">
+                                               autocomplete="new-password" <?= $is_portaria ? 'disabled' : '' ?>>
                                         <button class="btn btn-toggle-pass" type="button"
-                                                onclick="toggleSenha('nova_senha', this)">
+                                                onclick="toggleSenha('nova_senha', this)" <?= $is_portaria ? 'disabled' : '' ?>>
                                             <i class="bi bi-eye"></i>
                                         </button>
                                     </div>
@@ -668,9 +756,9 @@ function alertasDoCard(array $mensagens, string $card): string {
                                                name="confirmar_nova_senha"
                                                placeholder="Repita a nova senha" required
                                                oninput="verificarMatch()"
-                                               autocomplete="new-password">
+                                               autocomplete="new-password" <?= $is_portaria ? 'disabled' : '' ?>>
                                         <button class="btn btn-toggle-pass" type="button"
-                                                onclick="toggleSenha('confirmar_nova_senha', this)">
+                                                onclick="toggleSenha('confirmar_nova_senha', this)" <?= $is_portaria ? 'disabled' : '' ?>>
                                             <i class="bi bi-eye"></i>
                                         </button>
                                     </div>
@@ -692,7 +780,7 @@ function alertasDoCard(array $mensagens, string $card): string {
                             <div class="d-flex justify-content-end mt-3">
                                 <button type="submit" class="btn fw-bold px-4 rounded-pill"
                                         id="btnAlterarSenha"
-                                        style="background:var(--cps-red,#b80005);color:#fff;border:none;">
+                                        style="background:var(--cps-red,#b80005);color:#fff;border:none;" <?= $is_portaria ? 'disabled' : '' ?>>
                                     <i class="bi bi-shield-lock me-2"></i>Confirmar Alteração de Senha
                                 </button>
                             </div>
@@ -709,7 +797,7 @@ function alertasDoCard(array $mensagens, string $card): string {
     <footer class="footer-cps bg-dark text-white text-center py-3 mt-auto">
         <small class="text-white-50">
             © <?= date('Y') ?> RAV ETEC — Sistema de Registro de Acesso de Veículos.
-            Sessão: <strong><?= htmlspecialchars($etec['codigo_identificador']) ?></strong> (Admin)
+            Sessão: <strong><?= htmlspecialchars($etec['codigo_identificador']) ?></strong> (<?= $is_portaria ? 'Portaria' : 'Admin' ?>)
         </small>
     </footer>
 
@@ -721,17 +809,22 @@ function alertasDoCard(array $mensagens, string $card): string {
     document.addEventListener('DOMContentLoaded', () => {
         const body          = document.body;
         const btnContrast   = document.getElementById('btn-toggle-contrast');
+        const btnContrastMobile = document.getElementById('btn-toggle-contrast-mobile');
         const themeSwitch   = document.getElementById('themeSwitchConfig');
         const btnIncDt      = document.getElementById('btn-increase-font');
         const btnDecDt      = document.getElementById('btn-decrease-font');
         const btnIncCfg     = document.getElementById('btn-increase-font-cfg');
         const btnDecCfg     = document.getElementById('btn-decrease-font-cfg');
+        const btnIncMobile  = document.getElementById('btn-increase-font-mobile');
+        const btnDecMobile  = document.getElementById('btn-decrease-font-mobile');
 
         // ---- Tema ----
         const isDark = localStorage.getItem('theme') === 'dark';
         if (isDark) {
             body.classList.replace('light-mode', 'dark-mode');
-            if (btnContrast) btnContrast.innerHTML = '<i class="bi bi-sun-fill"></i>';
+            const sunIcon = '<i class="bi bi-sun-fill"></i>';
+            if (btnContrast) btnContrast.innerHTML = sunIcon;
+            if (btnContrastMobile) btnContrastMobile.innerHTML = sunIcon;
             if (themeSwitch) themeSwitch.checked   = true;
         }
 
@@ -740,12 +833,14 @@ function alertasDoCard(array $mensagens, string $card): string {
             body.classList.replace(going === 'dark' ? 'light-mode' : 'dark-mode',
                                    going === 'dark' ? 'dark-mode'  : 'light-mode');
             localStorage.setItem('theme', going);
-            if (btnContrast) btnContrast.innerHTML = going === 'dark'
-                ? '<i class="bi bi-sun-fill"></i>' : '<i class="bi bi-moon-stars-fill"></i>';
+            const iconHTML = going === 'dark' ? '<i class="bi bi-sun-fill"></i>' : '<i class="bi bi-moon-stars-fill"></i>';
+            if (btnContrast) btnContrast.innerHTML = iconHTML;
+            if (btnContrastMobile) btnContrastMobile.innerHTML = iconHTML;
             if (themeSwitch) themeSwitch.checked = (going === 'dark');
         }
 
         if (btnContrast) btnContrast.addEventListener('click', toggleTheme);
+        if (btnContrastMobile) btnContrastMobile.addEventListener('click', toggleTheme);
         if (themeSwitch) themeSwitch.addEventListener('change', toggleTheme);
 
         // ---- Fonte ----
@@ -761,8 +856,8 @@ function alertasDoCard(array $mensagens, string $card): string {
             localStorage.setItem('fontScale', scale);
         }
 
-        [btnIncDt, btnIncCfg].forEach(b => b && b.addEventListener('click', () => changeFont(1)));
-        [btnDecDt, btnDecCfg].forEach(b => b && b.addEventListener('click', () => changeFont(-1)));
+        [btnIncDt, btnIncCfg, btnIncMobile].forEach(b => b && b.addEventListener('click', () => changeFont(1)));
+        [btnDecDt, btnDecCfg, btnDecMobile].forEach(b => b && b.addEventListener('click', () => changeFont(-1)));
 
         // ---- Máscara de telefone ----
         if (typeof IMask !== 'undefined') {

@@ -4,8 +4,9 @@ session_start();
 
 header('Content-Type: application/json');
 
-$_SESSION['usuario_id']  = 1; 
-$_SESSION['empresa_id']  = 1; 
+// Usa os IDs da sessão ativa ou fallback para 1 caso indefinido
+$usuario_id = $_SESSION['usuario_id'] ?? 1;
+$etec_id    = $_SESSION['etec_id'] ?? $_SESSION['empresa_id'] ?? 1; 
 
 try {
     // 1. Captura dos campos
@@ -72,7 +73,7 @@ try {
     if (!$veiculo) {
         $stmt = $pdo->prepare("INSERT INTO veiculos (placa, tipo_veiculo, modelo, cor, id_empresa, id_unidade) 
                                VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$placa, $tipo_veiculo, $modelo, $cor, 1, 1]);
+        $stmt->execute([$placa, $tipo_veiculo, $modelo, $cor, $etec_id, $etec_id]);
         $veiculo_id = $pdo->lastInsertId();
     } else {
         $stmt = $pdo->prepare("UPDATE veiculos SET modelo = ?, cor = ?, tipo_veiculo = ? WHERE id = ?");
@@ -85,7 +86,7 @@ try {
                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Dentro')");
     $stmt->execute([
         $veiculo_id, 
-        1, 1, 
+        $usuario_id, $etec_id, 
         $_POST['tipo_acesso'] ?? 'Serviço', 
         $_POST['curso_aluno'] ?? null,
         $_POST['periodo_aluno'] ?? null,

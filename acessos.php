@@ -1,4 +1,5 @@
 <?php
+require_once 'trava_seguranca.php';
 require_once 'conn.php';
 
 // Filtro opcional via GET (vindo da busca do painel-admin)
@@ -160,17 +161,17 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                     <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
                         <span class="text-cps-red fs-2 me-1">RAV</span>
                         <span class="text-dark fs-4 mt-1">ETEC</span>
-                        <span class="badge bg-success text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Acessos</span>
+                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;"><?= (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria') ? 'Portaria' : 'Admin' ?></span>
                     </h1>
                 </a>
             </div>
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
                     <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
-                    <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
+                    <span class="d-none d-md-inline fw-medium text-dark small"><?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Operador') ?></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                    <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
+                    <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita - ETEC') ?></h6></li>
                     <li><a class="dropdown-item" href="configuracoes.php"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
@@ -182,12 +183,21 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
     <nav class="navbar navbar-expand-lg nav-cps p-0" style="z-index: 1010;">
         <div class="container flex-column flex-lg-row">
             <div class="collapse navbar-collapse w-100" id="adminNavbar">
+                <!-- Mobile only Accessibility Links -->
+                <div class="d-md-none bg-dark p-3 text-white d-flex justify-content-between align-items-center mb-2 mx-3 mt-3 rounded border">
+                    <span class="small fw-bold">Acessibilidade:</span>
+                    <div class="d-flex gap-3">
+                        <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font-mobile">A-</button>
+                        <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font-mobile">A+</button>
+                        <button type="button" class="btn btn-sm text-white p-0" id="btn-toggle-contrast-mobile"><i class="bi bi-moon-stars-fill"></i></button>
+                    </div>
+                </div>
                 <ul class="navbar-nav w-100 d-flex flex-lg-row gap-lg-1 py-1 py-lg-0 ms-lg-n3">
                     <li class="nav-item">
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
                     </li>
                     <li class="nav-item">
-                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Diários</a>
+                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Rápidos</a>
                     </li>
                     <li class="nav-item">
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
@@ -209,9 +219,9 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             <!-- LISTA DE ACESSOS (COR DIRETA VERDE) -->
             <div class="col-12 col-lg-7">
                 <div class="card border-0 shadow-lg h-100 bg-white">
-                    <div class="card-header bg-success text-white py-3 px-4 d-flex justify-content-between align-items-center">
-                        <div class="fw-bold"><i class="bi bi-ui-checks-grid me-2"></i>Lista de Acessos</div>
-                        <div class="input-group input-group-sm w-50">
+                    <div class="card-header bg-success text-white py-3 px-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                        <div class="fw-bold"><i class="bi bi-ui-checks-grid me-2"></i>Acessos Rápidos</div>
+                        <div class="input-group input-group-sm w-100 w-sm-50" style="max-width: 300px;">
                             <span class="input-group-text bg-light text-success border-0"><i class="bi bi-search"></i></span>
                             <input type="text" id="filtroAcessos" class="form-control border-0" placeholder="Buscar placa, nome...">
                         </div>
@@ -256,26 +266,26 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                                          data-contatotipo="<?= $contato_tipo ?>"
                                          data-contatovalor="<?= $contato_valor ?>"
                                          data-tipoveiculo="<?= $tipo_veiculo ?>">
-                                        <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
                                             <div class="d-flex align-items-center gap-3 w-100">
                                                 <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px;">
                                                     <i class="bi <?= $tipo === 'Aluno' ? 'bi-person' : 'bi-car-front' ?> fs-5"></i>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <h6 class="mb-0 fw-bold text-dark d-flex align-items-center gap-2">
+                                                    <h6 class="mb-0 fw-bold text-dark d-flex align-items-center gap-2 flex-wrap">
                                                         <?= $nome ?>
                                                         <!-- Ícone de anexo só aparece se tiver observação -->
                                                         <?php if($hasObs): ?>
                                                             <i class="bi bi-chat-square-text-fill text-warning fs-6" title="Possui observação"></i>
                                                         <?php endif; ?>
                                                     </h6>
-                                                    <small class="text-secondary fw-medium">
-                                                        <span class="badge bg-secondary bg-opacity-25 text-dark fw-bold me-1"><?= $placa ?></span>
-                                                        <i class="bi bi-clock me-1"></i><?= $dataHora ?>
-                                                    </small>
+                                                    <div class="text-secondary fw-medium small d-flex flex-wrap align-items-center gap-2 mt-1">
+                                                        <span class="badge bg-secondary bg-opacity-25 text-dark fw-bold"><?= $placa ?></span>
+                                                        <span><i class="bi bi-clock me-1"></i><?= $dataHora ?></span>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div class="d-flex align-items-center gap-2">
+                                            <div class="d-flex align-items-center gap-2 ms-5 ms-sm-0 mt-1 mt-sm-0">
                                                 <span class="badge bg-success bg-opacity-75 rounded-pill"><?= $tipo ?></span>
                                                 <button type="button" class="btn btn-sm text-secondary btn-edit-acesso p-1 border-0" title="Editar Acesso" onclick="abrirModalEdicao(this, event)">
                                                     <i class="bi bi-pencil-square fs-5"></i>
@@ -299,8 +309,8 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             <div class="col-12 col-lg-5">
                 <div class="chat-container">
                     <div class="chat-header text-dark fw-bold d-flex align-items-center">
-                        <i class="bi bi-chat-dots-fill me-2 fs-5" style="color: var(--cps-red);"></i> 
-                        Feed de Observação
+                        <i class="bi bi-info-circle-fill me-2 fs-5" style="color: var(--cps-red);"></i> 
+                        Dados do Registro
                     </div>
                     
                     <div class="chat-body custom-scrollbar" id="chatArea">
@@ -309,11 +319,168 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                             <i class="bi bi-cursor fs-1 mb-2"></i>
                             <h6 class="fw-bold">Nenhum Registro Selecionado</h6>
                             <p class="small bg-white px-3 py-2 rounded-bill shadow-sm mt-2">
-                                Clique em um acesso da lista ao lado para inspecionar os alertas e detalhes aqui.
+                                Clique em um acesso da lista ao lado para visualizar os dados completos e observações aqui.
                             </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Modal de Edição de Acesso -->
+    <div class="modal fade" id="modalEditarAcesso" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-success"><i class="bi bi-pencil-square me-2"></i>Editar Registro de Acesso</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="formEditarAcesso" novalidate>
+                        <input type="hidden" id="edit_id_registro" name="id_registro">
+                        
+                        <div class="mb-4">
+                            <h6 class="pb-2 mb-3 text-success border-bottom border-success" style="border-width: 2px !important;">
+                                <i class="bi bi-person-lines-fill me-2"></i>Dados do Condutor
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Nome Completo</label>
+                                    <input type="text" id="edit_nome_condutor" name="edit_nome_condutor" class="form-control" required style="border-radius: 20px;">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Contato</label>
+                                    <input type="tel" id="edit_inputContato" name="edit_contato_valor" class="form-control" data-mask="tel" placeholder="(00) 00000-0000" style="border-radius: 20px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label small fw-bold mb-3">Tipo de Acesso:</label>
+                            <div class="selectable-group" id="edit_groupTipoAcesso">
+                                <label class="selectable-item">
+                                    <input type="radio" name="edit_tipo_acesso" value="Aluno" required>
+                                    <div class="icon-box"><i class="bi bi-person-fill"></i></div>
+                                    <span>Aluno</span>
+                                </label>
+                                <label class="selectable-item">
+                                    <input type="radio" name="edit_tipo_acesso" value="Equipe">
+                                    <div class="icon-box"><i class="bi bi-people-fill"></i></div>
+                                    <span>Equipe</span>
+                                </label>
+                                <label class="selectable-item">
+                                    <input type="radio" name="edit_tipo_acesso" value="Outros">
+                                    <div class="icon-box"><i class="bi bi-person"></i></div>
+                                    <span>Outros</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Campos dinâmicos para ALUNO -->
+                        <div class="col-12 mb-4" id="edit_camposAlunoDinamico" style="display: none;">
+                            <div class="row g-2">
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold">Curso:</label>
+                                    <select id="edit_curso_aluno" name="edit_curso_aluno" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione...</option>
+                                        <option value="DSI">DSI</option>
+                                        <option value="DSII">DSII</option>
+                                        <option value="DSIII">DSIII</option>
+                                        <option value="RHI">RHI</option>
+                                        <option value="RHII">RHII</option>
+                                        <option value="RHIII">RHIII</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <label class="form-label small fw-bold">Período:</label>
+                                    <select id="edit_periodo_aluno" name="edit_periodo_aluno" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione...</option>
+                                        <option value="Matutino">Matutino</option>
+                                        <option value="Vespertino">Vespertino</option>
+                                        <option value="Noturno">Noturno</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos dinâmicos para EQUIPE -->
+                        <div class="col-12 mb-4" id="edit_camposEquipeDinamico" style="display: none;">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Cargo / Função:</label>
+                                    <select id="edit_funcao_equipe" name="edit_funcao_equipe" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione se aplicável...</option>
+                                        <option value="Secretaria">Secretaria</option>
+                                        <option value="Professor(a)">Professor(a)</option>
+                                        <option value="Funcionários">Funcionários</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6 class="pb-2 mb-3 text-success border-bottom border-success" style="border-width: 2px !important;">
+                                <i class="bi bi-car-front-fill me-2"></i>Dados do Veículo
+                            </h6>
+                            <div class="mb-3">
+                                <label class="form-label small fw-bold mb-3">Tipo veículo:</label>
+                                <div class="selectable-group" id="edit_groupTipoVeiculo">
+                                    <label class="selectable-item">
+                                        <input type="radio" name="edit_tipo_veiculo" value="Carro">
+                                        <div class="icon-box"><i class="bi bi-car-front-fill"></i></div>
+                                        <span>Carro</span>
+                                    </label>
+                                    <label class="selectable-item">
+                                        <input type="radio" name="edit_tipo_veiculo" value="Moto">
+                                        <div class="icon-box"><i class="bi bi-bicycle"></i></div>
+                                        <span>Moto</span>
+                                    </label>
+                                    <label class="selectable-item">
+                                        <input type="radio" name="edit_tipo_veiculo" value="Outros">
+                                        <div class="icon-box"><i class="bi bi-vinyl-fill"></i></div>
+                                        <span>Outros</span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="row g-3">
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Placa</label>
+                                    <input type="text" id="edit_placa" name="edit_placa" class="form-control" data-mask="placa" placeholder="AAA-0000" required style="border-radius: 20px;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Modelo</label>
+                                    <input type="text" id="edit_modelo_veiculo" name="edit_modelo_veiculo" class="form-control" style="border-radius: 20px;">
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Cor</label>
+                                    <input type="text" id="edit_cor_veiculo" name="edit_cor_veiculo" class="form-control" style="border-radius: 20px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6 class="pb-2 mb-3 text-success border-bottom border-success" style="border-width: 2px !important;">
+                                <i class="bi bi-chat-square-text-fill me-2"></i>Observações
+                            </h6>
+                            <textarea id="edit_observacao" name="edit_observacao" class="form-control" placeholder="Avarias ou observações do acesso..." rows="3" style="border-radius: 15px;"></textarea>
+                        </div>
+
+                        <div class="text-end mt-4 pt-3 border-top">
+                            <button type="button" class="btn btn-secondary px-4 rounded-pill" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="button" id="btnSalvarEdicao" class="btn btn-success px-4 fw-bold rounded-pill">Salvar Alterações</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Bibliotecas externas -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://unpkg.com/imask"></script>
+    <script src="script/script.js"></script>
     
     <script>
         // Função GLOBAL (escopo da window) para lidar com clique no botão de edição
@@ -338,7 +505,7 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             document.getElementById('edit_periodo_aluno').value = dados.periodo;
             document.getElementById('edit_funcao_equipe').value = dados.funcao;
             
-            // Setar os radios selectionados (Tipo veículo)
+            // Setar os radios selecionados (Tipo veículo)
             document.querySelectorAll('input[name="edit_tipo_veiculo"]').forEach(radio => {
                 radio.checked = (radio.value === dados.tipoveiculo);
             });
@@ -348,6 +515,9 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                 radio.checked = (radio.value === dados.tipo);
             });
             atualizarCamposDinamicosEdicao(dados.tipo);
+            
+            // Re-garantir a inicialização do iMask nos inputs após abrir
+            initMasks();
             
             // 3. Abrir o Bootstrap Modal
             if(!modalEdicaoInstancia) {
@@ -427,54 +597,117 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                     const hora = this.dataset.hora;
                     const obs = this.dataset.obs;
                     const hasObs = this.dataset.hasobs === 'true';
+                    const curso = this.dataset.curso;
+                    const periodo = this.dataset.periodo;
+                    const funcao = this.dataset.funcao;
+                    const modelo = this.dataset.modelo;
+                    const cor = this.dataset.cor;
+                    const contato_tipo = this.dataset.contatotipo;
+                    const contato_valor = this.dataset.contatovalor;
+                    const tipo_veiculo = this.dataset.tipoveiculo;
+                    const tipo_acesso = this.dataset.tipo;
 
                     // Ocultar placeholder
                     if (chatPlaceholder) chatPlaceholder.style.display = 'none';
 
-                    // Se não tem observação enviada, gera um card amigável dizendo isso
-                    let chatHTML = '';
-                    if (!hasObs) {
-                        chatHTML = `
-                            <div class="d-flex flex-column align-items-center justify-content-center h-100 text-secondary" style="opacity: 0.6; animation: fadeIn 0.3s ease;">
-                                <i class="bi bi-check-circle fs-1 mb-2 text-success"></i>
-                                <span class="fw-bold">Acesso Normal</span>
-                                <small>Nenhuma observação foi anotada para ${nome}</small>
-                            </div>
-                        `;
-                        chatArea.innerHTML = chatHTML;
-                        // Anexa o placeholder de volta escondido caso queiramos reciclar (o innerHTML apagou ele)
-                        return;
+                    // Formata contato amigável
+                    let contatoHTML = '';
+                    if (contato_valor) {
+                        const icon = contato_tipo === 'tel' ? 'bi-telephone' : 'bi-envelope';
+                        const label = contato_tipo === 'tel' ? 'Telefone' : 'E-mail';
+                        contatoHTML = `<p class="mb-2 fs-6"><strong><i class="bi ${icon} me-1 text-secondary"></i> ${label}:</strong> ${contato_valor}</p>`;
+                    } else {
+                        contatoHTML = `<p class="mb-2 fs-6 text-muted"><strong><i class="bi bi-telephone me-1"></i> Contato:</strong> Não informado</p>`;
                     }
 
-                    // Se tiver observação, monta o layout de Chat/Mensagem
-                    chatHTML = `
-                        <div class="d-flex flex-column align-items-center mb-4 pt-2">
-                            <span class="badge bg-secondary bg-opacity-25 text-dark px-3 py-1 rounded-pill small">${hora}</span>
+                    // Formata campos extras conforme o tipo
+                    let extraHTML = '';
+                    if (tipo_acesso === 'Aluno') {
+                        extraHTML = `
+                            <p class="mb-2 fs-6"><strong><i class="bi bi-book me-1 text-secondary"></i> Curso:</strong> ${curso || 'Não informado'}</p>
+                            <p class="mb-2 fs-6"><strong><i class="bi bi-calendar-event me-1 text-secondary"></i> Período:</strong> ${periodo || 'Não informado'}</p>
+                        `;
+                    } else if (funcao) {
+                        extraHTML = `<p class="mb-2 fs-6"><strong><i class="bi bi-briefcase me-1 text-secondary"></i> Cargo/Função:</strong> ${funcao}</p>`;
+                    }
+
+                    // Formata veículo
+                    let veiculoHTML = '';
+                    if (placa && placa !== 'PÉ') {
+                        veiculoHTML = `
+                            <p class="mb-2 fs-6"><strong>Placa:</strong> <span class="badge bg-secondary text-dark fw-bold fs-6">${placa}</span></p>
+                            <p class="mb-2 fs-6"><strong>Tipo:</strong> ${tipo_veiculo}</p>
+                            <p class="mb-2 fs-6"><strong>Modelo:</strong> ${modelo || 'Não informado'}</p>
+                            <p class="mb-2 fs-6"><strong>Cor:</strong> ${cor || 'Não informado'}</p>
+                        `;
+                    } else {
+                        veiculoHTML = `
+                            <p class="mb-0 fs-6 text-muted"><i class="bi bi-person-walking me-1"></i> Acesso a Pé (Sem veículo)</p>
+                        `;
+                    }
+
+                    // Formata Observações
+                    let obsHTML = '';
+                    if (hasObs) {
+                        obsHTML = `
+                            <p class="mb-0 fs-6 text-dark texto-msg">${obs.replace(/\n/g, '<br>')}</p>
+                        `;
+                    } else {
+                        obsHTML = `
+                            <p class="mb-0 fs-6 text-muted"><i class="bi bi-check-circle me-1 text-success"></i> Nenhum detalhe ou observação adicional registrada.</p>
+                        `;
+                    }
+
+                    let chatHTML = `
+                        <div class="d-flex flex-column align-items-center mb-3 pt-2">
+                            <span class="badge bg-secondary bg-opacity-25 text-dark px-3 py-1 rounded-pill fs-6"><i class="bi bi-clock me-1"></i>${hora}</span>
                         </div>
-                        
-                        <div class="d-flex align-items-start gap-3 w-100">
-                            <!-- Avatar de guarita generico -->
-                            <div class="bg-dark bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 40px; height: 40px;">
-                                <i class="bi bi-person-badge-fill text-dark"></i>
+
+                        <div class="chat-bubble w-100 text-start" style="max-width: 100%; border-bottom-left-radius: 12px; border-top-left-radius: 2px;">
+                            <!-- Header do Registro -->
+                            <div class="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom">
+                                <span class="fw-bold text-dark fs-5"><i class="bi bi-info-circle-fill text-success me-2"></i>Informações do Registro</span>
+                                <span class="text-secondary fs-6 fw-bold">#${nome.substring(0, 3).toUpperCase()}-${placa.replace('-', '')}</span>
                             </div>
-                            
-                            <div class="w-100">
-                                <div class="mb-1 ms-1 d-flex justify-content-between align-items-center">
-                                    <span class="fw-bold small text-dark">Operador / Guarita</span>
+
+                            <!-- Seção: Condutor -->
+                            <div class="mb-3">
+                                <div class="fw-bold text-success fs-6 mb-2"><i class="bi bi-person-badge-fill me-1"></i>Condutor</div>
+                                <div class="ps-2 border-start border-2 border-success-subtle">
+                                    <p class="mb-2 fs-6"><strong>Nome:</strong> ${nome}</p>
+                                    <p class="mb-2 fs-6"><strong>Tipo:</strong> <span class="badge bg-success bg-opacity-10 text-success rounded-pill fw-bold fs-6">${tipo_acesso}</span></p>
+                                    ${contatoHTML}
+                                    ${extraHTML}
                                 </div>
-                                <div class="chat-bubble flex-grow-1">
-                                    <p class="mb-2 texto-msg">${obs.replace(/\n/g, '<br>')}</p>
-                                    <hr class="text-secondary opacity-25 my-2">
-                                    <div class="d-flex justify-content-between align-items-center px-1">
-                                      <small class="text-secondary fw-bold"><i class="bi bi-person me-1"></i>${nome}</small>
-                                      <small class="badge border border-success text-success"><i class="bi bi-card-heading me-1"></i>${placa}</small>
-                                    </div>
+                            </div>
+
+                            <!-- Seção: Veículo -->
+                            <div class="mb-3">
+                                <div class="fw-bold text-success fs-6 mb-2"><i class="bi bi-car-front-fill me-1"></i>Veículo</div>
+                                <div class="ps-2 border-start border-2 border-success-subtle">
+                                    ${veiculoHTML}
+                                </div>
+                            </div>
+
+                            <!-- Seção: Observações -->
+                            <div class="mb-2">
+                                <div class="fw-bold text-success fs-6 mb-2"><i class="bi bi-chat-left-text-fill me-1"></i>Observações</div>
+                                <div class="ps-2 border-start border-2 border-success-subtle">
+                                    ${obsHTML}
                                 </div>
                             </div>
                         </div>
                     `;
                     
                     chatArea.innerHTML = chatHTML;
+
+                    // Scroll suave até o painel de detalhes no mobile
+                    if (window.innerWidth < 992) {
+                        const containerDetalhes = document.querySelector('.chat-container');
+                        if (containerDetalhes) {
+                            containerDetalhes.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }
                 });
             });
 
@@ -496,6 +729,72 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                     });
                 });
             }
+
+            // --- ACESSIBILIDADE: CONTROLE DE FONTE & TEMA ---
+            const body = document.body;
+            const btnContrast = document.getElementById('btn-toggle-contrast');
+            const btnContrastMobile = document.getElementById('btn-toggle-contrast-mobile');
+            const btnIncrease = document.getElementById('btn-increase-font');
+            const btnDecrease = document.getElementById('btn-decrease-font');
+            const btnIncreaseMobile = document.getElementById('btn-increase-font-mobile');
+            const btnDecreaseMobile = document.getElementById('btn-decrease-font-mobile');
+
+            // Aplicar estado inicial do LocalStorage para Tema
+            if (localStorage.getItem('theme') === 'dark') {
+                body.classList.remove('light-mode');
+                body.classList.add('dark-mode');
+                const sunIcon = '<i class="bi bi-sun-fill"></i>';
+                if(btnContrast) btnContrast.innerHTML = sunIcon;
+                if(btnContrastMobile) btnContrastMobile.innerHTML = sunIcon;
+            }
+            
+            function toggleTheme() {
+                if (body.classList.contains('dark-mode')) {
+                    body.classList.remove('dark-mode');
+                    body.classList.add('light-mode');
+                    const moonIcon = '<i class="bi bi-moon-stars-fill"></i>';
+                    if(btnContrast) btnContrast.innerHTML = moonIcon;
+                    if(btnContrastMobile) btnContrastMobile.innerHTML = moonIcon;
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    body.classList.remove('light-mode');
+                    body.classList.add('dark-mode');
+                    const sunIcon = '<i class="bi bi-sun-fill"></i>';
+                    if(btnContrast) btnContrast.innerHTML = sunIcon;
+                    if(btnContrastMobile) btnContrastMobile.innerHTML = sunIcon;
+                    localStorage.setItem('theme', 'dark');
+                }
+            }
+
+            if(btnContrast) btnContrast.addEventListener('click', toggleTheme);
+            if(btnContrastMobile) btnContrastMobile.addEventListener('click', toggleTheme);
+
+            // Aplicar estado inicial do LocalStorage para Escala de Fonte
+            const maxScale = 1.3; 
+            const minScale = 0.8; 
+            let currentScale = parseFloat(localStorage.getItem('fontScale')) || 1.0;
+            document.documentElement.style.setProperty('--font-scale', currentScale);
+
+            function increaseFont() {
+                if (currentScale < maxScale) {
+                    currentScale += 0.1;
+                    document.documentElement.style.setProperty('--font-scale', currentScale);
+                    localStorage.setItem('fontScale', currentScale.toFixed(1));
+                }
+            }
+
+            function decreaseFont() {
+                if (currentScale > minScale) {
+                    currentScale -= 0.1;
+                    document.documentElement.style.setProperty('--font-scale', currentScale);
+                    localStorage.setItem('fontScale', currentScale.toFixed(1));
+                }
+            }
+
+            if(btnIncrease) btnIncrease.addEventListener('click', increaseFont);
+            if(btnIncreaseMobile) btnIncreaseMobile.addEventListener('click', increaseFont);
+            if(btnDecrease) btnDecrease.addEventListener('click', decreaseFont);
+            if(btnDecreaseMobile) btnDecreaseMobile.addEventListener('click', decreaseFont);
         });
     </script>
 </body>

@@ -66,16 +66,14 @@ try {
     }
 
     // ── Passo 4: Registra a sessão e redireciona conforme o perfil ────────
-    $_SESSION['etec_id']    = $etec['id'];
-    $_SESSION['etec_nome']  = $etec['empresaNome'];
-    $_SESSION['usuario_id'] = $autenticado['id'];
-    $_SESSION['acesso']     = $autenticado['role'];  // 'admin' | 'portaria'
+    $_SESSION['etec_id']      = $etec['id'];
+    $_SESSION['etec_nome']    = $etec['empresaNome'];
+    $_SESSION['usuario_id']   = $autenticado['id'];
+    $_SESSION['usuario_nome'] = $autenticado['nome_completo'];
+    $_SESSION['empresa_id']   = $etec['id']; // Para retrocompatibilidade
+    $_SESSION['acesso']       = $autenticado['role'];  // 'admin' | 'portaria'
 
-    if ($autenticado['role'] === 'admin') {
-        header("Location: painel-admin.php");
-    } else {
-        header("Location: estacionamento.php");
-    }
+    header("Location: painel-admin.php");
     exit();
 
 } catch (PDOException $e) {

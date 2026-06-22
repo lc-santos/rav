@@ -231,8 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const btnAcessos = totalAcessos > 0
                 ? `<a class="btn btn-outline-secondary btn-sm"
                        href="acessos.php?nome=${encodeURIComponent(item.nome_condutor || '')}">
-                       <i class="bi bi-clock-history me-1"></i>Acessos
-                   </a>` : '';
+                       <i class="bi bi-clock-history me-1"></i>Acessos Rápidos
+                    </a>` : '';
 
             const btnCadastro = idUsuario
                 ? `<a class="btn btn-outline-primary btn-sm"

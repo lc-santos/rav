@@ -19,10 +19,9 @@ if (!isset($_SESSION['etec_id'])) {
     exit();
 }
 
-// 2. Trava de segurança: Bloqueia acesso a páginas administrativas para nível 'portaria'
-if ($_SESSION['acesso'] !== 'admin') {
-    // Se o nível for apenas 'portaria', impede a navegação e redireciona ao painel operacional
-    header("Location: estacionamento.php?error=acesso_negado");
+// 2. Trava de segurança: Garante que apenas usuários com nível 'admin' ou 'portaria' acessem estas páginas
+if (!in_array($_SESSION['acesso'], ['admin', 'portaria'])) {
+    header("Location: login.php?error=acesso_negado");
     exit();
 }
 

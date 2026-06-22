@@ -1,4 +1,5 @@
 <?php
+require_once 'trava_seguranca.php';
 require_once 'conn.php';
 
 // Busca veículos que estão "Dentro" (Ajustado para data_hora_entrada)
@@ -46,22 +47,21 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                 <button class="btn btn-outline-secondary d-lg-none" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar" aria-expanded="false" aria-controls="adminNavbar">
                     <i class="bi bi-list fs-4"></i>
                 </button>
-                <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
+                <a href="<?= (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria') ? 'estacionamento.php' : 'painel-admin.php' ?>" class="text-decoration-none d-flex align-items-center">
                     <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
                         <span class="text-cps-red fs-2 me-1">RAV</span>
                         <span class="text-dark fs-4 mt-1">ETEC</span>
-                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;">Admin</span>
+                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;"><?= (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria') ? 'Portaria' : 'Admin' ?></span>
                     </h1>
                 </a>
             </div>
-            
             <div class="dropdown">
                 <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
-                    <span class="d-none d-md-inline fw-medium text-dark small">Lucas Silva</span>
+                    <span class="d-none d-md-inline fw-medium text-dark small"><?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Gestor') ?></span>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                    <li><h6 class="dropdown-header">Guarita - ETEC</h6></li>
+                    <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita - ETEC') ?></h6></li>
                     <li><a class="dropdown-item" href="configuracoes.php"><i class="bi bi-gear me-2"></i>Configurações</a></li>
                     <li><hr class="dropdown-divider"></li>
                     <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
@@ -89,7 +89,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
                     </li>
                     <li class="nav-item">
-                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Diários</a>
+                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Rápidos</a>
                     </li>
                     <li class="nav-item">
                         <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
