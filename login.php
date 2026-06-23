@@ -10,7 +10,7 @@ unset($_SESSION['login_error']);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login | RAV ETEC</title>
+    <title>Login | RAV</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap CSS -->
@@ -40,9 +40,10 @@ unset($_SESSION['login_error']);
     <header class="main-header bg-white shadow-sm sticky-top border-bottom border-cps-red" style="border-bottom: 3px solid var(--cps-red);">
         <div class="container py-3 d-flex justify-content-center justify-content-md-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center">
-                <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-cps-red fs-2 me-1">RAV</span>
-                    <span class="text-dark fs-4 mt-1">ETEC</span>
+                <h1 class="logo-text m-0 fw-bold d-flex align-items-center flex-wrap">
+                    <span class="text-cps-red fs-2 me-2">RAV</span>
+                    <span class="text-dark fs-4 mt-1">Registro de acesso de veículos</span>
+                    <span class="badge bg-cps-red text-white ms-2 mt-2" style="font-size: 0.70rem; padding: 0.35em 0.65em;">ETEC's e FATEC's</span>
                 </h1>
             </a>
             <a href="index.php" class="btn-capsule d-none d-md-flex" style="padding: 0.4rem 1.5rem; font-size: 0.8rem;">
@@ -133,7 +134,7 @@ unset($_SESSION['login_error']);
     <!-- Footer -->
     <footer class="footer-cps bg-dark text-white text-center py-4 mt-auto">
         <div class="container">
-            <small class="text-white-50">© 2026 RAV ETEC. Todos os direitos reservados.</small>
+            <small class="text-white-50">© 2026 RAV. Todos os direitos reservados. Sistema exclusivo para ETECs e FATECs.</small>
         </div>
     </footer>
 

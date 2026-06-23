@@ -108,10 +108,11 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                     <i class="bi bi-list fs-4"></i>
                 </button>
                 <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
-                    <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                        <span class="text-cps-red fs-2 me-1">RAV</span>
-                        <span class="text-dark fs-4 mt-1">ETEC</span>
-                        <span class="badge bg-cps-red text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;"><?= (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria') ? 'Portaria' : 'Admin' ?></span>
+                    <h1 class="logo-text m-0 fw-bold d-flex align-items-center flex-wrap">
+                        <span class="text-cps-red fs-2 me-2">RAV</span>
+                        <span class="text-dark fs-4 mt-1">Registro de acesso de veículos</span>
+                        <span class="badge bg-cps-red text-white ms-2 mt-2" style="font-size: 0.70rem; padding: 0.35em 0.65em;">ETEC's e FATEC's</span>
+                        <span class="badge bg-secondary text-white font-monospace ms-2 mt-2" style="font-size: 0.70rem;"><?= (isset($_SESSION['acesso']) && $_SESSION['acesso'] === 'portaria') ? 'Portaria' : 'Admin' ?></span>
                     </h1>
                 </a>
             </div>
@@ -123,7 +124,7 @@ $acessosRecentes = $stmtRecentes->fetchAll(PDO::FETCH_ASSOC);
                         <span class="d-none d-md-inline fw-medium text-dark small"><?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Operador') ?></span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                        <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita - ETEC') ?></h6></li>
+                        <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita') ?></h6></li>
                         <li><hr class="dropdown-divider"></li>
                         <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
                     </ul>

@@ -203,7 +203,7 @@ function alertasDoCard(array $mensagens, string $card): string {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAV Admin — Configurações do Sistema</title>
-    <meta name="description" content="Painel de configurações seguro da unidade ETEC no sistema RAV.">
+    <meta name="description" content="Painel de configurações seguro da unidade ETEC/FATEC no sistema RAV.">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/index.css">
@@ -311,9 +311,10 @@ function alertasDoCard(array $mensagens, string $card): string {
                     <i class="bi bi-list fs-4"></i>
                 </button>
                 <a href="painel-admin.php" class="text-decoration-none d-flex align-items-center">
-                    <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                        <span class="text-cps-red fs-2 me-1">RAV</span>
-                        <span class="text-dark fs-4 mt-1">ETEC</span>
+                    <h1 class="logo-text m-0 fw-bold d-flex align-items-center flex-wrap">
+                        <span class="text-cps-red fs-2 me-2">RAV</span>
+                        <span class="text-dark fs-4 mt-1">Registro de acesso de veículos</span>
+                        <span class="badge bg-cps-red text-white ms-2 mt-2" style="font-size: 0.70rem; padding: 0.35em 0.65em;">ETEC's e FATEC's</span>
                         <span class="badge bg-secondary text-white font-monospace ms-2 mt-2" style="font-size:.70rem;">Config.</span>
                     </h1>
                 </a>
@@ -717,7 +718,7 @@ function alertasDoCard(array $mensagens, string $card): string {
     <!-- Footer -->
     <footer class="footer-cps bg-dark text-white text-center py-3 mt-auto">
         <small class="text-white-50">
-            © <?= date('Y') ?> RAV ETEC — Sistema de Registro de Acesso de Veículos.
+            © <?= date('Y') ?> RAV — Sistema de Registro de Acesso de Veículos exclusivo para ETECs e FATECs.
             Sessão: <strong><?= htmlspecialchars($etec['codigo_identificador']) ?></strong> (<?= $is_portaria ? 'Portaria' : 'Admin' ?>)
         </small>
     </footer>

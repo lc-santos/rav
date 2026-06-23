@@ -7,7 +7,7 @@ $msg = $_GET['msg'] ?? '';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAV ETEC - Fale Conosco</title>
+    <title>RAV - Fale Conosco</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
@@ -36,9 +36,10 @@ $msg = $_GET['msg'] ?? '';
     <header class="main-header bg-white shadow-sm sticky-top">
         <div class="container py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3 mb-md-0">
-                <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-cps-red fs-1 me-1">RAV</span>
-                    <span class="text-dark fs-3 mt-1">ETEC</span>
+                <h1 class="logo-text m-0 fw-bold d-flex align-items-center flex-wrap">
+                    <span class="text-cps-red fs-1 me-2">RAV</span>
+                    <span class="text-dark fs-4 mt-1">Registro de acesso de veículos</span>
+                    <span class="badge bg-cps-red text-white ms-2 mt-2" style="font-size: 0.70rem; padding: 0.35em 0.65em;">ETEC's e FATEC's</span>
                 </h1>
             </a>
             <div class="search-bar position-relative" style="min-width: 300px;">
@@ -58,6 +59,7 @@ $msg = $_GET['msg'] ?? '';
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="index.php">Início</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="funcionalidades.php">Funcionalidades</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="sobre.php">Sobre o Sistema</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="comousar.php">Como Usar</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3 active border-bottom border-3 border-white" href="contato.php">Fale Conosco</a></li>
                         <li class="nav-item ms-lg-auto d-flex flex-column flex-lg-row align-items-center gap-2 py-2 py-lg-0">
                             <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="cadastro.php">
@@ -185,10 +187,10 @@ $msg = $_GET['msg'] ?? '';
             <div class="row align-items-center g-4 mb-4">
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     <h3 class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
-                       <span class="text-white">RAV</span> <span class="text-cps-red ms-2">ETEC</span>
+                       <span class="text-white">RAV</span>
                     </h3>
                     <p class="small text-white-50 lh-lg pe-md-3">
-                        Sistema Integrado de Registro de Acesso de Veículos. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria da sua unidade escolar.
+                        Sistema de Registro de Acesso de Veículos exclusivo para ETECs e FATECs. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria.
                     </p>
                 </div>
 

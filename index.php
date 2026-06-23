@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RAV ETEC - Registro de Acesso</title>
+    <title>RAV - Registro de Acesso</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
@@ -45,9 +45,11 @@
         <div class="container py-3 d-flex flex-column flex-md-row justify-content-between align-items-center">
             <a href="index.php" class="text-decoration-none d-flex align-items-center mb-3 mb-md-0">
                 <!-- Logotipo em texto, estilo CPS -->
-                <h1 class="logo-text m-0 fw-bold d-flex align-items-center">
-                    <span class="text-cps-red fs-1 me-1">RAV</span>
-                    <span class="text-dark fs-3 mt-1">ETEC</span>
+                <h1 class="logo-text m-0 fw-bold d-flex align-items-center flex-wrap">
+                    <span class="text-cps-red fs-1 me-2">RAV</span>
+                    <span class="text-dark fs-4 mt-1">Registro de acesso de veículos</span>
+                    <span class="badge bg-cps-red text-white ms-2 mt-2"
+                        style="font-size: 0.70rem; padding: 0.35em 0.65em;">ETEC's e FATEC's</span>
                 </h1>
             </a>
 
@@ -74,9 +76,13 @@
                                 href="funcionalidades.php">Funcionalidades</a></li>
                         <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="sobre.php">Sobre o
                                 Sistema</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="comousar.php">Como
+                                Usar</a></li>
 
-                        <li class="nav-item ms-lg-auto d-flex flex-column flex-lg-row align-items-center gap-2 py-2 py-lg-0">
-                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="cadastro.php">
+                        <li
+                            class="nav-item ms-lg-auto d-flex flex-column flex-lg-row align-items-center gap-2 py-2 py-lg-0">
+                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white"
+                                href="cadastro.php">
                                 <i class="bi bi-building-fill me-1"></i> Cadastrar Unidade
                             </a>
                             <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
@@ -97,7 +103,7 @@
                 <div class="row h-100 align-items-center">
                     <div class="col-lg-7 text-white py-5 py-lg-0 hero-content text-center text-lg-start">
                         <span class="badge bg-cps-red text-white mb-4 fs-6 px-4 py-2 rounded-pill shadow-sm"
-                            style="margin-top: 20px">RAV ETEC - Portaria Inteligente</span>
+                            style="margin-top: 20px">RAV - Portaria Inteligente</span>
                         <h2 class="display-4 fw-bold mb-4" style="letter-spacing: -1px;">Gerenciamento de acesso de
                             veículos com segurança</h2>
                         <p class="fs-5 mb-5 opacity-75 fw-light lh-lg d-none d-md-block">
@@ -185,7 +191,7 @@
                             <h6 class="text-cps-red fw-bold text-uppercase mb-2">Conheça o sistema</h6>
                             <h2 class="fw-bold mb-4 display-6">Gerenciamento de Acesso Prático</h2>
                             <p class="fs-5 text-muted mb-4">
-                                Projetado exclusivamente para a rotina das Escolas Técnicas (ETECs), o <b>RAV</b>
+                                Projetado exclusivamente para a rotina de ETECs e FATECs, o <b>RAV</b>
                                 facilita o gerenciamento de acesso de veículos.
                                 Com apenas alguns cliques, o porteiro pode registrar a entrada de carros, motos e outros
                                 veículos,
@@ -246,7 +252,7 @@
 
                 <div class="text-white position-relative z-1 mb-4 mb-md-0 text-center text-md-start">
                     <h4 class="fw-bold mb-2">Pronto para transformar o acesso?</h4>
-                    <p class="mb-0 text-white-50" style="font-size: 0.95rem;">Acesse o painel do RAV ETEC com suas
+                    <p class="mb-0 text-white-50" style="font-size: 0.95rem;">Acesse o painel do RAV com suas
                         credenciais de portaria e simplifique hoje mesmo.</p>
                 </div>
 
@@ -270,11 +276,11 @@
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
                     <h3
                         class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
-                        <span class="text-white">RAV</span> <span class="text-cps-red ms-2">ETEC</span>
+                        <span class="text-white">RAV</span>
                     </h3>
                     <p class="small text-white-50 lh-lg pe-md-3 m-0">
-                        Sistema Integrado de Registro de Acesso de Veículos. Desenvolvido para modernizar, agilizar e
-                        trazer segurança inteligente para a portaria da sua unidade escolar.
+                        Sistema de Registro de Acesso de Veículos exclusivo para ETECs e FATECs. Desenvolvido para
+                        modernizar, agilizar e trazer segurança inteligente para a portaria.
                     </p>
                 </div>
 
