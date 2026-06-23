@@ -333,7 +333,7 @@
             // --- Acessibilidade: Controle de Fonte ---
             const btnIncrease = document.getElementById('btn-increase-font');
             const btnDecrease = document.getElementById('btn-decrease-font');
-            const maxScale = 1.3;
+            const maxScale = 1.5;
             const minScale = 0.8;
 
             let currentScale = parseFloat(localStorage.getItem('fontScale')) || 1.0;

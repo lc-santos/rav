@@ -368,8 +368,8 @@ function alertasDoCard(array $mensagens, string $card): string {
                 </div>
                 <ul class="navbar-nav w-100 d-flex flex-lg-row gap-lg-1 py-1 py-lg-0 ms-lg-n3">
                     <li class="nav-item"><a href="painel-admin.php"    class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-1"></i>Painel</a></li>
-                    <li class="nav-item"><a href="acessos.php"         class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-1"></i>Acessos Rápidos</a></li>
-                    <li class="nav-item"><a href="estacionamento.php"  class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-1"></i>Estacionamento</a></li>
+                    <li class="nav-item"><a href="acessos.php"         class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-speedometer2 me-1"></i>Acessos Rápidos</a></li>
+                    <li class="nav-item"><a href="estacionamento.php"  class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-car-front-fill me-1"></i>Estacionamento</a></li>
                     <li class="nav-item"><a href="gerenciar_cadastros.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-people-fill me-1"></i>Cadastros</a></li>
                     <li class="nav-item"><a href="relatorios.php"      class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-bar-chart-line me-1"></i>Relatórios</a></li>
                 </ul>
@@ -402,6 +402,7 @@ function alertasDoCard(array $mensagens, string $card): string {
         ================================================================= -->
         <div class="row g-4 mb-4">
 
+            <?php if (!$is_portaria): ?>
             <!-- ---- Card: Minha Conta ---- -->
             <div class="col-12 col-lg-7">
                 <div class="cfg-card card border-0 shadow-sm">
@@ -487,9 +488,10 @@ function alertasDoCard(array $mensagens, string $card): string {
                     </div>
                 </div>
             </div>
+            <?php endif; /* !$is_portaria */ ?>
 
             <!-- ---- Card: Preferências Visuais ---- -->
-            <div class="col-12 col-lg-5">
+            <div class="<?= $is_portaria ? 'col-12' : 'col-12 col-lg-5' ?>">
                 <div class="cfg-card card border-0 shadow-sm">
                     <div class="card-header-custom bg-white d-flex align-items-center gap-3">
                         <div class="cfg-icon cfg-icon-green"><i class="bi bi-palette-fill"></i></div>
@@ -515,138 +517,56 @@ function alertasDoCard(array $mensagens, string $card): string {
                             </div>
                         </div>
 
-                        <!-- Animações -->
-                        <div class="pref-row">
-                            <div>
-                                <div class="fw-semibold small">
-                                    <i class="bi bi-lightning-fill me-2 text-secondary"></i>Animações da Interface
-                                </div>
-                                <div class="text-secondary" style="font-size:.78rem;">Suaviza transições e microinterações.</div>
-                            </div>
-                            <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="animSwitch" checked title="Animações ativas">
-                                <label class="form-check-label visually-hidden" for="animSwitch">Animações</label>
-                            </div>
-                        </div>
-
                         <!-- Tamanho de Fonte -->
-                        <div class="pref-row">
-                            <div>
-                                <div class="fw-semibold small">
-                                    <i class="bi bi-fonts me-2 text-secondary"></i>Escala de Fonte
+                        <div class="pref-row flex-column align-items-start" style="gap:0.75rem;">
+                            <div class="d-flex justify-content-between align-items-center w-100">
+                                <div>
+                                    <div class="fw-semibold small">
+                                        <i class="bi bi-fonts me-2 text-secondary"></i>Escala de Fonte
+                                    </div>
+                                    <div class="text-secondary" style="font-size:.78rem;">
+                                        Aumente o texto para maior conforto visual.
+                                        <span class="badge bg-primary ms-1" style="font-size:.68rem;">Recomendável para idosos</span>
+                                    </div>
                                 </div>
-                                <div class="text-secondary" style="font-size:.78rem;">Ajuste o tamanho do texto na interface.</div>
+                                <span class="font-scale-indicator" id="fontScaleDisplay">100%</span>
                             </div>
-                            <div class="d-flex align-items-center gap-2">
-                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-0 fw-bold"
+                            <!-- Slider de escala -->
+                            <div class="w-100">
+                                <input type="range" class="form-range" id="fontScaleSlider"
+                                       min="0.8" max="1.5" step="0.1" value="1.0"
+                                       title="Ajustar escala de fonte">
+                                <div class="d-flex justify-content-between" style="font-size:.70rem; color:#888; margin-top:2px;">
+                                    <span>A-  Pequeno</span>
+                                    <span>Normal</span>
+                                    <span>A+  Grande</span>
+                                </div>
+                            </div>
+                            <!-- Botões rápidos -->
+                            <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 fw-bold"
                                         id="btn-decrease-font-cfg" title="Diminuir fonte">A-</button>
-                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-0 fw-bold"
+                                <button class="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1 fw-bold"
                                         id="btn-increase-font-cfg" title="Aumentar fonte">A+</button>
+                                <button class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1"
+                                        id="btn-reset-font-cfg" title="Restaurar fonte padrão">
+                                    <i class="bi bi-arrow-counterclockwise me-1"></i>Padrão
+                                </button>
                             </div>
-                        </div>
-
-                        <div class="mt-3 p-3 rounded-3" style="background:rgba(18,113,135,.06); border:1px solid rgba(18,113,135,.15);">
-                            <small class="text-secondary">
-                                <i class="bi bi-info-circle me-1 text-primary"></i>
-                                Preferências visuais são salvas localmente no navegador (<code>localStorage</code>)
-                                e não requerem autenticação.
-                            </small>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
+        <?php if (!$is_portaria): ?>
         <!-- ================================================================
-             LINHA 2: Alertas e Notificações | Segurança
+             LINHA 2: Segurança (apenas Admin)
         ================================================================= -->
         <div class="row g-4">
 
-            <!-- ---- Card: Alertas e Notificações ---- -->
-            <div class="col-12 col-lg-5">
-                <div class="cfg-card card border-0 shadow-sm">
-                    <div class="card-header-custom bg-white d-flex align-items-center gap-3">
-                        <div class="cfg-icon cfg-icon-amber"><i class="bi bi-bell-fill"></i></div>
-                        <div>
-                            <h5 class="fw-bold mb-0">Alertas e Notificações</h5>
-                            <small class="text-secondary">Configure como o sistema alerta sobre atividades na portaria.</small>
-                        </div>
-                    </div>
-                    <div class="card-body p-4">
-
-                        <!-- Switch: Alerta de capacidade -->
-                        <div class="pref-row">
-                            <div>
-                                <div class="fw-semibold small">
-                                    <i class="bi bi-p-circle me-2 text-warning"></i>Alerta de Ocupação Alta
-                                </div>
-                                <div class="text-secondary" style="font-size:.78rem;">Avisar quando pátio atingir 90% da capacidade.</div>
-                            </div>
-                            <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="notif_capacidade" checked>
-                                <label class="form-check-label visually-hidden" for="notif_capacidade">Alerta de capacidade</label>
-                            </div>
-                        </div>
-
-                        <!-- Switch: Som de entrada -->
-                        <div class="pref-row">
-                            <div>
-                                <div class="fw-semibold small">
-                                    <i class="bi bi-volume-up me-2 text-warning"></i>Som ao Registrar Entrada
-                                </div>
-                                <div class="text-secondary" style="font-size:.78rem;">Emite um bipe de confirmação ao registrar acesso.</div>
-                            </div>
-                            <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="notif_som" checked>
-                                <label class="form-check-label visually-hidden" for="notif_som">Som de entrada</label>
-                            </div>
-                        </div>
-
-                        <!-- Switch: Notificações do navegador -->
-                        <div class="pref-row">
-                            <div>
-                                <div class="fw-semibold small">
-                                    <i class="bi bi-browser-chrome me-2 text-warning"></i>Notificações do Navegador
-                                </div>
-                                <div class="text-secondary" style="font-size:.78rem;">Push notifications mesmo com a aba em segundo plano.</div>
-                            </div>
-                            <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="notif_browser">
-                                <label class="form-check-label visually-hidden" for="notif_browser">Notificação do navegador</label>
-                            </div>
-                        </div>
-
-                        <!-- Switch: Atualização automática -->
-                        <div class="pref-row">
-                            <div>
-                                <div class="fw-semibold small">
-                                    <i class="bi bi-arrow-repeat me-2 text-warning"></i>Atualização Automática do Pátio
-                                </div>
-                                <div class="text-secondary" style="font-size:.78rem;">Recarrega o pátio a cada 10 segundos automaticamente.</div>
-                            </div>
-                            <div class="form-check form-switch m-0">
-                                <input class="form-check-input" type="checkbox" role="switch"
-                                       id="notif_autorefresh" checked>
-                                <label class="form-check-label visually-hidden" for="notif_autorefresh">Auto-refresh</label>
-                            </div>
-                        </div>
-
-                        <div class="mt-3 text-end">
-                            <button type="button" class="btn btn-outline-warning fw-bold rounded-pill px-4"
-                                    onclick="salvarPreferencias()">
-                                <i class="bi bi-save me-2"></i>Salvar Preferências
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
             <!-- ---- Card: Segurança (Alterar Senhas) ---- -->
-            <div class="col-12 col-lg-7">
+            <div class="col-12">
                 <div class="cfg-card card border-0 shadow-sm" style="border-left: 4px solid var(--cps-red, #b80005) !important;">
                     <div class="card-header-custom bg-white d-flex align-items-center gap-3">
                         <div class="cfg-icon cfg-icon-red"><i class="bi bi-shield-lock-fill"></i></div>
@@ -790,6 +710,7 @@ function alertasDoCard(array $mensagens, string $card): string {
             </div>
 
         </div><!-- /row g-4 linha 2 -->
+        <?php endif; /* !$is_portaria - Segurança Admin Only */ ?>
 
     </main>
 
@@ -844,20 +765,37 @@ function alertasDoCard(array $mensagens, string $card): string {
         if (themeSwitch) themeSwitch.addEventListener('change', toggleTheme);
 
         // ---- Fonte ----
-        const maxScale = 1.3, minScale = 0.8;
+        const maxScale = 1.5, minScale = 0.8;
         let scale = parseFloat(localStorage.getItem('fontScale')) || 1.0;
         document.documentElement.style.setProperty('--font-scale', scale);
 
-        function changeFont(dir) {
-            scale = dir > 0
-                ? Math.min(maxScale, parseFloat((scale + 0.1).toFixed(1)))
-                : Math.max(minScale, parseFloat((scale - 0.1).toFixed(1)));
+        // Slider de escala de fonte
+        const slider = document.getElementById('fontScaleSlider');
+        const display = document.getElementById('fontScaleDisplay');
+
+        function updateFontUI() {
+            const pct = Math.round(scale * 100);
+            if (slider)  slider.value   = scale;
+            if (display) display.textContent = pct + '%';
+        }
+        updateFontUI();
+
+        function changeFont(newScale) {
+            scale = Math.min(maxScale, Math.max(minScale, parseFloat(newScale.toFixed(1))));
             document.documentElement.style.setProperty('--font-scale', scale);
             localStorage.setItem('fontScale', scale);
+            updateFontUI();
         }
 
-        [btnIncDt, btnIncCfg, btnIncMobile].forEach(b => b && b.addEventListener('click', () => changeFont(1)));
-        [btnDecDt, btnDecCfg, btnDecMobile].forEach(b => b && b.addEventListener('click', () => changeFont(-1)));
+        if (slider) {
+            slider.addEventListener('input', () => changeFont(parseFloat(slider.value)));
+        }
+
+        [btnIncDt, btnIncCfg, btnIncMobile].forEach(b => b && b.addEventListener('click', () => changeFont(scale + 0.1)));
+        [btnDecDt, btnDecCfg, btnDecMobile].forEach(b => b && b.addEventListener('click', () => changeFont(scale - 0.1)));
+
+        const btnReset = document.getElementById('btn-reset-font-cfg');
+        if (btnReset) btnReset.addEventListener('click', () => changeFont(1.0));
 
         // ---- Máscara de telefone ----
         if (typeof IMask !== 'undefined') {
@@ -923,35 +861,16 @@ function alertasDoCard(array $mensagens, string $card): string {
         }
     }
 
-    // ---- Salvar preferências de notificação (localStorage) ----
+    // ---- Salvar preferências de tema (localStorage) ----
     function salvarPreferencias() {
-        const prefs = {
-            notif_capacidade:  document.getElementById('notif_capacidade').checked,
-            notif_som:         document.getElementById('notif_som').checked,
-            notif_browser:     document.getElementById('notif_browser').checked,
-            notif_autorefresh: document.getElementById('notif_autorefresh').checked,
-        };
-        localStorage.setItem('rav_prefs', JSON.stringify(prefs));
-
         // Toast de confirmação
         const toast = document.createElement('div');
         toast.className = 'position-fixed bottom-0 end-0 m-4 alert alert-success d-flex align-items-center gap-2 shadow-lg';
         toast.style.cssText = 'z-index:9999;border-radius:12px;animation:fadeSlideDown .3s ease;min-width:260px;';
-        toast.innerHTML = '<i class="bi bi-check-circle-fill text-success fs-5"></i> Preferências salvas com sucesso!';
+        toast.innerHTML = '<i class="bi bi-check-circle-fill text-success fs-5"></i> Preferências salvas!';
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 3200);
     }
-
-    // Restaurar preferências ao carregar
-    (function restaurarPrefs() {
-        try {
-            const p = JSON.parse(localStorage.getItem('rav_prefs') || '{}');
-            ['notif_capacidade','notif_som','notif_browser','notif_autorefresh'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el && p[id] !== undefined) el.checked = p[id];
-            });
-        } catch(e) {}
-    })();
     </script>
 </body>
 </html>

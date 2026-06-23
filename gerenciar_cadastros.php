@@ -80,17 +80,21 @@ foreach ($todos_veiculos as $v) {
                     </h1>
                 </a>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
-                    <span class="d-none d-md-inline fw-medium text-dark small"><?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Gestor') ?></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                    <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita - ETEC') ?></h6></li>
-                    <li><a class="dropdown-item" href="configuracoes.php"><i class="bi bi-gear me-2"></i>Configurações</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
-                </ul>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
+                        <span class="d-none d-md-inline fw-medium text-dark small"><?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Gestor') ?></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                        <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita - ETEC') ?></h6></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+                    </ul>
+                </div>
+                <a href="configuracoes.php" class="btn btn-light border rounded-circle d-flex align-items-center justify-content-center nav-gear-btn" title="Configurações">
+                    <i class="bi bi-gear-fill text-secondary"></i>
+                </a>
             </div>
         </div>
     </header>
@@ -113,10 +117,10 @@ foreach ($todos_veiculos as $v) {
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
                     </li>
                     <li class="nav-item">
-                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Rápidos</a>
+                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-speedometer2 me-2 me-lg-1"></i>Acessos Rápidos</a>
                     </li>
                     <li class="nav-item">
-                        <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
+                        <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-car-front-fill me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">
                         <a href="gerenciar_cadastros.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-people-fill me-2 me-lg-1"></i>Cadastros</a>

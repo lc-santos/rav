@@ -24,6 +24,29 @@ try {
     $funcao        = $_POST['edit_funcao_equipe'] ?? null;
     $contato_valor = trim($_POST['edit_contato_valor'] ?? '');
     $observacao    = trim($_POST['edit_observacao'] ?? null);
+    
+    $data_hora_entrada = $_POST['edit_data_hora_entrada'] ?? null;
+    $data_hora_saida   = $_POST['edit_data_hora_saida'] ?? null;
+
+    if (!empty($data_hora_entrada)) {
+        $data_hora_entrada = str_replace('T', ' ', $data_hora_entrada);
+        if (strlen($data_hora_entrada) === 16) {
+            $data_hora_entrada .= ':00';
+        }
+    } else {
+        throw new Exception("Horário de entrada é obrigatório.");
+    }
+
+    $status = 'Dentro';
+    if (!empty($data_hora_saida)) {
+        $data_hora_saida = str_replace('T', ' ', $data_hora_saida);
+        if (strlen($data_hora_saida) === 16) {
+            $data_hora_saida .= ':00';
+        }
+        $status = 'Saiu';
+    } else {
+        $data_hora_saida = null;
+    }
 
     if (empty($id_registro) || empty($placa) || empty($nome_condutor)) {
         echo json_encode(['sucesso' => false, 'erro' => 'Placa e Nome são obrigatórios.']);
@@ -81,7 +104,10 @@ try {
                             funcao = ?, 
                             nome_condutor = ?, 
                             contato_valor = ?, 
-                            observacao = ? 
+                            observacao = ?,
+                            data_hora_entrada = ?,
+                            data_hora_saida = ?,
+                            status = ?
                            WHERE id = ?");
     $stmt->execute([
         $id_veiculo_final, 
@@ -93,6 +119,9 @@ try {
         $nome_condutor, 
         $contato_valor_limpo, 
         $observacao,
+        $data_hora_entrada,
+        $data_hora_saida,
+        $status,
         $id_registro
     ]);
 

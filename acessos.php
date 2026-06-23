@@ -7,7 +7,7 @@ $filtroNome = trim($_GET['nome'] ?? '');
 
 if (!empty($filtroNome)) {
     $stmtAcessos = $pdo->prepare("
-        SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.observacao, r.status, 
+        SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.data_hora_saida, r.observacao, r.status, 
                r.curso, r.periodo, r.modulo, r.funcao, r.contato_tipo, r.contato_valor,
                v.placa, v.tipo_veiculo, v.modelo, v.cor
         FROM registros_acesso r 
@@ -19,7 +19,7 @@ if (!empty($filtroNome)) {
     $stmtAcessos->execute([':nome' => "%$filtroNome%"]);
 } else {
     $stmtAcessos = $pdo->query("
-        SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.observacao, r.status, 
+        SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.data_hora_saida, r.observacao, r.status, 
                r.curso, r.periodo, r.modulo, r.funcao, r.contato_tipo, r.contato_valor,
                v.placa, v.tipo_veiculo, v.modelo, v.cor
         FROM registros_acesso r 
@@ -125,15 +125,14 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
         }
         /* Fix the edit button overlaying list */
         .btn-edit-acesso {
-            opacity: 0.5;
-            transition: all 0.2s;
+            opacity: 0.85;
+            transition: all 0.2s ease-in-out;
         }
         .list-acesso-item:hover .btn-edit-acesso {
             opacity: 1;
         }
         .btn-edit-acesso:hover {
-            color: var(--cps-red) !important;
-            transform: scale(1.1);
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -165,17 +164,21 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                     </h1>
                 </a>
             </div>
-            <div class="dropdown">
-                <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                    <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
-                    <span class="d-none d-md-inline fw-medium text-dark small"><?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Operador') ?></span>
-                </button>
-                <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
-                    <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita - ETEC') ?></h6></li>
-                    <li><a class="dropdown-item" href="configuracoes.php"><i class="bi bi-gear me-2"></i>Configurações</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
-                </ul>
+            <div class="d-flex align-items-center gap-2">
+                <div class="dropdown">
+                    <button class="btn btn-light rounded-pill border d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
+                        <i class="bi bi-person-badge-fill fs-5 text-cps-red"></i>
+                        <span class="d-none d-md-inline fw-medium text-dark small"><?= htmlspecialchars($_SESSION['usuario_nome'] ?? 'Operador') ?></span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0 mt-2">
+                        <li><h6 class="dropdown-header"><?= htmlspecialchars($_SESSION['etec_nome'] ?? 'Guarita - ETEC') ?></h6></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger fw-bold" href="sair.php"><i class="bi bi-box-arrow-right me-2"></i>Sair</a></li>
+                    </ul>
+                </div>
+                <a href="configuracoes.php" class="btn btn-light border rounded-circle d-flex align-items-center justify-content-center nav-gear-btn" title="Configurações">
+                    <i class="bi bi-gear-fill text-secondary"></i>
+                </a>
             </div>
         </div>
     </header>
@@ -197,10 +200,10 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                         <a href="painel-admin.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-house-door me-2 me-lg-1"></i>Painel Inicial</a>
                     </li>
                     <li class="nav-item">
-                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-list-check me-2 me-lg-1"></i>Acessos Rápidos</a>
+                        <a href="acessos.php" class="nav-link text-white fw-medium px-4 py-3 active"><i class="bi bi-speedometer2 me-2 me-lg-1"></i>Acessos Rápidos</a>
                     </li>
                     <li class="nav-item">
-                        <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-p-circle me-2 me-lg-1"></i>Estacionamento</a>
+                        <a href="estacionamento.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-car-front-fill me-2 me-lg-1"></i>Estacionamento</a>
                     </li>
                     <li class="nav-item">
                         <a href="gerenciar_cadastros.php" class="nav-link text-white fw-medium px-4 py-3"><i class="bi bi-people-fill me-2 me-lg-1"></i>Cadastros</a>
@@ -220,7 +223,7 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             <div class="col-12 col-lg-7">
                 <div class="card border-0 shadow-lg h-100 bg-white">
                     <div class="card-header bg-success text-white py-3 px-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
-                        <div class="fw-bold"><i class="bi bi-ui-checks-grid me-2"></i>Acessos Rápidos</div>
+                        <div class="fw-bold"><i class="bi bi-speedometer2 me-2"></i>Acessos Rápidos</div>
                         <div class="input-group input-group-sm w-100 w-sm-50" style="max-width: 300px;">
                             <span class="input-group-text bg-light text-success border-0"><i class="bi bi-search"></i></span>
                             <input type="text" id="filtroAcessos" class="form-control border-0" placeholder="Buscar placa, nome...">
@@ -250,6 +253,9 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                                     $contato_tipo = htmlspecialchars($reg['contato_tipo'] ?? 'tel');
                                     $contato_valor = htmlspecialchars($reg['contato_valor'] ?? '');
                                     $tipo_veiculo = htmlspecialchars($reg['tipo_veiculo'] ?? 'Carro');
+                                    
+                                    $dataHoraEntradaRaw = $reg['data_hora_entrada'] ? date('Y-m-d\TH:i', strtotime($reg['data_hora_entrada'])) : '';
+                                    $dataHoraSaidaRaw = $reg['data_hora_saida'] ? date('Y-m-d\TH:i', strtotime($reg['data_hora_saida'])) : '';
                                 ?>
                                     <div class="list-group-item list-acesso-item p-3 border-bottom"
                                          data-id="<?= $id ?>"
@@ -267,7 +273,9 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                                          data-cor="<?= $cor ?>"
                                          data-contatotipo="<?= $contato_tipo ?>"
                                          data-contatovalor="<?= $contato_valor ?>"
-                                         data-tipoveiculo="<?= $tipo_veiculo ?>">
+                                         data-tipoveiculo="<?= $tipo_veiculo ?>"
+                                         data-entradaraw="<?= $dataHoraEntradaRaw ?>"
+                                         data-saidaraw="<?= $dataHoraSaidaRaw ?>">
                                         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-2">
                                             <div class="d-flex align-items-center gap-3 w-100">
                                                 <div class="bg-success bg-opacity-10 text-success rounded-circle d-flex align-items-center justify-content-center flex-shrink-0" style="width: 45px; height: 45px;">
@@ -289,8 +297,9 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                                             </div>
                                             <div class="d-flex align-items-center gap-2 ms-5 ms-sm-0 mt-1 mt-sm-0">
                                                 <span class="badge bg-success bg-opacity-75 rounded-pill"><?= $tipo ?></span>
-                                                <button type="button" class="btn btn-sm text-secondary btn-edit-acesso p-1 border-0" title="Editar Acesso" onclick="abrirModalEdicao(this, event)">
-                                                    <i class="bi bi-pencil-square fs-5"></i>
+                                                <button type="button" class="btn btn-sm btn-outline-success btn-edit-acesso d-flex align-items-center gap-1" title="Editar Acesso" onclick="abrirModalEdicao(this, event)">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                    <span>Editar</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -474,6 +483,22 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
 
                         <div class="mb-4">
                             <h6 class="pb-2 mb-3 text-success border-bottom border-success" style="border-width: 2px !important;">
+                                <i class="bi bi-clock-fill me-2"></i>Horários de Acesso
+                            </h6>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Horário de Entrada</label>
+                                    <input type="datetime-local" id="edit_data_hora_entrada" name="edit_data_hora_entrada" class="form-control" style="border-radius: 20px;" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label small fw-bold">Horário de Saída <small class="text-muted">(Opcional)</small></label>
+                                    <input type="datetime-local" id="edit_data_hora_saida" name="edit_data_hora_saida" class="form-control" style="border-radius: 20px;">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h6 class="pb-2 mb-3 text-success border-bottom border-success" style="border-width: 2px !important;">
                                 <i class="bi bi-chat-square-text-fill me-2"></i>Observações
                             </h6>
                             <textarea id="edit_observacao" name="edit_observacao" class="form-control" placeholder="Avarias ou observações do acesso..." rows="3" style="border-radius: 15px;"></textarea>
@@ -570,6 +595,8 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             document.getElementById('edit_inputContato').value = dados.contatovalor;
             document.getElementById('edit_observacao').value = dados.obs;
             document.getElementById('edit_funcao_equipe').value = dados.funcao;
+            document.getElementById('edit_data_hora_entrada').value = dados.entradaraw;
+            document.getElementById('edit_data_hora_saida').value = dados.saidaraw;
             
             // Setar Curso e rodar lógica de preenchimento dinâmico de módulo/período
             document.getElementById('edit_curso_aluno').value = dados.curso;
@@ -855,7 +882,7 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             if(btnContrastMobile) btnContrastMobile.addEventListener('click', toggleTheme);
 
             // Aplicar estado inicial do LocalStorage para Escala de Fonte
-            const maxScale = 1.3; 
+            const maxScale = 1.5; 
             const minScale = 0.8; 
             let currentScale = parseFloat(localStorage.getItem('fontScale')) || 1.0;
             document.documentElement.style.setProperty('--font-scale', currentScale);
