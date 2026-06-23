@@ -219,6 +219,13 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 .nav-cps {
     background-color: var(--cps-red-dark);
     transition: background-color 0.3s;
+    position: relative;
+}
+
+/* Alterna ícone de hambúrguer para fechar (X) quando o menu collapse estiver aberto */
+.nav-cps .navbar-toggler:not(.collapsed) .bi-list::before,
+.main-header button[data-bs-toggle="collapse"]:not(.collapsed) .bi-list::before {
+    content: "\f659" !important;
 }
 
 .dark-mode .nav-cps {
@@ -239,12 +246,13 @@ section.py-5 .container > .rounded-4[style*="background-color"] {
 /* Modificações Mobile Navbar */
 @media (max-width: 991px) {
     .nav-cps .navbar-collapse {
-        position: fixed;
-        top: 75px;
+        position: absolute;
+        top: 100%;
         left: 0;
         right: 0;
         width: 100%;
-        height: 40vh;
+        height: auto;
+        max-height: 75vh;
         bottom: auto;
         background-color: var(--cps-red-dark) !important;
         z-index: 1050;

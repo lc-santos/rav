@@ -81,16 +81,32 @@ try {
         $veiculo_id = $veiculo['id'];
     }
 
+    $tipo_acesso   = $_POST['tipo_acesso'] ?? 'Serviço';
+    $curso         = $_POST['curso_aluno'] ?? null;
+    $periodo       = $_POST['periodo_aluno'] ?? null;
+    $modulo        = $_POST['modulo_aluno'] ?? null;
+    $funcao        = $_POST['funcao_equipe'] ?? null;
+
+    if ($tipo_acesso !== 'Aluno') {
+        $curso = null;
+        $periodo = null;
+        $modulo = null;
+    }
+    if ($tipo_acesso !== 'Equipe') {
+        $funcao = null;
+    }
+
     // 2. Registra o Acesso no Pátio (Status 'Dentro')
-    $stmt = $pdo->prepare("INSERT INTO registros_acesso (id_veiculo, id_usuario_registro, id_empresa, tipo_acesso, curso, periodo, funcao, nome_condutor, contato_tipo, contato_valor, observacao, status) 
-                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Dentro')");
+    $stmt = $pdo->prepare("INSERT INTO registros_acesso (id_veiculo, id_usuario_registro, id_empresa, tipo_acesso, curso, periodo, modulo, funcao, nome_condutor, contato_tipo, contato_valor, observacao, status) 
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'Dentro')");
     $stmt->execute([
         $veiculo_id, 
         $usuario_id, $etec_id, 
-        $_POST['tipo_acesso'] ?? 'Serviço', 
-        $_POST['curso_aluno'] ?? null,
-        $_POST['periodo_aluno'] ?? null,
-        $_POST['funcao_equipe'] ?? null,
+        $tipo_acesso, 
+        $curso,
+        $periodo,
+        $modulo,
+        $funcao,
         $nome_condutor, 
         $_POST['contato_tipo'] ?? 'tel', 
         ($_POST['contato_tipo'] ?? 'tel') === 'tel' ? preg_replace('/\D/', '', $_POST['contato_valor'] ?? '') : trim($_POST['contato_valor'] ?? ''),

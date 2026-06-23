@@ -8,7 +8,7 @@ $filtroNome = trim($_GET['nome'] ?? '');
 if (!empty($filtroNome)) {
     $stmtAcessos = $pdo->prepare("
         SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.observacao, r.status, 
-               r.curso, r.periodo, r.funcao, r.contato_tipo, r.contato_valor,
+               r.curso, r.periodo, r.modulo, r.funcao, r.contato_tipo, r.contato_valor,
                v.placa, v.tipo_veiculo, v.modelo, v.cor
         FROM registros_acesso r 
         LEFT JOIN veiculos v ON r.id_veiculo = v.id 
@@ -20,7 +20,7 @@ if (!empty($filtroNome)) {
 } else {
     $stmtAcessos = $pdo->query("
         SELECT r.id, r.nome_condutor, r.tipo_acesso, r.data_hora_entrada, r.observacao, r.status, 
-               r.curso, r.periodo, r.funcao, r.contato_tipo, r.contato_valor,
+               r.curso, r.periodo, r.modulo, r.funcao, r.contato_tipo, r.contato_valor,
                v.placa, v.tipo_veiculo, v.modelo, v.cor
         FROM registros_acesso r 
         LEFT JOIN veiculos v ON r.id_veiculo = v.id 
@@ -243,6 +243,7 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                                     $id = $reg['id'];
                                     $curso = htmlspecialchars($reg['curso'] ?? '');
                                     $periodo = htmlspecialchars($reg['periodo'] ?? '');
+                                    $modulo = htmlspecialchars($reg['modulo'] ?? '');
                                     $funcao = htmlspecialchars($reg['funcao'] ?? '');
                                     $modelo = htmlspecialchars($reg['modelo'] ?? '');
                                     $cor = htmlspecialchars($reg['cor'] ?? '');
@@ -260,6 +261,7 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                                          data-hasobs="<?= $hasObs ? 'true' : 'false' ?>"
                                          data-curso="<?= $curso ?>"
                                          data-periodo="<?= $periodo ?>"
+                                         data-modulo="<?= $modulo ?>"
                                          data-funcao="<?= $funcao ?>"
                                          data-modelo="<?= $modelo ?>"
                                          data-cor="<?= $cor ?>"
@@ -380,19 +382,30 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                         <!-- Campos dinâmicos para ALUNO -->
                         <div class="col-12 mb-4" id="edit_camposAlunoDinamico" style="display: none;">
                             <div class="row g-2">
-                                <div class="col-6">
+                                <div class="col-4">
                                     <label class="form-label small fw-bold">Curso:</label>
                                     <select id="edit_curso_aluno" name="edit_curso_aluno" class="form-select" style="border-radius: 20px;">
                                         <option value="">Selecione...</option>
-                                        <option value="DSI">DSI</option>
-                                        <option value="DSII">DSII</option>
-                                        <option value="DSIII">DSIII</option>
-                                        <option value="RHI">RHI</option>
-                                        <option value="RHII">RHII</option>
-                                        <option value="RHIII">RHIII</option>
+                                        <optgroup label="Técnico">
+                                            <option value="Administração">Administração</option>
+                                            <option value="Contabilidade">Contabilidade</option>
+                                            <option value="Desenvolvimento de sistemas">Desenvolvimento de sistemas</option>
+                                            <option value="Recursos humanos">Recursos humanos</option>
+                                            <option value="Segurança do trabalho">Segurança do trabalho</option>
+                                        </optgroup>
+                                        <optgroup label="M-Tec">
+                                            <option value="Administração (M-Tec)">Administração (M-Tec)</option>
+                                            <option value="Desenvolvimento de sistemas (M-Tec)">Desenvolvimento de sistemas (M-Tec)</option>
+                                        </optgroup>
                                     </select>
                                 </div>
-                                <div class="col-6">
+                                <div class="col-4">
+                                    <label id="edit_label_modulo_aluno" class="form-label small fw-bold">Módulo:</label>
+                                    <select id="edit_modulo_aluno" name="edit_modulo_aluno" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione...</option>
+                                    </select>
+                                </div>
+                                <div class="col-4">
                                     <label class="form-label small fw-bold">Período:</label>
                                     <select id="edit_periodo_aluno" name="edit_periodo_aluno" class="form-select" style="border-radius: 20px;">
                                         <option value="">Selecione...</option>
@@ -483,6 +496,61 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
     <script src="script/script.js"></script>
     
     <script>
+        // Lógica Dinâmica de Curso/Módulo/Período para Edição de Aluno
+        function atualizarModuloPeriodoEdicao() {
+            const cursoSelect = document.getElementById('edit_curso_aluno');
+            const moduloSelect = document.getElementById('edit_modulo_aluno');
+            const moduloLabel = document.getElementById('edit_label_modulo_aluno');
+            const periodoSelect = document.getElementById('edit_periodo_aluno');
+
+            const curso = cursoSelect.value;
+            const isMtec = curso.includes('(M-Tec)');
+
+            // Limpa opções antigas de Módulo
+            moduloSelect.innerHTML = '<option value="">Selecione...</option>';
+
+            if (!curso) {
+                moduloLabel.textContent = 'Módulo:';
+                periodoSelect.innerHTML = '<option value="">Selecione...</option>';
+                return;
+            }
+
+            if (isMtec) {
+                // M-Tec
+                moduloLabel.textContent = 'Ano:';
+                ['1º', '2º', '3º'].forEach(opt => {
+                    const option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    moduloSelect.appendChild(option);
+                });
+
+                // Período para M-Tec
+                periodoSelect.innerHTML = `
+                    <option value="">Selecione...</option>
+                    <option value="Integral">Integral</option>
+                    <option value="Noturno">Noturno</option>
+                `;
+            } else {
+                // Técnico Regular
+                moduloLabel.textContent = 'Módulo:';
+                ['I', 'II', 'III'].forEach(opt => {
+                    const option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    moduloSelect.appendChild(option);
+                });
+
+                // Período para Técnico Regular
+                periodoSelect.innerHTML = `
+                    <option value="">Selecione...</option>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Noturno">Noturno</option>
+                `;
+            }
+        }
+
         // Função GLOBAL (escopo da window) para lidar com clique no botão de edição
         let modalEdicaoInstancia = null;
         
@@ -501,9 +569,15 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
             document.getElementById('edit_nome_condutor').value = dados.nome;
             document.getElementById('edit_inputContato').value = dados.contatovalor;
             document.getElementById('edit_observacao').value = dados.obs;
-            document.getElementById('edit_curso_aluno').value = dados.curso;
-            document.getElementById('edit_periodo_aluno').value = dados.periodo;
             document.getElementById('edit_funcao_equipe').value = dados.funcao;
+            
+            // Setar Curso e rodar lógica de preenchimento dinâmico de módulo/período
+            document.getElementById('edit_curso_aluno').value = dados.curso;
+            atualizarModuloPeriodoEdicao();
+            
+            // Agora sim podemos selecionar o módulo e o período corretos
+            document.getElementById('edit_modulo_aluno').value = dados.modulo;
+            document.getElementById('edit_periodo_aluno').value = dados.periodo;
             
             // Setar os radios selecionados (Tipo veículo)
             document.querySelectorAll('input[name="edit_tipo_veiculo"]').forEach(radio => {
@@ -548,6 +622,11 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                     atualizarCamposDinamicosEdicao(this.value);
                 });
             });
+
+            const editCursoSelect = document.getElementById('edit_curso_aluno');
+            if (editCursoSelect) {
+                editCursoSelect.addEventListener('change', atualizarModuloPeriodoEdicao);
+            }
             
             const btnSalvar = document.getElementById('btnSalvarEdicao');
             if(btnSalvar) {
@@ -599,6 +678,7 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                     const hasObs = this.dataset.hasobs === 'true';
                     const curso = this.dataset.curso;
                     const periodo = this.dataset.periodo;
+                    const modulo = this.dataset.modulo;
                     const funcao = this.dataset.funcao;
                     const modelo = this.dataset.modelo;
                     const cor = this.dataset.cor;
@@ -623,8 +703,13 @@ $acessos = $stmtAcessos->fetchAll(PDO::FETCH_ASSOC);
                     // Formata campos extras conforme o tipo
                     let extraHTML = '';
                     if (tipo_acesso === 'Aluno') {
+                        let labelModulo = 'Módulo';
+                        if (curso && curso.includes('(M-Tec)')) {
+                            labelModulo = 'Ano';
+                        }
                         extraHTML = `
                             <p class="mb-2 fs-6"><strong><i class="bi bi-book me-1 text-secondary"></i> Curso:</strong> ${curso || 'Não informado'}</p>
+                            <p class="mb-2 fs-6"><strong><i class="bi bi-layers me-1 text-secondary"></i> ${labelModulo}:</strong> ${modulo || 'Não informado'}</p>
                             <p class="mb-2 fs-6"><strong><i class="bi bi-calendar-event me-1 text-secondary"></i> Período:</strong> ${periodo || 'Não informado'}</p>
                         `;
                     } else if (funcao) {

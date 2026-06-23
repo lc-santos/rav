@@ -20,6 +20,7 @@ try {
     $tipo_acesso   = $_POST['edit_tipo_acesso'] ?? 'Serviço';
     $curso         = $_POST['edit_curso_aluno'] ?? null;
     $periodo       = $_POST['edit_periodo_aluno'] ?? null;
+    $modulo        = $_POST['edit_modulo_aluno'] ?? null;
     $funcao        = $_POST['edit_funcao_equipe'] ?? null;
     $contato_valor = trim($_POST['edit_contato_valor'] ?? '');
     $observacao    = trim($_POST['edit_observacao'] ?? null);
@@ -64,7 +65,7 @@ try {
     }
 
     // Limpeza condicional para não sujar o banco
-    if ($tipo_acesso !== 'Aluno') { $curso = null; $periodo = null; }
+    if ($tipo_acesso !== 'Aluno') { $curso = null; $periodo = null; $modulo = null; }
     if ($tipo_acesso !== 'Equipe') { $funcao = null; }
 
     // Formata telefone
@@ -76,6 +77,7 @@ try {
                             tipo_acesso = ?, 
                             curso = ?, 
                             periodo = ?, 
+                            modulo = ?,
                             funcao = ?, 
                             nome_condutor = ?, 
                             contato_valor = ?, 
@@ -86,6 +88,7 @@ try {
         $tipo_acesso, 
         $curso, 
         $periodo, 
+        $modulo,
         $funcao, 
         $nome_condutor, 
         $contato_valor_limpo, 

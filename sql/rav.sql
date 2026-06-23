@@ -258,6 +258,7 @@ CREATE TABLE registros_acesso (
     tipo_acesso VARCHAR(50) NOT NULL,
     curso VARCHAR(50) NULL,
     periodo VARCHAR(50) NULL,
+    modulo VARCHAR(50) NULL,
     funcao VARCHAR(50) NULL,
     nome_condutor VARCHAR(150) NOT NULL,
     contato_tipo VARCHAR(20) NULL,

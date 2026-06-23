@@ -225,21 +225,32 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                             <!-- Campos dinâmicos para ALUNO -->
                             <div class="col-12" id="camposAlunoDinamico">
                                 <div class="row g-2">
-                                    <div class="col-6">
+                                    <div class="col-4">
                                         <label class="form-label small fw-bold">Curso:</label>
-                                        <select name="curso_aluno" class="form-select" style="border-radius: 20px;">
+                                        <select id="curso_aluno" name="curso_aluno" class="form-select" style="border-radius: 20px;">
                                             <option value="">Selecione...</option>
-                                            <option value="DSI">DSI</option>
-                                            <option value="DSII">DSII</option>
-                                            <option value="DSIII">DSIII</option>
-                                            <option value="RHI">RHI</option>
-                                            <option value="RHII">RHII</option>
-                                            <option value="RHIII">RHIII</option>
+                                            <optgroup label="Técnico">
+                                                <option value="Administração">Administração</option>
+                                                <option value="Contabilidade">Contabilidade</option>
+                                                <option value="Desenvolvimento de sistemas">Desenvolvimento de sistemas</option>
+                                                <option value="Recursos humanos">Recursos humanos</option>
+                                                <option value="Segurança do trabalho">Segurança do trabalho</option>
+                                            </optgroup>
+                                            <optgroup label="M-Tec">
+                                                <option value="Administração (M-Tec)">Administração (M-Tec)</option>
+                                                <option value="Desenvolvimento de sistemas (M-Tec)">Desenvolvimento de sistemas (M-Tec)</option>
+                                            </optgroup>
                                         </select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-4">
+                                        <label id="label_modulo_aluno" class="form-label small fw-bold">Módulo:</label>
+                                        <select id="modulo_aluno" name="modulo_aluno" class="form-select" style="border-radius: 20px;">
+                                            <option value="">Selecione...</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-4">
                                         <label class="form-label small fw-bold">Período:</label>
-                                        <select name="periodo_aluno" class="form-select" style="border-radius: 20px;">
+                                        <select id="periodo_aluno" name="periodo_aluno" class="form-select" style="border-radius: 20px;">
                                             <option value="">Selecione...</option>
                                             <option value="Matutino">Matutino</option>
                                             <option value="Vespertino">Vespertino</option>
@@ -495,6 +506,67 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                 if(btnIncreaseMobile) btnIncreaseMobile.addEventListener('click', increaseFont);
                 if(btnDecrease) btnDecrease.addEventListener('click', decreaseFont);
                 if(btnDecreaseMobile) btnDecreaseMobile.addEventListener('click', decreaseFont);
+
+                // --- Lógica Dinâmica de Curso/Módulo/Período para Aluno ---
+                const cursoSelect = document.getElementById('curso_aluno');
+                const moduloSelect = document.getElementById('modulo_aluno');
+                const moduloLabel = document.getElementById('label_modulo_aluno');
+                const periodoSelect = document.getElementById('periodo_aluno');
+
+                function atualizarModuloPeriodo() {
+                    const curso = cursoSelect.value;
+                    const isMtec = curso.includes('(M-Tec)');
+
+                    // Limpa opções antigas de Módulo
+                    moduloSelect.innerHTML = '<option value="">Selecione...</option>';
+
+                    if (!curso) {
+                        moduloLabel.textContent = 'Módulo:';
+                        periodoSelect.innerHTML = '<option value="">Selecione...</option>';
+                        return;
+                    }
+
+                    if (isMtec) {
+                        // M-Tec
+                        moduloLabel.textContent = 'Ano:';
+                        ['1º', '2º', '3º'].forEach(opt => {
+                            const option = document.createElement('option');
+                            option.value = opt;
+                            option.textContent = opt;
+                            moduloSelect.appendChild(option);
+                        });
+
+                        // Período para M-Tec
+                        periodoSelect.innerHTML = `
+                            <option value="">Selecione...</option>
+                            <option value="Integral">Integral</option>
+                            <option value="Noturno">Noturno</option>
+                        `;
+                    } else {
+                        // Técnico Regular
+                        moduloLabel.textContent = 'Módulo:';
+                        ['I', 'II', 'III'].forEach(opt => {
+                            const option = document.createElement('option');
+                            option.value = opt;
+                            option.textContent = opt;
+                            moduloSelect.appendChild(option);
+                        });
+
+                        // Período para Técnico Regular
+                        periodoSelect.innerHTML = `
+                            <option value="">Selecione...</option>
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                            <option value="Noturno">Noturno</option>
+                        `;
+                    }
+                }
+
+                if (cursoSelect) {
+                    cursoSelect.addEventListener('change', atualizarModuloPeriodo);
+                    // Inicializar caso já venha pré-preenchido
+                    atualizarModuloPeriodo();
+                }
             });
         </script>
 </body>
