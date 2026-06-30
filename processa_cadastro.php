@@ -23,6 +23,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $telefone = preg_replace('/\D/', '', $_POST['telefone']); // Remove máscaras do telefone
         $empresa_id = $_SESSION['empresa_id'] ?? 1;
 
+        // Novos campos de tipo de acesso
+        $tipo_acesso = $_POST['tipo_acesso'] ?? 'Outros';
+        $curso = $_POST['curso_aluno'] ?? null;
+        $periodo = $_POST['periodo_aluno'] ?? null;
+        $modulo = $_POST['modulo_aluno'] ?? null;
+        $funcao = $_POST['funcao_equipe'] ?? null;
+
+        if ($tipo_acesso !== 'Aluno') {
+            $curso = null;
+            $periodo = null;
+            $modulo = null;
+        }
+        if ($tipo_acesso !== 'Equipe') {
+            $funcao = null;
+        }
+
         // 2. Captura de Dados do Veículo
         $tipo_veiculo = $_POST['tipo_veiculo'];
         $placa = strtoupper(trim($_POST['placa']));
@@ -36,14 +52,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 3. Gerar e Salvar Usuário
         $novo_codigo = gerarCodigoAcesso($pdo);
-        $sqlUser = "INSERT INTO usuarios (codigo_acesso, nome_completo, email, senha, cpf, id_empresa, id_unidade, role, contato_valor) 
-                    VALUES (?, ?, ?, '123', ?, ?, ?, 'usuario', ?)";
+        $sqlUser = "INSERT INTO usuarios (codigo_acesso, nome_completo, email, senha, cpf, id_empresa, id_unidade, role, contato_valor, tipo_acesso, curso, periodo, modulo, funcao) 
+                    VALUES (?, ?, ?, '123', ?, ?, ?, 'usuario', ?, ?, ?, ?, ?, ?)";
         $stmtUser = $pdo->prepare($sqlUser);
         
         // Usamos o telefone como contato principal, se não houver, usamos o email original
         $contato_principal = !empty($telefone) ? $telefone : (strpos($email, '@rav.tmp') === false ? $email : '');
         
-        $stmtUser->execute([$novo_codigo, $nome, $email, $cpf, $empresa_id, $empresa_id, $contato_principal]);
+        $stmtUser->execute([
+            $novo_codigo, $nome, $email, $cpf, $empresa_id, $empresa_id, $contato_principal,
+            $tipo_acesso, $curso, $periodo, $modulo, $funcao
+        ]);
         $novo_usuario_id = $pdo->lastInsertId();
 
         // 4. Salvar Veículo Vinculado

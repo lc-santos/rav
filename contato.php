@@ -22,9 +22,6 @@ $msg = $_GET['msg'] ?? '';
                 <span class="fw-bold text-white small">RAV - PROJETO INSTITUCIONAL</span>
             </div>
             <div class="accessibility-tools d-flex align-items-center gap-3">
-                <a href="#" class="text-white text-decoration-none small"><i class="bi bi-facebook"></i></a>
-                <a href="https://www.instagram.com/governosp" class="text-white text-decoration-none small"><i class="bi bi-instagram"></i></a>
-                <span class="text-white-50 mx-1">|</span>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font" title="Diminuir Fonte">A-</button>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font" title="Aumentar Fonte">A+</button>
                 <button type="button" class="btn btn-sm text-white p-0 ms-2" id="btn-toggle-contrast"><i class="bi bi-moon-stars-fill fs-6"></i></button>
@@ -51,7 +48,7 @@ $msg = $_GET['msg'] ?? '';
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg nav-cps p-0 shadow-sm">
             <div class="container">
-                <button class="navbar-toggler my-2 border-white text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button class="navbar-toggler collapsed my-2 border-white text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <i class="bi bi-list fs-1"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -110,7 +107,7 @@ $msg = $_GET['msg'] ?? '';
                             </div>
                             <div>
                                 <h6 class="fw-bold mb-0">Suporte Técnico</h6>
-                                <p class="text-secondary small mb-0">(11) 99999-9999</p>
+                                <p class="text-secondary small mb-0">(11) 3324-3000</p>
                             </div>
                         </div>
                         

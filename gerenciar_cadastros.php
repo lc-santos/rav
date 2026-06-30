@@ -3,7 +3,7 @@ require_once 'trava_seguranca.php';
 require_once 'conn.php';
 
 // Busca todos os usuários cadastrados (condutores/visitantes do sistema)
-$stmt = $pdo->query("SELECT id, codigo_acesso, nome_completo, cpf, email, contato_valor FROM usuarios WHERE role = 'usuario' ORDER BY nome_completo ASC");
+$stmt = $pdo->query("SELECT id, codigo_acesso, nome_completo, cpf, email, contato_valor, tipo_acesso, curso, periodo, modulo, funcao FROM usuarios WHERE role = 'usuario' ORDER BY nome_completo ASC");
 $cadastros = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 $stmtV = $pdo->query("SELECT id, id_usuario, placa, modelo, cor, tipo_veiculo FROM veiculos WHERE id_usuario IS NOT NULL");
@@ -181,9 +181,34 @@ foreach ($todos_veiculos as $v) {
             <div class="col cadastro-item">
                 <div class="card h-100 cadastro-card bg-white rounded-3">
                     <div class="card-body p-4">
-                        <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
                             <h5 class="card-title fw-bold text-primary mb-0"><i class="bi bi-person-fill me-2"></i><?= htmlspecialchars($c['nome_completo']) ?></h5>
                             <span class="badge bg-secondary opacity-75">ID: <?= htmlspecialchars($c['codigo_acesso']) ?></span>
+                        </div>
+
+                        <!-- Badge do Tipo de Acesso e Detalhes Acadêmicos -->
+                        <div class="mb-3 d-flex flex-wrap gap-1">
+                            <?php 
+                                $tipo = htmlspecialchars($c['tipo_acesso'] ?? 'Outros');
+                                if ($tipo === 'Aluno') {
+                                    $badgeColor = 'bg-info bg-opacity-10 text-info border border-info-subtle';
+                                    $desc = htmlspecialchars(($c['curso'] ?? '') . ' - ' . ($c['modulo'] ?? '') . ' (' . ($c['periodo'] ?? '') . ')');
+                                } else if ($tipo === 'Equipe') {
+                                    $badgeColor = 'bg-warning bg-opacity-10 text-warning border border-warning-subtle';
+                                    $desc = htmlspecialchars($c['funcao'] ?? 'Equipe');
+                                } else {
+                                    $badgeColor = 'bg-secondary bg-opacity-10 text-secondary border border-secondary-subtle';
+                                    $desc = 'Visitante / Serviço';
+                                }
+                            ?>
+                            <span class="badge <?= $badgeColor ?> px-2 py-1 rounded-pill fw-bold" style="font-size:0.75rem;">
+                                <i class="bi bi-person-badge-fill me-1"></i><?= $tipo ?>
+                            </span>
+                            <?php if (!empty($desc) && $tipo !== 'Outros'): ?>
+                                <span class="badge bg-light text-dark border px-2 py-1 rounded-pill small" style="font-size:0.72rem; font-weight: 500;">
+                                    <?= $desc ?>
+                                </span>
+                            <?php endif; ?>
                         </div>
                         
                         <div class="text-secondary small mb-3">
@@ -244,6 +269,11 @@ foreach ($todos_veiculos as $v) {
                             data-cpf="<?= htmlspecialchars($c['cpf']) ?>"
                             data-email="<?= htmlspecialchars($c['email']) ?>"
                             data-contato="<?= htmlspecialchars($c['contato_valor']) ?>"
+                            data-tipo-acesso="<?= htmlspecialchars($c['tipo_acesso'] ?? 'Outros') ?>"
+                            data-curso="<?= htmlspecialchars($c['curso'] ?? '') ?>"
+                            data-periodo="<?= htmlspecialchars($c['periodo'] ?? '') ?>"
+                            data-modulo="<?= htmlspecialchars($c['modulo'] ?? '') ?>"
+                            data-funcao="<?= htmlspecialchars($c['funcao'] ?? '') ?>"
                             data-veiculos="<?= htmlspecialchars(json_encode($veiculos), ENT_QUOTES, 'UTF-8') ?>">
                             <i class="bi bi-pencil-square me-2"></i> Editar
                         </button>
@@ -290,6 +320,80 @@ foreach ($todos_veiculos as $v) {
                         <div class="mb-3">
                             <label class="form-label small fw-bold">Telefone/Contato</label>
                             <input type="tel" id="edit_contato" name="contato_valor" class="form-control" data-mask="tel" placeholder="(00) 00000-0000">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold mb-3">Tipo acesso:</label>
+                            <div class="selectable-group" id="editGroupTipoAcesso">
+                                <label class="selectable-item">
+                                    <input type="radio" name="tipo_acesso" id="edit_tipo_acesso_aluno" value="Aluno" required>
+                                    <div class="icon-box"><i class="bi bi-person-fill"></i></div>
+                                    <span>Aluno</span>
+                                </label>
+                                <label class="selectable-item">
+                                    <input type="radio" name="tipo_acesso" id="edit_tipo_acesso_equipe" value="Equipe">
+                                    <div class="icon-box"><i class="bi bi-people-fill"></i></div>
+                                    <span>Equipe</span>
+                                </label>
+                                <label class="selectable-item">
+                                    <input type="radio" name="tipo_acesso" id="edit_tipo_acesso_outros" value="Outros">
+                                    <div class="icon-box"><i class="bi bi-person"></i></div>
+                                    <span>Outros</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Campos dinâmicos para ALUNO no Editar -->
+                        <div class="mb-3" id="editCamposAlunoDinamico" style="display: none;">
+                            <div class="row g-2">
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Curso:</label>
+                                    <select id="edit_curso_aluno" name="curso_aluno" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione...</option>
+                                        <optgroup label="Técnico">
+                                            <option value="Administração">Administração</option>
+                                            <option value="Contabilidade">Contabilidade</option>
+                                            <option value="Desenvolvimento de sistemas">Desenvolvimento de sistemas</option>
+                                            <option value="Recursos humanos">Recursos humanos</option>
+                                            <option value="Segurança do trabalho">Segurança do trabalho</option>
+                                        </optgroup>
+                                        <optgroup label="M-Tec">
+                                            <option value="Administração (M-Tec)">Administração (M-Tec)</option>
+                                            <option value="Desenvolvimento de sistemas (M-Tec)">Desenvolvimento de sistemas (M-Tec)</option>
+                                        </optgroup>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label id="edit_label_modulo_aluno" class="form-label small fw-bold">Módulo:</label>
+                                    <select id="edit_modulo_aluno" name="modulo_aluno" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione...</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label class="form-label small fw-bold">Período:</label>
+                                    <select id="edit_periodo_aluno" name="periodo_aluno" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione...</option>
+                                        <option value="Matutino">Matutino</option>
+                                        <option value="Vespertino">Vespertino</option>
+                                        <option value="Noturno">Noturno</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos dinâmicos para EQUIPE no Editar -->
+                        <div class="mb-3" id="editCamposEquipeDinamico" style="display: none;">
+                            <div class="row g-2">
+                                <div class="col-12">
+                                    <label class="form-label small fw-bold">Cargo / Função:</label>
+                                    <select name="funcao_equipe" id="edit_funcao_equipe" class="form-select" style="border-radius: 20px;">
+                                        <option value="">Selecione se aplicável...</option>
+                                        <option value="Secretaria">Secretaria</option>
+                                        <option value="Professor(a)">Professor(a)</option>
+                                        <option value="Funcionários">Funcionários</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Zona de Exclusão de Veículos -->
@@ -392,6 +496,74 @@ foreach ($todos_veiculos as $v) {
         const btnEditores = document.querySelectorAll('.btn-editar');
         const modalEdit = new bootstrap.Modal(document.getElementById('modalEditarCadastro'));
         
+        // --- LÓGICA DO MODAL EDITAR CADASTRO ---
+        const editCursoSelect = document.getElementById('edit_curso_aluno');
+        const editModuloSelect = document.getElementById('edit_modulo_aluno');
+        const editModuloLabel = document.getElementById('edit_label_modulo_aluno');
+        const editPeriodoSelect = document.getElementById('edit_periodo_aluno');
+
+        function atualizarModuloPeriodoEdit() {
+            if (!editCursoSelect) return;
+            const curso = editCursoSelect.value;
+            const isMtec = curso.includes('(M-Tec)');
+
+            editModuloSelect.innerHTML = '<option value="">Selecione...</option>';
+
+            if (!curso) {
+                editModuloLabel.textContent = 'Módulo:';
+                editPeriodoSelect.innerHTML = '<option value="">Selecione...</option>';
+                return;
+            }
+
+            if (isMtec) {
+                editModuloLabel.textContent = 'Ano:';
+                ['1º', '2º', '3º'].forEach(opt => {
+                    const option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    editModuloSelect.appendChild(option);
+                });
+
+                editPeriodoSelect.innerHTML = `
+                        <option value="">Selecione...</option>
+                        <option value="Integral">Integral</option>
+                        <option value="Noturno">Noturno</option>
+                    `;
+            } else {
+                editModuloLabel.textContent = 'Módulo:';
+                ['I', 'II', 'III'].forEach(opt => {
+                    const option = document.createElement('option');
+                    option.value = opt;
+                    option.textContent = opt;
+                    editModuloSelect.appendChild(option);
+                });
+
+                editPeriodoSelect.innerHTML = `
+                        <option value="">Selecione...</option>
+                        <option value="Matutino">Matutino</option>
+                        <option value="Vespertino">Vespertino</option>
+                        <option value="Noturno">Noturno</option>
+                    `;
+            }
+        }
+
+        if (editCursoSelect) {
+            editCursoSelect.addEventListener('change', atualizarModuloPeriodoEdit);
+        }
+
+        // Listener para alternar os rádios no modal de edição
+        const editRadios = document.querySelectorAll('#editGroupTipoAcesso input[name="tipo_acesso"]');
+        editRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                editRadios.forEach(r => r.closest('.selectable-item').classList.remove('active'));
+                this.closest('.selectable-item').classList.add('active');
+
+                const valor = this.value;
+                document.getElementById('editCamposAlunoDinamico').style.display = (valor === 'Aluno') ? 'block' : 'none';
+                document.getElementById('editCamposEquipeDinamico').style.display = (valor === 'Equipe') ? 'block' : 'none';
+            });
+        });
+
         btnEditores.forEach(btn => {
             btn.addEventListener('click', function() {
                 document.getElementById('edit_id').value = this.getAttribute('data-id');
@@ -404,6 +576,45 @@ foreach ($todos_veiculos as $v) {
                 
                 document.getElementById('edit_cpf').value = this.getAttribute('data-cpf');
                 document.getElementById('edit_contato').value = this.getAttribute('data-contato');
+
+                // Recupera novos campos de tipo de acesso
+                const tipo = this.getAttribute('data-tipo-acesso') || 'Outros';
+                const curso = this.getAttribute('data-curso') || '';
+                const periodo = this.getAttribute('data-periodo') || '';
+                const modulo = this.getAttribute('data-modulo') || '';
+                const funcao = this.getAttribute('data-funcao') || '';
+
+                // Seleciona o radio correspondente e atualiza visual
+                editRadios.forEach(r => {
+                    if (r.value === tipo) {
+                        r.checked = true;
+                        r.closest('.selectable-item').classList.add('active');
+                    } else {
+                        r.checked = false;
+                        r.closest('.selectable-item').classList.remove('active');
+                    }
+                });
+
+                // Atualiza campos dinâmicos no Edit Modal
+                document.getElementById('editCamposAlunoDinamico').style.display = (tipo === 'Aluno') ? 'block' : 'none';
+                document.getElementById('editCamposEquipeDinamico').style.display = (tipo === 'Equipe') ? 'block' : 'none';
+
+                if (tipo === 'Aluno') {
+                    document.getElementById('edit_curso_aluno').value = curso;
+                    atualizarModuloPeriodoEdit();
+                    document.getElementById('edit_modulo_aluno').value = modulo;
+                    document.getElementById('edit_periodo_aluno').value = periodo;
+                } else {
+                    document.getElementById('edit_curso_aluno').value = '';
+                    document.getElementById('edit_modulo_aluno').value = '';
+                    document.getElementById('edit_periodo_aluno').value = '';
+                }
+
+                if (tipo === 'Equipe') {
+                    document.getElementById('edit_funcao_equipe').value = funcao;
+                } else {
+                    document.getElementById('edit_funcao_equipe').value = '';
+                }
 
                 // Renderiza Veiculos para Remoção  
                 let veiculosStr = this.getAttribute('data-veiculos');

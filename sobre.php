@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RAV - Sobre a Iniciativa</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/index.css">
 </head>
+
 <body class="light-mode section-bg-gray">
 
     <!-- Acessibility Bar -->
@@ -18,12 +21,12 @@
                 <span class="fw-bold text-white small">RAV - PROJETO INSTITUCIONAL</span>
             </div>
             <div class="accessibility-tools d-flex align-items-center gap-3">
-                <a href="#" class="text-white text-decoration-none small"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-white text-decoration-none small"><i class="bi bi-instagram"></i></a>
-                <span class="text-white-50 mx-1">|</span>
-                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font" title="Diminuir Fonte">A-</button>
-                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font" title="Aumentar Fonte">A+</button>
-                <button type="button" class="btn btn-sm text-white p-0 ms-2" id="btn-toggle-contrast"><i class="bi bi-moon-stars-fill fs-6"></i></button>
+                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font"
+                    title="Diminuir Fonte">A-</button>
+                <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font"
+                    title="Aumentar Fonte">A+</button>
+                <button type="button" class="btn btn-sm text-white p-0 ms-2" id="btn-toggle-contrast"><i
+                        class="bi bi-moon-stars-fill fs-6"></i></button>
             </div>
         </div>
     </div>
@@ -35,30 +38,40 @@
                 <h1 class="logo-text m-0 fw-bold d-flex align-items-center flex-wrap">
                     <span class="text-cps-red fs-1 me-2">RAV</span>
                     <span class="text-dark fs-4 mt-1">Registro de acesso de veículos</span>
-                    <span class="badge bg-cps-red text-white ms-2 mt-2" style="font-size: 0.70rem; padding: 0.35em 0.65em;">ETEC's e FATEC's</span>
+                    <span class="badge bg-cps-red text-white ms-2 mt-2"
+                        style="font-size: 0.70rem; padding: 0.35em 0.65em;">ETEC's e FATEC's</span>
                 </h1>
             </a>
             <div class="search-bar position-relative" style="min-width: 300px;">
                 <input type="text" class="form-control rounded-pill pe-5 py-2" placeholder="O que deseja localizar?">
-                <button class="btn position-absolute end-0 top-0 h-100 text-cps-red" type="button"><i class="bi bi-search"></i></button>
+                <button class="btn position-absolute end-0 top-0 h-100 text-cps-red" type="button"><i
+                        class="bi bi-search"></i></button>
             </div>
         </div>
-        
+
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg nav-cps p-0 shadow-sm">
             <div class="container">
-                <button class="navbar-toggler my-2 border-white text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button class="navbar-toggler collapsed my-2 border-white text-white" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav">
                     <i class="bi bi-list fs-1"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav w-100 py-2 py-lg-0">
-                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="index.php">Início</a></li>
-                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="funcionalidades.php">Funcionalidades</a></li>
-                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3 active border-bottom border-3 border-white" href="sobre.php">Sobre o Sistema</a></li>
-                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="comousar.php">Como Usar</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3"
+                                href="index.php">Início</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3"
+                                href="funcionalidades.php">Funcionalidades</a></li>
+                        <li class="nav-item"><a
+                                class="nav-link text-white fw-medium px-3 py-3 active border-bottom border-3 border-white"
+                                href="sobre.php">Sobre o Sistema</a></li>
+                        <li class="nav-item"><a class="nav-link text-white fw-medium px-3 py-3" href="comousar.php">Como
+                                Usar</a></li>
 
-                        <li class="nav-item ms-lg-auto d-flex flex-column flex-lg-row align-items-center gap-2 py-2 py-lg-0">
-                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="cadastro.php">
+                        <li
+                            class="nav-item ms-lg-auto d-flex flex-column flex-lg-row align-items-center gap-2 py-2 py-lg-0">
+                            <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white"
+                                href="cadastro.php">
                                 <i class="bi bi-building-fill me-1"></i> Cadastrar Unidade
                             </a>
                             <a class="btn btn-light text-cps-red fw-bold rounded-pill px-4 bg-white" href="login.php">
@@ -78,20 +91,18 @@
                     <h6 class="text-cps-red fw-bold text-uppercase tracking-wider">Histórico e Propósito</h6>
                     <h1 class="display-5 fw-bold text-contrast mb-4">Por que criamos o RAV?</h1>
                     <p class="fs-5 text-contrast-secondary lh-lg mb-4">
-                        Por anos, as portarias institucionais basearam-se em cadernos físicos. Isso gerava falhas, perdas de histórico e dificuldade enorme em realizar auditorias de segurança.
+                        O RAV (Registro de Acesso de Veículos) nasceu da urgência de modernizar a entrada das Escolas
+                        Técnicas do Centro Paula Souza. Ao levar a portaria integralmente para o formato Web,
+                        economizamos tempo na fila, papel para a escola, e garantimos que a diretoria possua métricas em
+                        tempo real sobre quem e quantos carros circulam pelo pátio a cada hora.
                     </p>
-                    <p class="fs-5 text-contrast-secondary lh-lg mb-4">
-                        O RAV (Registro de Acesso de Veículos) nasceu da urgência de modernizar a entrada das Escolas Técnicas do Centro Paula Souza. Ao levar a portaria integralmente para o formato Web, economizamos tempo na fila, papel para a escola, e garantimos que a diretoria possua métricas em tempo real sobre quem e quantos carros circulam pelo pátio a cada hora.
-                    </p>
-                 
+
                 </div>
                 <!-- Imagem Direita -->
                 <div class="col-lg-5 offset-lg-1">
-                    <div class="bg-white rounded-4 shadow-sm border p-3">
-                        <!-- Placeholder -->
-                        <div class="rounded-3 bg-light d-flex align-items-center justify-content-center" style="height: 480px; font-size: 5rem; color: #ccc;">
-                            <i class="bi bi-building"></i>
-                        </div>
+                    <div class="bg-white rounded-4 shadow-sm border p-3 text-center">
+                        <img src="img/guarda3.png" alt="Sistema RAV" class="img-fluid rounded-3"
+                            style="max-height: 480px; object-fit: cover; width: 100%;">
                     </div>
                 </div>
             </div>
@@ -104,20 +115,27 @@
                 </div>
                 <div class="row g-5">
                     <div class="col-md-4 text-center">
-                        <i class="bi bi-shield-lock-fill text-cps-red pb-3 mb-3 border-bottom border-2 border-danger d-inline-block" style="font-size: 3rem;"></i>
+                        <i class="bi bi-shield-lock-fill text-cps-red pb-3 mb-3 border-bottom border-2 border-danger d-inline-block"
+                            style="font-size: 3rem;"></i>
                         <h4 class="fw-bold">Segurança</h4>
-                        <p class="text-secondary">Arquitetura focada em proteção de senhas e identificação em conformidade com as exigências LGPD e de segurança estudantil.</p>
+                        <p class="text-secondary">Arquitetura focada em proteção de senhas e identificação em
+                            conformidade com as exigências LGPD e de segurança estudantil.</p>
                     </div>
                     <div class="col-md-4 text-center">
-                        <i class="bi bi-lightning-charge-fill text-primary pb-3 mb-3 border-bottom border-2 border-primary d-inline-block" style="font-size: 3rem;"></i>
+                        <i class="bi bi-lightning-charge-fill text-primary pb-3 mb-3 border-bottom border-2 border-primary d-inline-block"
+                            style="font-size: 3rem;"></i>
                         <h4 class="fw-bold">Praticidade</h4>
-                        <p class="text-secondary">Uma interface focada no dia a dia, concebida para exigir 'zero treinamento'. Elementos claros tornam óbvio e instintivo o fluxo da portaria.</p>
+                        <p class="text-secondary">Uma interface focada no dia a dia, concebida para exigir 'zero
+                            treinamento'. Elementos claros tornam óbvio e instintivo o fluxo da portaria.</p>
                     </div>
                     <div class="col-md-4 text-center">
-                        <i class="bi bi-server text-success pb-3 mb-3 border-bottom border-2 border-success d-inline-block" style="font-size: 3rem;"></i>
-                        <h2 class="fw-bold mb-3">Multi-Veículos e Gestão de Cadastros</h2>
-                        <p class="mb-4">
-                            Problemas com registros que mudam de veículo? O módulo de Gestão de Cadastros permite vincular diversas placas à mesma pessoa com histórico centralizado, evitando duplicidade e retrabalho de cadastro.
+                        <i class="bi bi-server text-success pb-3 mb-3 border-bottom border-2 border-success d-inline-block"
+                            style="font-size: 3rem;"></i>
+                        <h4 class="fw-bold">Gestão de Cadastros</h4>
+                        <p class="text-secondary">
+                            O módulo de Gestão de Cadastros permite
+                            vincular diversas placas à mesma pessoa com histórico centralizado, evitando duplicidade e
+                            retrabalho de cadastro.
                         </p>
                     </div>
                 </div>
@@ -130,11 +148,13 @@
         <div class="container text-center text-md-start">
             <div class="row align-items-center g-4 mb-4">
                 <div class="col-12 col-md-6 col-lg-5 text-center text-md-start">
-                    <h3 class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
-                       <span class="text-white">RAV</span>
+                    <h3
+                        class="fw-bold m-0 mb-3 d-flex align-items-center justify-content-center justify-content-md-start">
+                        <span class="text-white">RAV</span>
                     </h3>
                     <p class="small text-white-50 lh-lg pe-md-3">
-                        Sistema de Registro de Acesso de Veículos exclusivo para ETECs e FATECs. Desenvolvido para modernizar, agilizar e trazer segurança inteligente para a portaria.
+                        Sistema de Registro de Acesso de Veículos exclusivo para ETECs e FATECs. Desenvolvido para
+                        modernizar, agilizar e trazer segurança inteligente para a portaria.
                     </p>
                 </div>
 
@@ -190,4 +210,5 @@
         });
     </script>
 </body>
+
 </html>

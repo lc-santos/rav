@@ -12,7 +12,7 @@ if (empty($busca)) {
 
 try {
     // Busca o usuário pelo Código de Acesso (7 dígitos) ou CPF
-    $stmt = $pdo->prepare("SELECT id, nome_completo, contato_valor 
+    $stmt = $pdo->prepare("SELECT id, nome_completo, contato_valor, tipo_acesso, curso, periodo, modulo, funcao 
                            FROM usuarios 
                            WHERE codigo_acesso = :busca OR cpf = :busca LIMIT 1");
     $stmt->execute([':busca' => $busca]);
@@ -20,7 +20,7 @@ try {
 
     if ($user) {
         // Busca veículos vinculados a esse usuário
-        $stmtV = $pdo->prepare("SELECT placa, modelo, cor FROM veiculos WHERE id_usuario = :id");
+        $stmtV = $pdo->prepare("SELECT placa, modelo, cor, tipo_veiculo FROM veiculos WHERE id_usuario = :id");
         $stmtV->execute([':id' => $user['id']]);
         $veiculos = $stmtV->fetchAll(PDO::FETCH_ASSOC);
 
@@ -28,6 +28,11 @@ try {
             'sucesso' => true,
             'nome' => $user['nome_completo'],
             'contato' => $user['contato_valor'],
+            'tipo_acesso' => $user['tipo_acesso'],
+            'curso' => $user['curso'],
+            'periodo' => $user['periodo'],
+            'modulo' => $user['modulo'],
+            'funcao' => $user['funcao'],
             'veiculos' => $veiculos
         ]);
     } else {

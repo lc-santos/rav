@@ -25,6 +25,11 @@ try {
             u.id          AS id_usuario_lookup,
             u.nome_completo,
             u.codigo_acesso,
+            u.tipo_acesso,
+            u.curso,
+            u.periodo,
+            u.modulo,
+            u.funcao,
             (SELECT COUNT(*) FROM registros_acesso ra WHERE ra.id_veiculo = v.id) AS total_acessos,
             (SELECT status FROM registros_acesso ra WHERE ra.id_veiculo = v.id ORDER BY ra.data_hora_entrada DESC LIMIT 1) AS ultimo_status
         FROM veiculos v
@@ -46,6 +51,11 @@ try {
             u.id      AS id_usuario_lookup,
             u.nome_completo,
             u.codigo_acesso,
+            u.tipo_acesso,
+            u.curso,
+            u.periodo,
+            u.modulo,
+            u.funcao,
             0         AS total_acessos,
             'Cadastrado' AS ultimo_status
         FROM usuarios u

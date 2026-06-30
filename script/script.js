@@ -1,5 +1,5 @@
 // 1. FUNÇÃO GLOBAL DE SELEÇÃO (Fora do DOMContentLoaded para ser acessível pelos resultados da busca)
-function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '') {
+function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '', tipo = 'Carro', tipo_acesso = 'Outros', curso = '', periodo = '', modulo = '', funcao = '') {
     // Preenchimento dos dados básicos
     document.getElementsByName('nome_condutor')[0].value = nome;
     document.getElementById('placa').value = placa;
@@ -93,26 +93,77 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // 1.5 CONTROLE DE EXIBIÇÃO DINÂMICA (Tipos de Acesso)
-    const radiosAcesso = document.querySelectorAll('input[name="tipo_acesso"]');
-    const camposAlunoDinamico = document.getElementById('camposAlunoDinamico');
-    const camposEquipeDinamico = document.getElementById('camposEquipeDinamico');
+    // ─── 1.5 FORM PRINCIPAL: Tipos de Acesso (ISOLADO) ───────────────────────
+    const formPrincipal    = document.querySelector('form[action="registrar_acesso.php"]');
+    const camposAluno      = document.getElementById('camposAlunoDinamico');
+    const camposEquipe     = document.getElementById('camposEquipeDinamico');
+    const camposOutros     = document.getElementById('camposOutrosDinamico');
 
-    if (radiosAcesso.length > 0) {
-        // Função para atualizar visibilidade
-        function atualizarCamposDinamicos(valor) {
-            if (camposAlunoDinamico) camposAlunoDinamico.style.display = (valor === 'Aluno') ? 'block' : 'none';
-            if (camposEquipeDinamico) camposEquipeDinamico.style.display = (valor === 'Equipe') ? 'block' : 'none';
+    function atualizarCamposDinamicos(valor) {
+        if (camposAluno)   camposAluno.style.display  = (valor === 'Aluno')  ? 'block' : 'none';
+        if (camposEquipe)  camposEquipe.style.display = (valor === 'Equipe') ? 'block' : 'none';
+        if (camposOutros)  camposOutros.style.display = (valor === 'Outros') ? 'block' : 'none';
+    }
+
+    if (formPrincipal) {
+        const radiosAcessoMain = formPrincipal.querySelectorAll('input[name="tipo_acesso"]');
+        if (radiosAcessoMain.length > 0) {
+            // Estado inicial
+            const checkedMain = formPrincipal.querySelector('input[name="tipo_acesso"]:checked');
+            atualizarCamposDinamicos(checkedMain ? checkedMain.value : '');
+
+            radiosAcessoMain.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    // Atualiza classe active no form principal apenas
+                    const grupoMain = formPrincipal.querySelectorAll('input[name="tipo_acesso"]');
+                    grupoMain.forEach(r => r.closest('.selectable-item').classList.remove('active'));
+                    this.closest('.selectable-item').classList.add('active');
+                    atualizarCamposDinamicos(this.value);
+                });
+            });
+        }
+    }
+
+    // ─── 1.6 MODAL CADASTRO: Tipos de Acesso (ISOLADO) ───────────────────────
+    const modalEl            = document.getElementById('modalCadastro');
+    const modalCamposAluno   = document.getElementById('modalCamposAlunoDinamico');
+    const modalCamposEquipe  = document.getElementById('modalCamposEquipeDinamico');
+    const modalCamposOutros  = document.getElementById('modalCamposOutrosDinamico');
+
+    function atualizarCamposModal(valor) {
+        if (modalCamposAluno)   modalCamposAluno.style.display  = (valor === 'Aluno')  ? 'block' : 'none';
+        if (modalCamposEquipe)  modalCamposEquipe.style.display = (valor === 'Equipe') ? 'block' : 'none';
+        if (modalCamposOutros)  modalCamposOutros.style.display = (valor === 'Outros') ? 'block' : 'none';
+    }
+
+    if (modalEl) {
+        const radiosModal = modalEl.querySelectorAll('input[name="tipo_acesso"]');
+        if (radiosModal.length > 0) {
+            // Estado inicial do modal (Outros está checked por padrão)
+            const checkedModal = modalEl.querySelector('input[name="tipo_acesso"]:checked');
+            atualizarCamposModal(checkedModal ? checkedModal.value : 'Outros');
+
+            radiosModal.forEach(radio => {
+                radio.addEventListener('change', function () {
+                    // Atualiza classe active SOMENTE dentro do modal
+                    radiosModal.forEach(r => r.closest('.selectable-item').classList.remove('active'));
+                    this.closest('.selectable-item').classList.add('active');
+                    atualizarCamposModal(this.value);
+                });
+            });
         }
 
-        // Estado inicial
-        const acessoSelecionado = document.querySelector('input[name="tipo_acesso"]:checked');
-        atualizarCamposDinamicos(acessoSelecionado ? acessoSelecionado.value : '');
-
-        radiosAcesso.forEach(radio => {
-            radio.addEventListener('change', function () {
-                atualizarCamposDinamicos(this.value);
+        // Quando o modal fechar, resetar para Outros
+        modalEl.addEventListener('hidden.bs.modal', function () {
+            const radiosReset = modalEl.querySelectorAll('input[name="tipo_acesso"]');
+            radiosReset.forEach(r => {
+                r.closest('.selectable-item').classList.remove('active');
+                if (r.value === 'Outros') {
+                    r.checked = true;
+                    r.closest('.selectable-item').classList.add('active');
+                }
             });
+            atualizarCamposModal('Outros');
         });
     }
 
@@ -148,7 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                             <small class="text-muted" style="font-size: 0.85rem;">${v.modelo} - ${v.cor}</small>
                                         </div>
                                         <button type="button" class="btn btn-sm btn-success px-3 fw-bold shadow-sm" 
-                                            onclick="selecionarVeiculo('${data.nome}', '${v.placa}', '${data.contato}', '${v.modelo}', '${v.cor}')">
+                                            onclick="selecionarVeiculo('${data.nome}', '${v.placa}', '${data.contato}', '${v.modelo}', '${v.cor}', '${v.tipo_veiculo || 'Carro'}', '${data.tipo_acesso || 'Outros'}', '${data.curso || ''}', '${data.periodo || ''}', '${data.modulo || ''}', '${data.funcao || ''}')">
                                             ENTRADA <i class="bi bi-box-arrow-in-right ms-1"></i>
                                         </button>
                                     </div>`;
@@ -212,6 +263,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const totalAcessos = parseInt(item.total_acessos) || 0;
             const status       = item.ultimo_status || 'Fora';
             const idUsuario    = item.id_usuario_lookup || '';
+            const tipoAcc      = item.tipo_acesso || 'Outros';
+            const cursoAcc     = item.curso || '';
+            const periodoAcc   = item.periodo || '';
+            const moduloAcc    = item.modulo || '';
+            const funcaoAcc    = item.funcao || '';
 
             const icoClass = iconeVeiculo(tipoVeic);
             const icoColor = status === 'Dentro' ? '#28a745' : (tipoVeic ? '#6c757d' : '#127187');
@@ -224,7 +280,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Botões de ação contextuais
             const btnEntrada = (status !== 'Dentro' && item.placa && item.placa !== '---')
                 ? `<button class="btn btn-success btn-sm"
-                       onclick="preencherFormulario('${nomeSafe}','${placaSafe}','${modeloSafe}','${corSafe}'); fecharPainelBusca();">
+                       onclick="preencherFormulario('${nomeSafe}','${placaSafe}','${modeloSafe}','${corSafe}','${tipoVeic}','${tipoAcc}','${cursoAcc}','${periodoAcc}','${moduloAcc}','${funcaoAcc}'); fecharPainelBusca();">
                        <i class="bi bi-box-arrow-in-right me-1"></i>Entrada
                    </button>` : '';
 
@@ -274,7 +330,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (painelResultados) painelResultados.classList.add('d-none');
     }
 
-    function preencherFormulario(nome, placa, modelo, cor) {
+    function preencherFormulario(nome, placa, modelo, cor, tipo_veiculo = 'Carro', tipo_acesso = 'Outros', curso = '', periodo = '', modulo = '', funcao = '') {
         const campoNome   = document.querySelector('[name="nome_condutor"]');
         const campoPlaca  = document.getElementById('placa');
         const campoModelo = document.querySelector('[name="modelo_veiculo"]');
@@ -283,6 +339,46 @@ document.addEventListener('DOMContentLoaded', () => {
         if (campoPlaca) campoPlaca.value = placa;
         if (campoModelo) campoModelo.value = modelo;
         if (campoCor)   campoCor.value   = cor;
+
+        // Atualiza tipo veículo radio group
+        const radiosVeiculo = document.querySelectorAll('input[name="tipo_veiculo"]');
+        radiosVeiculo.forEach(r => {
+            if (r.value === tipo_veiculo) {
+                r.checked = true;
+                r.closest('.selectable-item').classList.add('active');
+            } else {
+                r.closest('.selectable-item').classList.remove('active');
+            }
+        });
+        aplicarEstadoOutros(tipo_veiculo === 'Outros');
+
+        // Atualiza tipo acesso radio group
+        const radiosAcesso = document.querySelectorAll('form[action="registrar_acesso.php"] input[name="tipo_acesso"]');
+        radiosAcesso.forEach(r => {
+            if (r.value === tipo_acesso) {
+                r.checked = true;
+                r.closest('.selectable-item').classList.add('active');
+            } else {
+                r.closest('.selectable-item').classList.remove('active');
+            }
+        });
+        atualizarCamposDinamicos(tipo_acesso);
+
+        if (tipo_acesso === 'Aluno') {
+            const cursoSelect = document.getElementById('curso_aluno');
+            if (cursoSelect) {
+                cursoSelect.value = curso;
+                atualizarModuloPeriodo();
+                document.getElementById('modulo_aluno').value = modulo;
+                document.getElementById('periodo_aluno').value = periodo;
+            }
+        } else if (tipo_acesso === 'Equipe') {
+            const funcaoSelect = document.querySelector('select[name="funcao_equipe"]');
+            if (funcaoSelect) {
+                funcaoSelect.value = funcao;
+            }
+        }
+
         // Scroll suave até o formulário
         const form = document.querySelector('form[action="registrar_acesso.php"]');
         if (form) form.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -527,8 +623,7 @@ function initMasks() {
 }
 
 // Alterado para registrar a entrada IMEDIATAMENTE
-// Localize esta função no seu script.js e altere a linha do tipo_acesso
-function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '', tipo = 'Carro') {
+function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '', tipo = 'Carro', tipo_acesso = 'Outros', curso = '', periodo = '', modulo = '', funcao = '') {
     const formData = new FormData();
     formData.append('nome_condutor', nome);
     formData.append('placa', placa);
@@ -536,9 +631,12 @@ function selecionarVeiculo(nome, placa, contato, modelo = '', cor = '', tipo = '
     formData.append('modelo_veiculo', modelo);
     formData.append('cor_veiculo', cor);
     formData.append('tipo_veiculo', tipo);
-
-    // MUDANÇA AQUI: Use 'Serviço' ou 'Aluno' para não dar erro de ENUM no banco
-    formData.append('tipo_acesso', 'Serviço');
+    formData.append('tipo_acesso', tipo_acesso);
+    
+    if (curso) formData.append('curso_aluno', curso);
+    if (periodo) formData.append('periodo_aluno', periodo);
+    if (modulo) formData.append('modulo_aluno', modulo);
+    if (funcao) formData.append('funcao_equipe', funcao);
 
     fetch('registrar_acesso.php', { method: 'POST', body: formData })
         .then(res => res.json())

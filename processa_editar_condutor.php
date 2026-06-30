@@ -8,6 +8,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = trim($_POST['email'] ?? '');
     $contato = preg_replace('/\D/', '', $_POST['contato_valor'] ?? '');
 
+    // Novos campos de tipo de acesso
+    $tipo_acesso = $_POST['tipo_acesso'] ?? 'Outros';
+    $curso = $_POST['curso_aluno'] ?? null;
+    $periodo = $_POST['periodo_aluno'] ?? null;
+    $modulo = $_POST['modulo_aluno'] ?? null;
+    $funcao = $_POST['funcao_equipe'] ?? null;
+
+    if ($tipo_acesso !== 'Aluno') {
+        $curso = null;
+        $periodo = null;
+        $modulo = null;
+    }
+    if ($tipo_acesso !== 'Equipe') {
+        $funcao = null;
+    }
+
     if (empty($id_condutor) || empty($nome) || empty($cpf)) {
         header("Location: gerenciar_cadastros.php?erro=" . urlencode("Dados vazios! Preencha Nome e CPF obrigatórios."));
         exit;
@@ -19,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        $stmt = $pdo->prepare("UPDATE usuarios SET nome_completo = ?, cpf = ?, email = ?, contato_valor = ? WHERE id = ?");
-        $stmt->execute([$nome, $cpf, $email, $contato, $id_condutor]);
+        $stmt = $pdo->prepare("UPDATE usuarios SET nome_completo = ?, cpf = ?, email = ?, contato_valor = ?, tipo_acesso = ?, curso = ?, periodo = ?, modulo = ?, funcao = ? WHERE id = ?");
+        $stmt->execute([$nome, $cpf, $email, $contato, $tipo_acesso, $curso, $periodo, $modulo, $funcao, $id_condutor]);
         
         header("Location: gerenciar_cadastros.php?sucesso=" . urlencode("Dados do condutor $nome atualizados com sucesso!"));
         exit;

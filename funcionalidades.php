@@ -1,3 +1,27 @@
+<?php
+/**
+ * SISTEMA RAV (REGISTRO DE ACESSO DE VEÍCULOS)
+ * Helper para renderizar imagens de funcionalidades ou placeholders
+ */
+function render_feature_image($filename, $icon_class, $text_color_class = 'text-primary')
+{
+    $filepath = 'img/' . $filename;
+    if (file_exists($filepath)) {
+        return '
+        <div class="bg-white p-2 rounded-4 shadow-sm border text-center">
+            <img src="' . $filepath . '" alt="Funcionalidade" class="img-fluid rounded-3" style="max-height: 350px; object-fit: cover; width: 100%;">
+        </div>';
+    } else {
+        return '
+        <div class="bg-white p-2 rounded-4 shadow-sm border">
+            <div class="bg-light rounded-3 display-1 d-flex flex-column align-items-center justify-content-center ' . htmlspecialchars($text_color_class) . '" style="height: 350px;">
+                <i class="' . htmlspecialchars($icon_class) . '"></i>
+                <div class="fs-6 text-secondary mt-3">💡 Salve a imagem em: <code>img/' . htmlspecialchars($filename) . '</code></div>
+            </div>
+        </div>';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -23,9 +47,6 @@
                 <span class="fw-bold text-white small">RAV - PROJETO INSTITUCIONAL</span>
             </div>
             <div class="accessibility-tools d-flex align-items-center gap-3">
-                <a href="#" class="text-white text-decoration-none small"><i class="bi bi-facebook"></i></a>
-                <a href="#" class="text-white text-decoration-none small"><i class="bi bi-instagram"></i></a>
-                <span class="text-white-50 mx-1">|</span>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font" title="Diminuir Fonte">A-</button>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font" title="Aumentar Fonte">A+</button>
                 <button type="button" class="btn btn-sm text-white p-0 ms-2" id="btn-toggle-contrast"><i class="bi bi-moon-stars-fill fs-6"></i></button>
@@ -52,7 +73,7 @@
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg nav-cps p-0 shadow-sm">
             <div class="container">
-                <button class="navbar-toggler my-2 border-white text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <button class="navbar-toggler collapsed my-2 border-white text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <i class="bi bi-list fs-1"></i>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
@@ -89,94 +110,67 @@
             <!-- Funcionalidade 1 -->
             <div class="row align-items-center mb-5 pb-5 border-bottom border-secondary-subtle">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="bg-white p-2 rounded-4 shadow-sm border">
-                        <!-- Imagem placeholder representativa -->
-                        <div class="bg-light rounded-3 display-1 d-flex align-items-center justify-content-center text-primary" style="height: 350px;">
-                            <i class="bi bi-textarea-resize"></i>
-                        </div>
-                    </div>
+                    <?= render_feature_image('func_tempo_real.png', 'bi bi-clock-history', 'text-primary') ?>
                 </div>
                 <div class="col-lg-5 ms-auto">
                     <div class="feature-icon-wrapper mb-3">
                         <i class="bi bi-stopwatch fs-2 text-cps-red"></i>
                     </div>
-                    <h2 class="fw-bold mb-3 text-contrast">Controle em Tempo Real no Estacionamento</h2>
+                    <h2 class="fw-bold mb-3 text-contrast">Controle em Tempo Real</h2>
                     <p class="text-secondary fs-6 lh-lg mb-4 text-contrast-secondary">
-                        O monitoramento diário é a espinha dorsal de um centro Paula Souza seguro. No módulo "Estacionamento", a portaria tem a visão cirúrgica de todos os veículos presentes no pátio, organizados por card em um painel sem recarregamentos automáticos invasivos.
+                        Monitore instantaneamente quais veículos estão no pátio da escola. A portaria consegue registrar entradas e saídas de forma otimizada com busca em tempo real e atualização dinâmica dos cards no painel.
                     </p>
-                    <ul class="list-unstyled text-dark mb-4">
-                        
-                    <a href="login.php" class="btn-capsule">Testar Agora <i class="bi bi-arrow-right ms-2"></i></a>
+                    <a href="login.php" class="btn-cps-custom-primary text-decoration-none">Testar Agora <i class="bi bi-arrow-right ms-2"></i></a>
                 </div>
             </div>
 
             <!-- Funcionalidade 2 -->
             <div class="row align-items-center flex-row-reverse mb-5 pb-5 border-bottom border-secondary-subtle">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="bg-white p-2 rounded-4 shadow-sm border">
-                        <div class="bg-light rounded-3 display-1 d-flex align-items-center justify-content-center text-primary" style="height: 350px;">
-                            <i class="bi bi-person-vcard"></i>
-                        </div>
-                    </div>
+                    <?= render_feature_image('func_gestao_condutores.png', 'bi bi-person-vcard', 'text-primary') ?>
                 </div>
                 <div class="col-lg-5 me-auto">
                     <div class="feature-icon-wrapper mb-3" style="background: rgba(18, 113, 135, 0.1);">
                         <i class="bi bi-people-fill fs-2 text-primary"></i>
                     </div>
-                    <h2 class="fw-bold mb-3">Multi-Veículos e Gestão de Condutores</h2>
+                    <h2 class="fw-bold mb-3">Gestão de Condutores</h2>
                     <p class="text-secondary fs-6 lh-lg mb-4">
-                        Problemas com condutores que mudam de veículo? O módulo de Gestão de Condutores permite vincular diversas placas à mesma pessoa com histórico centralizado, evitando duplicidade e retrabalho de cadastro.
+                        Cadastre e gerencie condutores associando informações detalhadas de curso, período, módulo ou cargo (para membros da equipe) para identificar quem acessa a instituição.
                     </p>
-                    <ul class="list-unstyled text-dark mb-4">
-                        
+                    <a href="login.php" class="btn-cps-custom-primary text-decoration-none">Acessar Painel <i class="bi bi-arrow-right ms-2"></i></a>
                 </div>
             </div>
 
             <!-- Funcionalidade 3 -->
             <div class="row align-items-center mb-5 pb-4">
                 <div class="col-lg-6 mb-4 mb-lg-0">
-                    <div class="bg-white p-2 rounded-4 shadow-sm border">
-                        <div class="bg-light rounded-3 display-1 d-flex align-items-center justify-content-center text-success" style="height: 350px;">
-                            <i class="bi bi-clipboard-data"></i>
-                        </div>
-                    </div>
+                    <?= render_feature_image('func_relatorios_fluxo.png', 'bi bi-file-earmark-bar-graph', 'text-success') ?>
                 </div>
                 <div class="col-lg-5 ms-auto">
                     <div class="feature-icon-wrapper mb-3" style="background: rgba(25, 135, 84, 0.1);">
                         <i class="bi bi-bar-chart-line-fill fs-2 text-success"></i>
                     </div>
-                    <h2 class="fw-bold mb-3 text-contrast">Relatórios Automatizados</h2>
+                    <h2 class="fw-bold mb-3 text-contrast">Relatórios de Fluxo</h2>
                     <p class="text-contrast-secondary fs-6 lh-lg mb-4">
-                        A direção escolar exige transparência e agilidade na auditoria. Com o Módulo de Relacionamentos, geramos Atas em formato PDF oficial com a assinatura do sistema para envio à central de controle ou conselho tutelar em segundos.
+                        Visualize e audite todo o histórico de acessos por meio de filtros personalizados. Controle com exatidão as datas e horários de entrada e saída da comunidade escolar.
                     </p>
-                    <ul class="list-unstyled text-contrast mb-4">
-                        
-                    <a href="login.php" class="btn-capsule">Ver Modelos de Ata <i class="bi bi-file-pdf ms-2"></i></a>
+                    <a href="login.php" class="btn-cps-custom-primary text-decoration-none">Gerar Relatórios <i class="bi bi-file-pdf ms-2"></i></a>
                 </div>
             </div>
-            
-            <!-- Cards menores para extras -->
-            <div class="row g-4 mt-2">
-                <div class="col-md-4">
-                    <div class="card h-100 bg-white border border-light-subtle shadow-sm rounded-4 feature-card p-4">
-                        <i class="bi bi-phone-fill fs-2 text-dark mb-3"></i>
-                        <h5 class="fw-bold mb-2">Interface Responsiva</h5>
-                        <p class="text-secondary small mb-0">Totalmente acessível via celular, tablet ou desktop. A tela do porteiro funciona onde ele precisar.</p>
-                    </div>
+            <!-- Funcionalidade 4 -->
+            <div class="row align-items-center flex-row-reverse mb-5 pb-4">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <?= render_feature_image('func_interface_responsiva.png', 'bi bi-phone-fill', 'text-danger') ?>
                 </div>
-                <div class="col-md-4">
-                    <div class="card h-100 bg-white border border-light-subtle shadow-sm rounded-4 feature-card p-4">
-                        <i class="bi bi-whatsapp fs-2 text-success mb-3"></i>
-                        <h5 class="fw-bold mb-2">Ação Rápida WhatsApp</h5>
-                        <p class="text-secondary small mb-0">Em caso de estacionamento indevido, acione rapidamente o responsável no WhatsApp pelo perfil do condutor.</p>
+                <div class="col-lg-5 me-auto">
+                    <div class="feature-icon-wrapper mb-3" style="background: rgba(220, 53, 69, 0.1);">
+                        <i class="bi bi-phone-fill fs-2 text-danger"></i>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="card h-100 bg-white border border-light-subtle shadow-sm rounded-4 feature-card p-4">
-                        <i class="bi bi-cloud-check-fill fs-2 text-primary mb-3"></i>
-                        <h5 class="fw-bold mb-2">100% Cloud Base</h5>
-                        <p class="text-secondary small mb-0">Sem hardwares complexos. A arquitetura roda através de servidores web e bancos SQL em tempo real.</p>
-                    </div>
+                    <h2 class="fw-bold mb-3 text-contrast">Interface Responsiva</h2>
+                    <p class="text-contrast-secondary fs-6 lh-lg mb-4">
+                        O RAV foi desenvolvido com design totalmente responsivo. A portaria pode operar o sistema diretamente de um smartphone ou tablet, permitindo realizar registros de acesso de qualquer ponto do pátio escolar de forma ágil.
+                    </p>
+                    <a href="login.php" class="btn-cps-custom-primary text-decoration-none">Ver no Celular <i class="bi bi-phone ms-2"></i></a>
                 </div>
             </div>
         </div>

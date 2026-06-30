@@ -265,7 +265,7 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                             </div>
 
                             <!-- Campos dinâmicos para ALUNO -->
-                            <div class="col-12" id="camposAlunoDinamico">
+                            <div class="col-12" id="camposAlunoDinamico" style="display: none;">
                                 <div class="row g-2">
                                     <div class="col-4">
                                         <label class="form-label small fw-bold">Curso:</label>
@@ -275,15 +275,13 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                             <optgroup label="Técnico">
                                                 <option value="Administração">Administração</option>
                                                 <option value="Contabilidade">Contabilidade</option>
-                                                <option value="Desenvolvimento de sistemas">Desenvolvimento de sistemas
-                                                </option>
+                                                <option value="Desenvolvimento de sistemas">Desenvolvimento de sistemas</option>
                                                 <option value="Recursos humanos">Recursos humanos</option>
                                                 <option value="Segurança do trabalho">Segurança do trabalho</option>
                                             </optgroup>
                                             <optgroup label="M-Tec">
                                                 <option value="Administração (M-Tec)">Administração (M-Tec)</option>
-                                                <option value="Desenvolvimento de sistemas (M-Tec)">Desenvolvimento de
-                                                    sistemas (M-Tec)</option>
+                                                <option value="Desenvolvimento de sistemas (M-Tec)">Desenvolvimento de sistemas (M-Tec)</option>
                                             </optgroup>
                                         </select>
                                     </div>
@@ -312,11 +310,49 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                 <div class="row g-2">
                                     <div class="col-12">
                                         <label class="form-label small fw-bold">Cargo / Função:</label>
-                                        <select name="funcao_equipe" class="form-select" style="border-radius: 20px;">
+                                        <select name="funcao_equipe" id="funcao_equipe" class="form-select" style="border-radius: 20px;">
                                             <option value="">Selecione se aplicável...</option>
-                                            <option value="Secretaria">Secretaria</option>
+                                            <option value="Diretor(a)">Diretor(a)</option>
+                                            <option value="Vice-diretor(a)">Vice-diretor(a)</option>
                                             <option value="Professor(a)">Professor(a)</option>
-                                            <option value="Funcionários">Funcionários</option>
+                                            <option value="Coordenador(a)">Coordenador(a)</option>
+                                            <option value="Secretaria">Secretaria</option>
+                                            <option value="Funcionário(a) ADM">Funcionário(a) ADM</option>
+                                            <option value="Auxiliar de limpeza">Auxiliar de limpeza</option>
+                                            <option value="Segurança/Vigilância">Segurança/Vigilância</option>
+                                            <option value="Estagiário(a)">Estagiário(a)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Campos dinâmicos para OUTROS -->
+                            <div class="col-12" id="camposOutrosDinamico" style="display: none;">
+                                <div class="row g-2">
+                                    <div class="col-12">
+                                        <label class="form-label small fw-bold">Relação com a instituição:</label>
+                                        <select name="funcao_equipe" id="outros_subtipo" class="form-select" style="border-radius: 20px;">
+                                            <option value="">Selecione o tipo de visitante...</option>
+                                            <optgroup label="Familiar de aluno">
+                                                <option value="Pai/Mãe de aluno">Pai/Mãe de aluno</option>
+                                                <option value="Responsável de aluno">Responsável de aluno</option>
+                                            </optgroup>
+                                            <optgroup label="Prestador de serviço">
+                                                <option value="Fornecedor">Fornecedor</option>
+                                                <option value="Técnico/Manutenção">Técnico/Manutenção</option>
+                                                <option value="Entregador">Entregador</option>
+                                            </optgroup>
+                                            <optgroup label="Visita institucional">
+                                                <option value="Visitante externo">Visitante externo</option>
+                                                <option value="Representante CPS">Representante CPS</option>
+                                                <option value="Representante ETEC/FATEC">Representante ETEC/FATEC</option>
+                                                <option value="Parceiro empresarial">Parceiro empresarial</option>
+                                            </optgroup>
+                                            <optgroup label="Outros">
+                                                <option value="Ex-aluno">Ex-aluno</option>
+                                                <option value="Candidato/Interessado">Candidato/Interessado</option>
+                                                <option value="Outro">Outro (especificar na observação)</option>
+                                            </optgroup>
                                         </select>
                                     </div>
                                 </div>
@@ -443,6 +479,118 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                                     <label class="form-label small fw-bold">Telefone/Celular</label>
                                     <input type="tel" id="modalTelefone" name="telefone" class="form-control"
                                         data-mask="tel" placeholder="(00) 00000-0000">
+                                </div>
+                                
+                                <div class="col-md-12 mt-3">
+                                    <label class="form-label small fw-bold mb-3">Tipo de acesso:</label>
+                                    <div class="selectable-group" id="modalGroupTipoAcesso">
+                                        <label class="selectable-item">
+                                            <input type="radio" name="tipo_acesso" value="Aluno" required>
+                                            <div class="icon-box"><i class="bi bi-person-fill"></i></div>
+                                            <span>Aluno</span>
+                                        </label>
+                                        <label class="selectable-item">
+                                            <input type="radio" name="tipo_acesso" value="Equipe">
+                                            <div class="icon-box"><i class="bi bi-people-fill"></i></div>
+                                            <span>Equipe</span>
+                                        </label>
+                                        <label class="selectable-item active">
+                                            <input type="radio" name="tipo_acesso" value="Outros" checked>
+                                            <div class="icon-box"><i class="bi bi-person"></i></div>
+                                            <span>Outros</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <!-- Campos dinâmicos para ALUNO no Modal -->
+                                <div class="col-12" id="modalCamposAlunoDinamico" style="display: none;">
+                                    <div class="row g-2">
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Curso:</label>
+                                            <select id="modal_curso_aluno" name="curso_aluno" class="form-select" style="border-radius: 20px;">
+                                                <option value="">Selecione...</option>
+                                                <optgroup label="Técnico">
+                                                    <option value="Administração">Administração</option>
+                                                    <option value="Contabilidade">Contabilidade</option>
+                                                    <option value="Desenvolvimento de sistemas">Desenvolvimento de sistemas</option>
+                                                    <option value="Recursos humanos">Recursos humanos</option>
+                                                    <option value="Segurança do trabalho">Segurança do trabalho</option>
+                                                </optgroup>
+                                                <optgroup label="M-Tec">
+                                                    <option value="Administração (M-Tec)">Administração (M-Tec)</option>
+                                                    <option value="Desenvolvimento de sistemas (M-Tec)">Desenvolvimento de sistemas (M-Tec)</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Módulo:</label>
+                                            <select id="modal_modulo_aluno" name="modulo_aluno" class="form-select" style="border-radius: 20px;">
+                                                <option value="">Selecione...</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">Período:</label>
+                                            <select id="modal_periodo_aluno" name="periodo_aluno" class="form-select" style="border-radius: 20px;">
+                                                <option value="">Selecione...</option>
+                                                <option value="Matutino">Matutino</option>
+                                                <option value="Vespertino">Vespertino</option>
+                                                <option value="Noturno">Noturno</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Campos dinâmicos para EQUIPE no Modal -->
+                                <div class="col-12" id="modalCamposEquipeDinamico" style="display: none;">
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <label class="form-label small fw-bold">Cargo / Função:</label>
+                                            <select name="funcao_equipe" id="modal_funcao_equipe" class="form-select" style="border-radius: 20px;">
+                                                <option value="">Selecione se aplicável...</option>
+                                                <option value="Diretor(a)">Diretor(a)</option>
+                                                <option value="Vice-diretor(a)">Vice-diretor(a)</option>
+                                                <option value="Professor(a)">Professor(a)</option>
+                                                <option value="Coordenador(a)">Coordenador(a)</option>
+                                                <option value="Secretaria">Secretaria</option>
+                                                <option value="Funcionário(a) ADM">Funcionário(a) ADM</option>
+                                                <option value="Auxiliar de limpeza">Auxiliar de limpeza</option>
+                                                <option value="Segurança/Vigilância">Segurança/Vigilância</option>
+                                                <option value="Estagiário(a)">Estagiário(a)</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Campos dinâmicos para OUTROS no Modal -->
+                                <div class="col-12" id="modalCamposOutrosDinamico" style="display: block;">
+                                    <div class="row g-2">
+                                        <div class="col-12">
+                                            <label class="form-label small fw-bold">Relação com a instituição:</label>
+                                            <select name="funcao_equipe" id="modal_outros_subtipo" class="form-select" style="border-radius: 20px;">
+                                                <option value="">Selecione o tipo de visitante...</option>
+                                                <optgroup label="Familiar de aluno">
+                                                    <option value="Pai/Mãe de aluno">Pai/Mãe de aluno</option>
+                                                    <option value="Responsável de aluno">Responsável de aluno</option>
+                                                </optgroup>
+                                                <optgroup label="Prestador de serviço">
+                                                    <option value="Fornecedor">Fornecedor</option>
+                                                    <option value="Técnico/Manutenção">Técnico/Manutenção</option>
+                                                    <option value="Entregador">Entregador</option>
+                                                </optgroup>
+                                                <optgroup label="Visita institucional">
+                                                    <option value="Visitante externo">Visitante externo</option>
+                                                    <option value="Representante CPS">Representante CPS</option>
+                                                    <option value="Representante ETEC/FATEC">Representante ETEC/FATEC</option>
+                                                    <option value="Parceiro empresarial">Parceiro empresarial</option>
+                                                </optgroup>
+                                                <optgroup label="Outros">
+                                                    <option value="Ex-aluno">Ex-aluno</option>
+                                                    <option value="Candidato/Interessado">Candidato/Interessado</option>
+                                                    <option value="Outro">Outro (especificar na observação)</option>
+                                                </optgroup>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -628,6 +776,62 @@ $veiculosDentro = $stmtSaida->fetchAll(PDO::FETCH_ASSOC);
                 cursoSelect.addEventListener('change', atualizarModuloPeriodo);
                 // Inicializar caso já venha pré-preenchido
                 atualizarModuloPeriodo();
+            }
+
+            // --- Lógica Dinâmica de Curso/Módulo/Período para Aluno no Modal ---
+            const modalCursoSelect = document.getElementById('modal_curso_aluno');
+            const modalModuloSelect = document.getElementById('modal_modulo_aluno');
+            const modalModuloLabel = document.getElementById('modal_label_modulo_aluno');
+            const modalPeriodoSelect = document.getElementById('modal_periodo_aluno');
+
+            function atualizarModuloPeriodoModal() {
+                if (!modalCursoSelect) return;
+                const curso = modalCursoSelect.value;
+                const isMtec = curso.includes('(M-Tec)');
+
+                modalModuloSelect.innerHTML = '<option value="">Selecione...</option>';
+
+                if (!curso) {
+                    modalModuloLabel.textContent = 'Módulo:';
+                    modalPeriodoSelect.innerHTML = '<option value="">Selecione...</option>';
+                    return;
+                }
+
+                if (isMtec) {
+                    modalModuloLabel.textContent = 'Ano:';
+                    ['1º', '2º', '3º'].forEach(opt => {
+                        const option = document.createElement('option');
+                        option.value = opt;
+                        option.textContent = opt;
+                        modalModuloSelect.appendChild(option);
+                    });
+
+                    modalPeriodoSelect.innerHTML = `
+                            <option value="">Selecione...</option>
+                            <option value="Integral">Integral</option>
+                            <option value="Noturno">Noturno</option>
+                        `;
+                } else {
+                    modalModuloLabel.textContent = 'Módulo:';
+                    ['I', 'II', 'III'].forEach(opt => {
+                        const option = document.createElement('option');
+                        option.value = opt;
+                        option.textContent = opt;
+                        modalModuloSelect.appendChild(option);
+                    });
+
+                    modalPeriodoSelect.innerHTML = `
+                            <option value="">Selecione...</option>
+                            <option value="Matutino">Matutino</option>
+                            <option value="Vespertino">Vespertino</option>
+                            <option value="Noturno">Noturno</option>
+                        `;
+                }
+            }
+
+            if (modalCursoSelect) {
+                modalCursoSelect.addEventListener('change', atualizarModuloPeriodoModal);
+                atualizarModuloPeriodoModal();
             }
         });
     </script>

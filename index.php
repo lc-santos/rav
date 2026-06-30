@@ -25,11 +25,6 @@
                 <span class="fw-bold text-white small">RAV - PROJETO INSTITUCIONAL</span>
             </div>
             <div class="accessibility-tools d-flex align-items-center gap-3">
-                <a href="#" class="text-white text-decoration-none small" title="Página no Facebook"><i
-                        class="bi bi-facebook"></i></a>
-                <a href="https://www.instagram.com/governosp" class="text-white text-decoration-none small"
-                    title="Página no Instagram"><i class="bi bi-instagram"></i></a>
-                <span class="text-white-50 mx-1">|</span>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-decrease-font"
                     title="Diminuir Fonte">A-</button>
                 <button type="button" class="btn btn-sm text-white p-0 fw-bold" id="btn-increase-font"
@@ -64,7 +59,7 @@
         <!-- Navbar Vermelha -->
         <nav class="navbar navbar-expand-lg nav-cps p-0 shadow-sm">
             <div class="container">
-                <button class="navbar-toggler my-2 border-white text-white" type="button" data-bs-toggle="collapse"
+                <button class="navbar-toggler collapsed my-2 border-white text-white" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarNav">
                     <i class="bi bi-list fs-1"></i>
                 </button>
@@ -182,67 +177,98 @@
         <!-- Espaçador -->
         <div style="height: 20px;" class="d-none d-lg-block spacer-cards"></div>
 
-        <!-- Seção de Video e Descrição -->
+        <!-- Seção de Atalhos de Acesso -->
         <section id="sobre" class="py-5 section-bg-gray">
             <div class="container py-lg-4">
                 <div class="row align-items-center g-5">
-                    <div class="col-lg-6 order-2 order-lg-1">
-                        <div class="pe-lg-5 text-center text-lg-start">
-                            <h6 class="text-cps-red fw-bold text-uppercase mb-2">Conheça o sistema</h6>
-                            <h2 class="fw-bold mb-4 display-6">Gerenciamento de Acesso Prático</h2>
-                            <p class="fs-5 text-muted mb-4">
-                                Projetado exclusivamente para a rotina de ETECs e FATECs, o <b>RAV</b>
-                                facilita o gerenciamento de acesso de veículos.
-                                Com apenas alguns cliques, o porteiro pode registrar a entrada de carros, motos e outros
-                                veículos,
-                                mantendo um histórico preciso e automatizado de todas as movimentações nas dependências.
-                            </p>
 
-                            <!-- Vídeo Mobile: Aparece aqui apenas em resoluções menores -->
-                            <div
-                                class="video-wrapper shadow-lg rounded-4 overflow-hidden position-relative bg-white mb-4 d-block d-lg-none">
-                                <div class="ratio ratio-16x9">
-                                    <iframe src="https://www.youtube.com/embed/gfzsjcTZlWU?si=n10mSSJwvYUY0Mqv"
-                                        title="YouTube video player" allowfullscreen style="border:0;"></iframe>
+                    <!-- Coluna esquerda: Texto -->
+                    <div class="col-lg-5 order-2 order-lg-1">
+                        <div class="text-center text-lg-start">
+                            <span class="atalho-label d-inline-block mb-3">Conheça o sistema</span>
+                            <h2 class="fw-bold mb-4" style="font-size:2.2rem;line-height:1.2; letter-spacing: -0.5px;">Controle de acesso de veículos prático e ágil</h2>
+                            <p class="text-muted mb-4 fs-5" style="line-height:1.6;">
+                                O <strong>RAV</strong> moderniza a portaria de ETECs e FATECs sem necessidade de instalação de aplicativos.
+                            </p>
+                            
+                            <ul class="list-unstyled mb-5 text-start d-flex flex-column gap-3">
+                                <li class="d-flex align-items-center gap-3">
+                                    <i class="bi bi-check2-circle text-success fw-bold fs-3" style="flex-shrink:0"></i>
+                                    <span class="text-muted fs-5 fw-medium">Registros rápidos em segundos</span>
+                                </li>
+                                <li class="d-flex align-items-center gap-3">
+                                    <i class="bi bi-check2-circle text-success fw-bold fs-3" style="flex-shrink:0"></i>
+                                    <span class="text-muted fs-5 fw-medium">Painel otimizado para portaria</span>
+                                </li>
+                                <li class="d-flex align-items-center gap-3">
+                                    <i class="bi bi-check2-circle text-success fw-bold fs-3" style="flex-shrink:0"></i>
+                                    <span class="text-muted fs-5 fw-medium">Histórico digital unificado</span>
+                                </li>
+                            </ul>
+                            
+                            <a href="sobre.php" class="btn-cps-custom-primary px-4 py-2">Saiba mais</a>
+                        </div>
+                    </div>
+
+                    <!-- Coluna direita: Grade de 3 atalhos -->
+                    <div class="col-lg-7 order-1 order-lg-2">
+                        <div class="row g-4">
+
+                            <!-- Acessar Sistema (Destaque) -->
+                            <div class="col-12">
+                                <div class="sc-card sc-card--featured p-4 d-flex align-items-center justify-content-between gap-4">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="sc-icon" style="--sc-color:#c00000;--sc-bg:rgba(192,0,0,.08);">
+                                            <i class="bi bi-door-open"></i>
+                                        </div>
+                                        <div>
+                                            <div class="sc-title mb-1">Entrar no Sistema</div>
+                                            <div class="sc-desc">Acesse o painel de portaria ou administração.</div>
+                                        </div>
+                                    </div>
+                                    <a href="login.php" class="btn-cps-custom-primary px-4 py-2 text-decoration-none">Acessar</a>
                                 </div>
                             </div>
 
-                            <ul class="list-unstyled mb-4 text-start d-inline-block d-lg-block mx-auto">
-                                <li class="d-flex align-items-center mb-3">
-                                    <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
-                                    <span class="fs-5 fw-medium">Controle de acesso rápido e seguro</span>
-                                </li>
-                                <li class="d-flex align-items-center mb-3">
-                                    <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
-                                    <span class="fs-5 fw-medium">Painel intuitivo feito para a Portaria</span>
-                                </li>
-                                <li class="d-flex align-items-center mb-3">
-                                    <i class="bi bi-check-circle-fill text-success fs-4 me-3"></i>
-                                    <span class="fs-5 fw-medium">100% digital</span>
-                                </li>
-                            </ul>
+                            <!-- Como Usar -->
+                            <div class="col-12 col-md-6">
+                                <div class="sc-card p-4 d-flex flex-column h-100 justify-content-between">
+                                    <div>
+                                        <div class="sc-icon mb-3" style="--sc-color:#2563eb;--sc-bg:rgba(37,99,235,.08);">
+                                            <i class="bi bi-journal-text"></i>
+                                        </div>
+                                        <div class="sc-title mb-1">Como Usar</div>
+                                        <div class="sc-desc mb-4">Guia rápido com instruções de operação.</div>
+                                    </div>
+                                    <a href="comousar.php" class="btn-cps-custom-primary px-3 py-2 text-center text-decoration-none">Ver guia</a>
+                                </div>
+                            </div>
 
-                            <!-- Botão Saiba Mais Sobre -->
-                            <div class="mt-4 text-center text-lg-start">
-                                <a href="sobre.php" class="btn-capsule">
-                                    Mais detalhes
-                                </a>
+                            <!-- Cadastrar Unidade -->
+                            <div class="col-12 col-md-6">
+                                <div class="sc-card p-4 d-flex flex-column h-100 justify-content-between">
+                                    <div>
+                                        <div class="sc-icon mb-3" style="--sc-color:#b45309;--sc-bg:rgba(180,83,9,.08);">
+                                            <i class="bi bi-building"></i>
+                                        </div>
+                                        <div class="sc-title mb-1">Cadastrar Unidade</div>
+                                        <div class="sc-desc mb-4">Registre uma nova ETEC ou FATEC no RAV.</div>
+                                    </div>
+                                    <a href="cadastro.php" class="btn-cps-custom-primary px-3 py-2 text-center text-decoration-none">Cadastrar</a>
+                                </div>
                             </div>
+
                         </div>
                     </div>
-                    <div class="col-lg-6 order-1 order-lg-2 d-none d-lg-block">
-                        <div class="video-wrapper shadow-lg rounded-4 overflow-hidden position-relative bg-white">
-                            <div class="ratio ratio-16x9">
-                                <iframe src="https://www.youtube.com/embed/gfzsjcTZlWU?si=n10mSSJwvYUY0Mqv"
-                                    title="YouTube video player" allowfullscreen style="border:0;"></iframe>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </section>
 
+
     </main>
+
+
 
     <!-- Call to Action -->
     <section class="py-5 section-bg-gray">

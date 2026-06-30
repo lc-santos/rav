@@ -236,6 +236,11 @@ CREATE TABLE usuarios (
         'usuario',
         'aluno'
     ) NOT NULL DEFAULT 'usuario',
+    tipo_acesso VARCHAR(50) NOT NULL DEFAULT 'Outros',
+    curso VARCHAR(50) NULL,
+    periodo VARCHAR(50) NULL,
+    modulo VARCHAR(50) NULL,
+    funcao VARCHAR(50) NULL,
     id_empresa INT NULL,
     contato_valor VARCHAR(100) NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
